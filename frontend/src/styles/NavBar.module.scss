@@ -1,0 +1,208 @@
+.navbarWrapper {
+  position: fixed;
+  width: 100%;
+  z-index: 10;
+}
+
+.navbar {
+  width: 100%;
+  background-color: rgba(var(--background), 0.7);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  color: rgb(var(--foreground));
+  padding: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 10px rgba(var(--foreground), 0.1);
+  transition: all 0.2s ease;
+}
+
+.navbarContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.avatarWrapper {
+  cursor: pointer;
+}
+
+.avatar {
+  border: 1px solid rgb(var(--border));
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+.navItemContainer {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.navItemWrapper {
+  position: relative;
+}
+
+.navItemLink {
+  text-decoration: none;
+}
+
+.navItem {
+  margin: 0 15px;
+  cursor: pointer;
+  color: rgb(var(--foreground));
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: rgb(var(--primary));
+  }
+}
+
+.underlineAnimation {
+  position: relative;
+  display: inline-block;
+}
+
+.underlineAnimation::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.underlineAnimation:hover::after {
+  width: 100%;
+}
+
+.glowAnimation {
+  color: var(--primary);
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px rgba(var(--primary), 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(var(--primary), 1);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(var(--primary), 0.5);
+  }
+}
+
+.glowAnimation:hover {
+  animation: glow 1s forwards;
+}
+
+.navbarContent {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.searchWrapper, .githubWrapper, .themeToggleWrapper, .loginButtonWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  position: relative;
+}
+
+.searchIcon {
+  color: rgb(var(--muted-foreground));
+  cursor: pointer;
+}
+
+.githubLink,
+.themeToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgb(var(--foreground));
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: rgb(var(--primary));
+  }
+}
+
+.loginButton {
+  color: var(--foreground);
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(var(--primary), 0.8);
+  }
+}
+
+.submenu {
+  position: absolute;
+  width: 6em;
+  margin-top: 1.7em;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(var(--background), 0.7);
+  backdrop-filter: blur(10px);
+  //-webkit-backdrop-filter: blur(5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
+  padding: 8px 0;
+  z-index: 10;
+}
+
+.submenuItemWrapper {
+  text-decoration: none;
+}
+
+.submenuItem {
+  display: block;
+  padding: 8px 16px;
+  margin: 4px 0;
+  color: rgb(var(--foreground));
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(var(--primary), 0.1);
+  }
+}
+
+.subtitle {
+  position: absolute;
+  top: 220%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  color: rgb(var(--foreground));
+  text-align: center;
+  padding: 1rem;
+  z-index: 5;
+}
+
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(var(--primary), 0.1) 0%, rgba(var(--background), 0.1) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
