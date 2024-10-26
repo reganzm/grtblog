@@ -2,7 +2,7 @@ package com.grtsinry43.grtblog.controller;
 
 import com.grtsinry43.grtblog.annotation.AuthCheck;
 import com.grtsinry43.grtblog.common.UserRole;
-import com.grtsinry43.grtblog.config.MyBatisPlusConfig;
+//import com.grtsinry43.grtblog.config.MyBatisPlusConfig;
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.entity.Tag;
 import com.grtsinry43.grtblog.service.impl.TagServiceImpl;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @Validated
 @RestController
-@RequestMapping("/api/tag")
+@RequestMapping("/tag")
 public class TagController {
     private final TagServiceImpl tagService;
 
