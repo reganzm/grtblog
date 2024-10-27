@@ -1,54 +1,36 @@
-package com.grtsinry43.grtblog.entity;
+package com.grtsinry43.grtblog.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
+import com.grtsinry43.grtblog.entity.Article;
+import lombok.Data;
 
-import java.io.Serial;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
- * <p>
- *
- * </p>
- *
  * @author grtsinry43
- * @since 2024-10-09
+ * @date 2024/10/27 18:47
+ * @description 热爱可抵岁月漫长
  */
-@Getter
-@Setter
-public class Article implements Serializable {
-
-    @Serial
-    private static final long serialVersionUID = 1L;
-
+@Data
+public class ArticleVO {
     /**
      * 文章 ID，会由雪花算法生成
      */
-    @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 文章标题
      */
-    @TableField("title")
     private String title;
 
     /**
      * 文章内容，markdown 格式，交由前端解析
      */
-    @TableField("content")
     private String content;
 
     /**
-     * 作者 ID，逻辑限制
+     * 作者 ID
      */
-    @TableField("author_id")
-    private Long authorId;
+    private String authorName;
 
     /**
      * 文章封面
@@ -73,7 +55,7 @@ public class Article implements Serializable {
     /**
      * 文章状态（PUBLISHED, DRAFT）
      */
-    private Status status;
+    private Article.Status status;
 
     /**
      * 文章创建时间
@@ -89,15 +71,4 @@ public class Article implements Serializable {
      * 文章删除时间（软删除），如果不为空则表示已删除
      */
     private LocalDateTime deletedAt;
-
-    public enum Status {
-        /**
-         * 已发布
-         */
-        PUBLISHED,
-        /**
-         * 草稿
-         */
-        DRAFT
-    }
 }

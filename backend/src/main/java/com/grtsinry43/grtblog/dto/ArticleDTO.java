@@ -15,6 +15,7 @@ public class ArticleDTO {
     private String title;
     private String content;
     private String cover;
+    private Long categoryId;
     private String tags;
     private String status;
 

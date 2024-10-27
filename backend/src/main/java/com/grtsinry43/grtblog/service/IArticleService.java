@@ -3,6 +3,10 @@ package com.grtsinry43.grtblog.service;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
 import com.grtsinry43.grtblog.entity.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.grtsinry43.grtblog.vo.ArticleVO;
+import com.grtsinry43.grtblog.vo.ArticleView;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,5 +17,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2024-10-09
  */
 public interface IArticleService extends IService<Article> {
-    Article addArticle(ArticleDTO articleDTO, Long userId);
+    ArticleVO addArticle(ArticleDTO articleDTO, Long userId);
+
+    ArticleView viewOneArticle(Long id);
+
+    List<Long> getAllArticleIds();
 }

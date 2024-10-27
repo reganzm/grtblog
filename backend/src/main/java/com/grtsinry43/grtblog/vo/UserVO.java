@@ -2,6 +2,8 @@ package com.grtsinry43.grtblog.vo;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * @author grtsinry43
  * @date 2024/10/11 18:55
@@ -13,6 +15,6 @@ public class UserVO {
     private String nickname;
     private String email;
     private String avatar;
-    private String created;
+    private LocalDateTime createdAt;
     private String oauthProvider;
 }
