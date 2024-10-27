@@ -18,9 +18,9 @@ const AuthorCard = () => {
             <div className={styles.bannerCard}>
                 <div className="relative w-full max-w-md">
                     <div
-                        className="absolute -left-16 -bottom-16 w-32 h-32 bg-blue-500 rounded-full blur-xl opacity-50 animate-pulse"/>
+                        className="absolute -left-16 -bottom-16 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-50 animate-pulse"/>
                     <div
-                        className="absolute -right-16 -top-16 w-32 h-32 bg-orange-500 rounded-full blur-xl opacity-50 animate-pulse"/>
+                        className="absolute -right-16 -top-16 w-32 h-32 bg-orange-500 rounded-full blur-2xl opacity-50 animate-pulse"/>
                     <motion.div
                         initial={{scale: 0}}
                         animate={{scale: 1}}
@@ -34,7 +34,7 @@ const AuthorCard = () => {
                         }}
                     >
                         <Container
-                            className="relative backdrop-blur-md bg-white/30 dark:bg-black/30 p-8 rounded-xl z-0 border border-white/20 shadow-xl">
+                            className="relative backdrop-blur-3xl bg-gradient-to-r from-white/40 to-white/20 dark:from-black/40 dark:to-black/20 p-8 rounded-xl z-0 border border-white/20 shadow-2xl">
                             <div className="flex items-center space-x-4 mb-4">
                                 <Avatar className="w-16 h-16 border-2 border-white shadow-lg"
                                         src="https://dogeoss.grtsinry43.com/img/author.jpeg" alt="Author"

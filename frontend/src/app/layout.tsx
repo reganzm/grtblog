@@ -5,6 +5,7 @@ import "@radix-ui/themes/styles.css";
 import styles from "@/styles/Main.module.scss";
 import {ThemeProvider} from "./theme-provider";
 import Navbar from "@/components/NavBar";
+import "@/api/config";
 
 export const metadata: Metadata = {
     title: "Create Next App",

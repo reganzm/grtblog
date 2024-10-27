@@ -1,11 +1,14 @@
 import React from "react";
 import AuthorBanner from "@/app/home/AuthorBanner";
+import HomePageMomentShow from "@/components/moment/HomePageMomentShow";
+import "@/api/config";
 
 export default function Home() {
 
     return (
         <div>
             <AuthorBanner/>
+            <HomePageMomentShow/>
             <div>
                 <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto asperiores atque autem
                     delectus doloremque eaque est exercitationem expedita fuga id, inventore iure, modi praesentium quas

@@ -7,8 +7,8 @@
 .navbar {
   width: 100%;
   background-color: rgba(var(--background), 0.7);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: rgb(var(--foreground));
   padding: 10px;
   position: sticky;
