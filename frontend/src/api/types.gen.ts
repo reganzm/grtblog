@@ -13,11 +13,11 @@ export type ApiResponseUserVO = {
 };
 
 export type UserVO = {
-    id?: number;
+    id?: string;
     nickname?: string;
     email?: string;
     avatar?: string;
-    created?: string;
+    createdAt?: string;
     oauthProvider?: string;
 };
 
@@ -39,30 +39,33 @@ export type ArticleDTO = {
     title?: string;
     content?: string;
     cover?: string;
+    categoryId?: number;
     tags?: string;
     status?: string;
 };
 
-export type ApiResponseArticle = {
+export type ApiResponseArticleVO = {
     code?: number;
     msg?: string;
-    data?: Article;
+    data?: ArticleVO;
 };
 
-export type Article = {
-    id?: number;
+export type ArticleVO = {
+    id?: string;
     title?: string;
     content?: string;
-    authorId?: number;
+    authorName?: string;
     cover?: string;
     views?: number;
     likes?: number;
     comments?: number;
-    status?: string;
-    created?: string;
-    updated?: string;
-    deleted?: string;
+    status?: 'PUBLISHED' | 'DRAFT';
+    createdAt?: string;
+    updatedAt?: string;
+    deletedAt?: string;
 };
+
+export type status = 'PUBLISHED' | 'DRAFT';
 
 export type ApiResponseObject = {
     code?: number;
@@ -70,6 +73,25 @@ export type ApiResponseObject = {
     data?: {
         [key: string]: unknown;
     };
+};
+
+export type ApiResponseArticleView = {
+    code?: number;
+    msg?: string;
+    data?: ArticleView;
+};
+
+export type ArticleView = {
+    id?: string;
+    title?: string;
+    content?: string;
+    authorName?: string;
+    cover?: string;
+    views?: number;
+    likes?: number;
+    comments?: number;
+    createdAt?: string;
+    updatedAt?: string;
 };
 
 export type RegisterApiData = {
@@ -94,10 +116,20 @@ export type AddArticleApiData = {
     body: ArticleDTO;
 };
 
-export type AddArticleApiResponse = (ApiResponseArticle);
+export type AddArticleApiResponse = (ApiResponseArticleVO);
 
 export type AddArticleApiError = unknown;
 
 export type HelloResponse = (ApiResponseObject);
 
 export type HelloError = unknown;
+
+export type ViewOneArticleApiData = {
+    path: {
+        id: number;
+    };
+};
+
+export type ViewOneArticleApiResponse = (ApiResponseArticleView);
+
+export type ViewOneArticleApiError = unknown;

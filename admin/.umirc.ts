@@ -20,6 +20,22 @@ export default defineConfig({
       component: './Home',
     },
     {
+      name: '文章',
+      path: '/article',
+      routes: [
+        {
+          name: '文章列表',
+          path: '/article/list',
+          component: './Article',
+        },
+        {
+          name: '添加文章',
+          path: '/article/add',
+          component: './Article/AddArticle',
+        },
+      ],
+    },
+    {
       name: '权限演示',
       path: '/access',
       component: './Access',
@@ -31,5 +47,11 @@ export default defineConfig({
     },
   ],
   npmClient: 'pnpm',
+  proxy: {
+    '/api': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+    },
+  },
 });
 

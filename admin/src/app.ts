@@ -14,3 +14,19 @@ export const layout = () => {
     },
   };
 };
+
+// 配置请求响应拦截器
+export const request = {
+  timeout: 5000,
+  // 请求拦截器
+  requestInterceptors: [
+    function(url: string, options: any) {
+      // 从本地获取 token
+      const token = localStorage.getItem('adminToken');
+      if (token) {
+        options.headers['Authorization'] = 'Bearer ' + token;
+      }
+      return { url, options };
+    },
+  ],
+};

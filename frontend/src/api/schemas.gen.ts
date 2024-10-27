@@ -35,8 +35,7 @@ export const UserVOSchema = {
     type: 'object',
     properties: {
         id: {
-            type: 'integer',
-            format: 'int64'
+            type: 'string'
         },
         nickname: {
             type: 'string'
@@ -47,8 +46,9 @@ export const UserVOSchema = {
         avatar: {
             type: 'string'
         },
-        created: {
-            type: 'string'
+        createdAt: {
+            type: 'string',
+            format: 'date-time'
         },
         oauthProvider: {
             type: 'string'
@@ -109,6 +109,10 @@ export const ArticleDTOSchema = {
         cover: {
             type: 'string'
         },
+        categoryId: {
+            type: 'integer',
+            format: 'int64'
+        },
         tags: {
             type: 'string'
         },
@@ -118,7 +122,7 @@ export const ArticleDTOSchema = {
     }
 } as const;
 
-export const ApiResponseArticleSchema = {
+export const ApiResponseArticleVOSchema = {
     type: 'object',
     properties: {
         code: {
@@ -129,17 +133,16 @@ export const ApiResponseArticleSchema = {
             type: 'string'
         },
         data: {
-            '$ref': '#/components/schemas/Article'
+            '$ref': '#/components/schemas/ArticleVO'
         }
     }
 } as const;
 
-export const ArticleSchema = {
+export const ArticleVOSchema = {
     type: 'object',
     properties: {
         id: {
-            type: 'integer',
-            format: 'int64'
+            type: 'string'
         },
         title: {
             type: 'string'
@@ -147,9 +150,8 @@ export const ArticleSchema = {
         content: {
             type: 'string'
         },
-        authorId: {
-            type: 'integer',
-            format: 'int64'
+        authorName: {
+            type: 'string'
         },
         cover: {
             type: 'string'
@@ -167,17 +169,18 @@ export const ArticleSchema = {
             format: 'int32'
         },
         status: {
-            type: 'string'
+            type: 'string',
+            enum: ['PUBLISHED', 'DRAFT']
         },
-        created: {
+        createdAt: {
             type: 'string',
             format: 'date-time'
         },
-        updated: {
+        updatedAt: {
             type: 'string',
             format: 'date-time'
         },
-        deleted: {
+        deletedAt: {
             type: 'string',
             format: 'date-time'
         }
@@ -196,6 +199,61 @@ export const ApiResponseObjectSchema = {
         },
         data: {
             type: 'object'
+        }
+    }
+} as const;
+
+export const ApiResponseArticleViewSchema = {
+    type: 'object',
+    properties: {
+        code: {
+            type: 'integer',
+            format: 'int32'
+        },
+        msg: {
+            type: 'string'
+        },
+        data: {
+            '$ref': '#/components/schemas/ArticleView'
+        }
+    }
+} as const;
+
+export const ArticleViewSchema = {
+    type: 'object',
+    properties: {
+        id: {
+            type: 'string'
+        },
+        title: {
+            type: 'string'
+        },
+        content: {
+            type: 'string'
+        },
+        authorName: {
+            type: 'string'
+        },
+        cover: {
+            type: 'string'
+        },
+        views: {
+            type: 'integer',
+            format: 'int32'
+        },
+        likes: {
+            type: 'integer',
+            format: 'int32'
+        },
+        comments: {
+            type: 'integer',
+            format: 'int32'
+        },
+        createdAt: {
+            type: 'string'
+        },
+        updatedAt: {
+            type: 'string'
         }
     }
 } as const;
