@@ -6,6 +6,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { solarizedlight, solarizedDarkAtom } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Badge, Button } from '@radix-ui/themes';
 import { useTheme } from 'next-themes';
+import { jetbrains_mono } from '@/app/fonts/font';
 
 interface CodeBlockProps {
   language: string;
@@ -22,7 +23,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
   };
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div style={{ position: 'relative' }} className={jetbrains_mono.className}>
       <div className="quick-action"
            style={{
              position: 'absolute',

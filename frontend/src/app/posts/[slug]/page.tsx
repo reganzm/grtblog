@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import styles from '@/styles/PostPage.module.scss';
 import { clsx } from 'clsx';
 import CodeBlock from '@/components/CodeBlock';
+import InlineCodeBlock from '@/components/InlineCodeBlock';
 
 // 定义 API 请求的 URL
 const API_URL = 'http://127.0.0.1:8080/api/v1/article';
@@ -48,7 +49,7 @@ export default async function BlogPost({ params }) {
 
 
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       3456345
       <h1>{post.data.title}</h1>
       <ReactMarkdown
@@ -58,14 +59,10 @@ export default async function BlogPost({ params }) {
           code({ node, inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '');
             if (!match) {
-              return <code
-                style={{
-                  border: '1px solid',
-                }}
-                {...props}>{children}</code>;
+              return <InlineCodeBlock {...props} >{children}</InlineCodeBlock>;
             }
             return inline ? (
-              <code {...props}>{children}</code>
+              <InlineCodeBlock {...props} >{children}</InlineCodeBlock>
             ) : (
               <CodeBlock language={match[1]} value={String(children).replace(/\n$/, '')} />
             );
@@ -79,7 +76,16 @@ export default async function BlogPost({ params }) {
                       target="_blank" rel="noopener noreferrer" />;
           },
           p({ node, ...props }) {
-            return <p className={'m-4'} {...props} />;
+            return <p className={'mt-2 mb-2 line'} style={{ lineHeight: '1.5' }} {...props} />;
+          },
+          h1({ node, ...props }) {
+            return <h1 className={'mt-4 mb-4'} {...props} />;
+          },
+          h2({ node, ...props }) {
+            return <h2 className={'mt-3 mb-3'} {...props} />;
+          },
+          h3({ node, ...props }) {
+            return <h3 className={'mt-2 mb-2'} {...props} />;
           },
         }}
       >
