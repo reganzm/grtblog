@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { solarizedlight, solarizedDarkAtom } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -15,12 +15,18 @@ interface CodeBlockProps {
 
 const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
   const [copied, setCopied] = useState(false);
-  const theme = useTheme();
+  const { resolvedTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = useState<CSSProperties | undefined>(undefined); // 用状态管理主题
 
   const handleCopy = () => {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000); // 2 秒后重置复制状态
   };
+
+  useEffect(() => {
+    // 根据主题切换设置 currentTheme
+    setCurrentTheme(resolvedTheme === 'dark' ? solarizedDarkAtom : solarizedlight);
+  }, [resolvedTheme]); // 依赖于 resolvedTheme
 
   return (
     <div style={{ position: 'relative' }} className={jetbrains_mono.className}>
@@ -39,14 +45,12 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
           {language}
         </Badge>
         <CopyToClipboard text={value} onCopy={handleCopy}>
-          <Button
-            variant={'soft'}>
+          <Button variant={'soft'}>
             {copied ? '已复制!' : '复制'}
           </Button>
         </CopyToClipboard>
       </div>
-      <SyntaxHighlighter language={language}
-                         style={theme.resolvedTheme === 'dark' ? solarizedDarkAtom : solarizedlight}>
+      <SyntaxHighlighter language={language} style={currentTheme || undefined}>
         {value}
       </SyntaxHighlighter>
     </div>
