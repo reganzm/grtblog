@@ -28,6 +28,7 @@ const ArticleView = ({ post }) => {
   return (
     <div>
       <ReactMarkdown
+        className={styles.markdown}
         rehypePlugins={[rehypeSanitize]}
         remarkPlugins={[remarkGfm]}
         components={{

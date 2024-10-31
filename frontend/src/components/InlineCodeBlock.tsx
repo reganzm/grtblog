@@ -12,6 +12,9 @@ const InlineCodeBlock = (props) => {
   useEffect(() => {
     // 根据主题切换设置 currentTheme
     setCurrentTheme(resolvedTheme === 'dark' ? '#333' : '#f5f5f5');
+    return () => {
+      setCurrentTheme(''); // 组件卸载时重
+    };
   }, [resolvedTheme]); // 依赖于 resolvedTheme
 
 
@@ -20,6 +23,7 @@ const InlineCodeBlock = (props) => {
       padding: '2px',
       margin: '0 2px',
       borderRadius: '3px',
+      transition: 'background-color 0.5s',
       backgroundColor: currentTheme,
     }}
           {...props} className={jetbrains_mono.className}

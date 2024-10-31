@@ -10,13 +10,22 @@ import { useTheme } from 'next-themes';
 import { clsx } from 'clsx';
 
 export default function NavBar() {
-  const { resolvedTheme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme, theme } = useTheme();
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    // 强制过渡效果
+    document.documentElement.classList.add('transition-colors');
+    return () => {
+      console.log('remove transition-colors');
+      document.documentElement.classList.remove('transition-colors');
+    };
+  }, [theme]);
 
   const navItems = [
     {

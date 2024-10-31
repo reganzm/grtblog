@@ -1,12 +1,16 @@
 'use client';
 
-import React, { CSSProperties, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { solarizedlight, solarizedDarkAtom } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { Badge, Button } from '@radix-ui/themes';
 import { useTheme } from 'next-themes';
 import { jetbrains_mono } from '@/app/fonts/font';
+import theme from '@/components/code/customTheme';
+import fallbackTheme from '@/components/code/fallbackTheme';
+import styles from '@/styles/CodeBlock.module.scss';
+import { clsx } from 'clsx';
+import { motion } from 'framer-motion';
 
 interface CodeBlockProps {
   language: string;
@@ -16,44 +20,87 @@ interface CodeBlockProps {
 const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
   const [copied, setCopied] = useState(false);
   const { resolvedTheme } = useTheme();
-  const [currentTheme, setCurrentTheme] = useState<CSSProperties | undefined>(undefined); // 用状态管理主题
+  const [currentTheme, setCurrentTheme] = useState(fallbackTheme);
+  const [bgClass, setBgClass] = useState('');
+  const [lineNumberBg, setLineNumberBg] = useState('transparent');
 
   const handleCopy = () => {
     setCopied(true);
-    setTimeout(() => setCopied(false), 2000); // 2 秒后重置复制状态
+    setTimeout(() => setCopied(false), 2000);
   };
 
   useEffect(() => {
-    // 根据主题切换设置 currentTheme
-    setCurrentTheme(resolvedTheme === 'dark' ? solarizedDarkAtom : solarizedlight);
-  }, [resolvedTheme]); // 依赖于 resolvedTheme
+    setCurrentTheme(resolvedTheme === 'dark' ? theme.customSolarizedDarkAtom : theme.customSolarizedLightAtom);
+    setBgClass(resolvedTheme === 'dark' ? styles.darkBg : styles.lightBg);
+    setLineNumberBg(resolvedTheme === 'dark' ? '#242424' : '#f1f1f1');
+    document.documentElement.style.setProperty('--scrollbar-color', resolvedTheme === 'dark' ? '#2f2f2f transparent' : '#cacaca transparent');
+    return () => {
+      setCurrentTheme(fallbackTheme);
+      setBgClass('');
+      setLineNumberBg('transparent');
+      document.documentElement.style.removeProperty('--scrollbar-color');
+    };
+  }, [resolvedTheme]);
 
   return (
-    <div style={{ position: 'relative' }} className={jetbrains_mono.className}>
-      <div className="quick-action"
-           style={{
-             position: 'absolute',
-             top: 0,
-             right: 0,
-             display: 'flex',
-             alignItems: 'center',
-             gap: 8,
-             padding: 8,
-           }}
-      >
-        <Badge>
-          {language}
-        </Badge>
-        <CopyToClipboard text={value} onCopy={handleCopy}>
-          <Button variant={'soft'}>
-            {copied ? '已复制!' : '复制'}
-          </Button>
-        </CopyToClipboard>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className={clsx(styles.codeBlock, jetbrains_mono.className, bgClass)} style={{
+        scrollbarColor: 'var(--scrollbar-color)',
+        scrollbarWidth: 'thin',
+        scrollbarGutter: 'auto',
+        scrollBehavior: 'smooth',
+      }}>
+        <div className="quick-action"
+             style={{
+               position: 'absolute',
+               top: 0,
+               right: 0,
+               display: 'flex',
+               alignItems: 'center',
+               gap: 8,
+               padding: 8,
+             }}
+        >
+          <Badge style={{
+            backgroundColor: 'var(--colors-background)',
+            color: 'var(--colors-text)',
+            fontSize: 12,
+          }}>
+            {language.toUpperCase()}
+          </Badge>
+          <CopyToClipboard text={value} onCopy={handleCopy}>
+            <Button variant={'soft'}>
+              {copied ? '已复制!' : '复制'}
+            </Button>
+          </CopyToClipboard>
+        </div>
+        <SyntaxHighlighter
+          language={language}
+          style={currentTheme}
+          customStyle={{
+            fontFamily: 'JetBrains Mono, monospace',
+            transition: 'color 0.5s, background-color 0.5s',
+          }}
+          showLineNumbers
+          lineNumberStyle={{
+            position: 'sticky',
+            left: 0,
+            background: lineNumberBg,
+            paddingRight: '10px',
+            marginRight: '10px',
+            userSelect: 'none',
+            minWidth: '2em',
+            transition: 'background-color 0.5s',
+          }}
+        >
+          {value}
+        </SyntaxHighlighter>
       </div>
-      <SyntaxHighlighter language={language} style={currentTheme || undefined}>
-        {value}
-      </SyntaxHighlighter>
-    </div>
+    </motion.div>
   );
 };
 

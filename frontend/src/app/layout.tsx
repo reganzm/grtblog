@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import '@/styles/global.css';
 import './globals.css';
 import { Container, Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
@@ -27,7 +28,7 @@ export default function RootLayout({
         >
           <Theme>
             <Navbar />
-            <Container size={'4'}>
+            <Container size={'4'} className={'bg-transition'}>
               <div className={styles.mainContainer}>{children}</div>
             </Container>
           </Theme>

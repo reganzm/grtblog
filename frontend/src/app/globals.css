@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 :root {
     --background: 255, 255, 255;
     --foreground: 0, 0, 0;
@@ -51,8 +47,30 @@ html {
     --ring: 77, 163, 255;
 }
 
-body {
-    transition: background-color 0.3s ease, color 0.3s ease; /* 确保 body 也有过渡 */
-    background-color: rgb(var(--background));
-    color: rgb(var(--foreground));
+@layer components {
+    .transition-colors {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in-out;
+    }
+
+    .bg-transition {
+        transition: background-color 200ms ease-in-out;
+    }
+
+    .border-transition {
+        transition: border-color 200ms ease-in-out;
+    }
+
+    .text-transition {
+        transition: color 200ms ease-in-out;
+    }
+
+    /* 可以为主题切换时的过渡添加类 */
+    .dark .transition-colors {
+        transition-property: background-color, border-color, color, fill, stroke;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in-out;
+    }
 }
+
