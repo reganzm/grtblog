@@ -7,6 +7,7 @@ import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.ArticleMapper;
 import com.grtsinry43.grtblog.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.vo.ArticlePreview;
 import com.grtsinry43.grtblog.vo.ArticleVO;
 import com.grtsinry43.grtblog.vo.ArticleView;
 import org.springframework.beans.BeanUtils;
@@ -64,5 +65,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public List<Long> getAllArticleIds() {
         return this.list().stream().map(Article::getId).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ArticlePreview> getLastFiveArticleList() {
+        List<Article> articles = this.baseMapper.getLastFiveArticles();
+        return articles.stream().map(article -> {
+            ArticlePreview articlePreview = new ArticlePreview();
+            BeanUtils.copyProperties(article, articlePreview);
+            articlePreview.setId(article.getId().toString());
+            articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
+            return articlePreview;
+        }).collect(Collectors.toList());
     }
 }

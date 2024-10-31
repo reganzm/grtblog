@@ -4,6 +4,7 @@ import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
 import com.grtsinry43.grtblog.entity.Article;
 import com.grtsinry43.grtblog.service.impl.ArticleServiceImpl;
+import com.grtsinry43.grtblog.vo.ArticlePreview;
 import com.grtsinry43.grtblog.vo.ArticleVO;
 import com.grtsinry43.grtblog.vo.ArticleView;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,6 +56,12 @@ public class ArticleController {
         Long idLong = Long.parseLong(id);
         ArticleView articleView = articleService.viewOneArticle(idLong);
         return ApiResponse.success(articleView);
+    }
+
+    @GetMapping("/lastFive")
+    public ApiResponse<List<ArticlePreview>> getLastFiveArticles() {
+        List<ArticlePreview> lastFiveArticles = articleService.getLastFiveArticleList();
+        return ApiResponse.success(lastFiveArticles);
     }
 
 }
