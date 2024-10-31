@@ -6,7 +6,9 @@ import '@radix-ui/themes/styles.css';
 import styles from '@/styles/Main.module.scss';
 import { ThemeProvider } from './theme-provider';
 import Navbar from '@/components/NavBar';
-import '@/api/config';
+import { LazyMotion, domAnimation } from 'framer-motion';
+import * as m from 'framer-motion/m';
+import React from 'react';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -29,7 +31,17 @@ export default function RootLayout({
           <Theme>
             <Navbar />
             <Container size={'4'} className={'bg-transition'}>
-              <div className={styles.mainContainer}>{children}</div>
+              <LazyMotion features={domAnimation}>
+                <m.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1 }}
+                >
+                  <div className={styles.mainContainer}>
+                    {children}
+                  </div>
+                </m.div>
+              </LazyMotion>
             </Container>
           </Theme>
         </ThemeProvider>

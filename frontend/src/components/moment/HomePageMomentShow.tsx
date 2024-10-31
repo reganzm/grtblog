@@ -7,8 +7,6 @@ import {motion} from 'framer-motion';
 import {clsx} from "clsx";
 import Image from "next/image";
 import quoteFront from "@/assets/quote-front.svg";
-import "@/api/config";
-import {hello} from "@/api";
 
 const HomePageMomentShow = () => {
     // const [msg, setMsg] = React.useState<string>("");
