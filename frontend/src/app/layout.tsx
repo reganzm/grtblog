@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles/global.css';
 import './globals.css';
-import { Container, Theme } from '@radix-ui/themes';
+import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import styles from '@/styles/Main.module.scss';
 import { ThemeProvider } from './theme-provider';
@@ -30,19 +30,17 @@ export default function RootLayout({
         >
           <Theme>
             <Navbar />
-            <Container size={'4'} className={'bg-transition'}>
-              <LazyMotion features={domAnimation}>
-                <m.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 1 }}
-                >
-                  <div className={styles.mainContainer}>
-                    {children}
-                  </div>
-                </m.div>
-              </LazyMotion>
-            </Container>
+            <LazyMotion features={domAnimation}>
+              <m.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1 }}
+              >
+                <div className={styles.mainContainer}>
+                  {children}
+                </div>
+              </m.div>
+            </LazyMotion>
           </Theme>
         </ThemeProvider>
       </body>

@@ -5,11 +5,10 @@ import { motion, useInView } from 'framer-motion';
 import RecentArticleItem from '@/app/home/recent/RecentArticleItem';
 
 const staggerContainer = {
-  hidden: { opacity: 1, blur: 20 },
+  hidden: { opacity: 1 },
   visible: {
     opacity: 1,
     transition: {
-      // 间隔时间
       staggerChildren: 0.2,
     },
   },
@@ -18,14 +17,28 @@ const staggerContainer = {
 const itemMotion = {
   hidden: { opacity: 0, x: -20 },
   visible: {
-    opacity: 1, x: 0, transition: {
+    opacity: 1,
+    x: 0,
+    transition: {
       duration: 1,
     },
   },
 };
 
-const RecentArticleMotion = ({ list }: { list: any[] }) => {
-  const ref = useRef(null);
+type Article = {
+  id: string;
+  title: string;
+  createdAt: string;
+};
+
+interface RecentArticleMotionProps {
+  list: Article[];
+}
+
+export default function RecentArticleMotion({ list }: RecentArticleMotionProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
   const inView = useInView(ref, {
     once: true,
   });
@@ -37,13 +50,15 @@ const RecentArticleMotion = ({ list }: { list: any[] }) => {
       initial="hidden"
       animate={inView ? 'visible' : 'hidden'}
     >
-      {list.map((item: any, index: number) => (
-        <motion.div key={index} variants={itemMotion} ref={ref}>
-          <RecentArticleItem article={item} />
-        </motion.div>
-      ))}
+      <div className="relative">
+        {list.map((item: Article, index: number) => (
+          <motion.div key={index} variants={itemMotion}>
+            <div className="relative">
+              <RecentArticleItem article={item} />
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </motion.div>
   );
-};
-
-export default RecentArticleMotion;
+}

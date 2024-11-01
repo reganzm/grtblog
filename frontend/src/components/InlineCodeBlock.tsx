@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { jetbrains_mono } from '@/app/fonts/font';
 
-const InlineCodeBlock = (props) => {
+const InlineCodeBlock = (props: React.JSX.IntrinsicAttributes & React.ClassAttributes<HTMLSpanElement> & React.HTMLAttributes<HTMLSpanElement>) => {
   const { resolvedTheme } = useTheme(); // 获取 resolvedTheme
 
   const [currentTheme, setCurrentTheme] = useState(''); // 用状态管理主题

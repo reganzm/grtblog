@@ -21,6 +21,7 @@ export const playwrite_us_modern = Playwrite_US_Modern({
 });
 
 export const jetbrains_mono = JetBrains_Mono({
+  subsets: ['latin'],
   display: 'swap',
   weight: ['400'],
 });

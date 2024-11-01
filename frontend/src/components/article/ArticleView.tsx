@@ -8,7 +8,7 @@ import styles from '@/styles/PostPage.module.scss';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
 
-const ImageComponent = ({ src, alt }) => {
+const ImageComponent = ({ src, alt }: { src: string; alt: string }) => {
   return (
     <Image
       src={src}
@@ -24,7 +24,13 @@ const ImageComponent = ({ src, alt }) => {
   );
 };
 
-const ArticleView = ({ post }) => {
+type Post = {
+  data: {
+    content: string;
+  };
+};
+
+const ArticleView = ({ post }: { post: Post }) => {
   return (
     <div>
       <ReactMarkdown
@@ -32,7 +38,7 @@ const ArticleView = ({ post }) => {
         rehypePlugins={[rehypeSanitize]}
         remarkPlugins={[remarkGfm]}
         components={{
-          code({ node, inline, className, children, ...props }) {
+          code({ inline, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || '');
             if (!match) {
               return <InlineCodeBlock {...props} >{children}</InlineCodeBlock>;
@@ -43,24 +49,24 @@ const ArticleView = ({ post }) => {
               <CodeBlock language={match[1]} value={String(children).replace(/\n$/, '')} />
             );
           },
-          img({ node, ...props }) {
+          img({ ...props }) {
             // 使用 Next.js Image 组件替换 img
             return <ImageComponent {...props} />;
           },
-          a({ node, ...props }) {
+          a({ ...props }) {
             return <a {...props} className={clsx(styles.glowAnimation, styles.underlineAnimation)}
                       target="_blank" rel="noopener noreferrer" />;
           },
-          p({ node, ...props }) {
+          p({ ...props }) {
             return <p className={'mt-2 mb-2 line'} style={{ lineHeight: '1.5' }} {...props} />;
           },
-          h1({ node, ...props }) {
+          h1({ ...props }) {
             return <h1 className={'mt-4 mb-4'} {...props} />;
           },
-          h2({ node, ...props }) {
+          h2({ ...props }) {
             return <h2 className={'mt-3 mb-3'} {...props} />;
           },
-          h3({ node, ...props }) {
+          h3({ ...props }) {
             return <h3 className={'mt-2 mb-2'} {...props} />;
           },
         }}

@@ -1,0 +1,94 @@
+.itemCard {
+  background-color: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px) saturate(180%);
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 1rem;
+  width: 30vw;
+  border: 1px solid rgba(var(--foreground), 0.1);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px rgba(var(--foreground), 0.1);
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(
+                    circle 200px at var(--mouse-x) var(--mouse-y),
+                    rgba(204, 204, 204, 0.2),
+                    transparent 40%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .arrowIcon {
+      transform: translateX(5px);
+    }
+  }
+}
+
+.arrowIcon {
+  margin-left: 1em;
+}
+
+.itemTitle {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--foreground);
+  margin-right: 1rem;
+  flex-grow: 1;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: rgba(var(--foreground), 0.6);
+  margin-right: 1rem;
+  width: 6rem;
+  text-align: end;
+}
+
+.underlineAnimation {
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 1px;
+    bottom: -2px;
+    left: 0;
+    background-color: rgba(255, 255, 255, 0.6);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+
+  &:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+}
+
+.arrowIcon {
+  color: rgba(255, 255, 255, 0.6);
+  transition: transform 0.3s ease;
+}

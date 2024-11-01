@@ -20,7 +20,7 @@ interface CodeBlockProps {
 const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
   const [copied, setCopied] = useState(false);
   const { resolvedTheme } = useTheme();
-  const [currentTheme, setCurrentTheme] = useState(fallbackTheme);
+  const [currentTheme, setCurrentTheme] = useState<{ [key: string]: React.CSSProperties }>(fallbackTheme);
   const [bgClass, setBgClass] = useState('');
   const [lineNumberBg, setLineNumberBg] = useState('transparent');
 

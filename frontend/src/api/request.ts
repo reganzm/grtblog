@@ -6,6 +6,7 @@ const ins = ofetch.create({
 
 export const request = async (url: string, options?: RequestInit) => {
   const res = await ins(url, options);
+  console.log(res);
   if (res.code !== 0) {
     throw new Error(res.msg);
   } else {
