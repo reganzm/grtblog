@@ -26,6 +26,16 @@ public class ArticlePreview {
     private String authorName;
 
     /**
+     * 文章简介
+     */
+    private String summary;
+
+    /**
+     * 作者头像
+     */
+    private String avatar;
+
+    /**
      * 文章封面
      */
     private String cover;

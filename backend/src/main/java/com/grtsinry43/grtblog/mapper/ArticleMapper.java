@@ -16,6 +16,6 @@ import java.util.List;
  * @since 2024-10-09
  */
 public interface ArticleMapper extends BaseMapper<Article> {
-    @Select("SELECT * FROM article ORDER BY created_at DESC LIMIT 5")
+    @Select("SELECT * FROM article WHERE status = 'PUBLISHED' ORDER BY created_at DESC LIMIT 5")
     public List<Article> getLastFiveArticles();
 }

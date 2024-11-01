@@ -74,6 +74,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             ArticlePreview articlePreview = new ArticlePreview();
             BeanUtils.copyProperties(article, articlePreview);
             articlePreview.setId(article.getId().toString());
+            articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
             articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
             return articlePreview;
         }).collect(Collectors.toList());

@@ -3,6 +3,8 @@ package com.grtsinry43.grtblog.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -21,6 +23,7 @@ import lombok.Setter;
 @TableName("status_update")
 public class StatusUpdate implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -35,6 +38,11 @@ public class StatusUpdate implements Serializable {
     private Long userId;
 
     /**
+     * 图片
+     */
+    private String images;
+
+    /**
      * 说说内容
      */
     private String content;
@@ -42,15 +50,15 @@ public class StatusUpdate implements Serializable {
     /**
      * 说说创建时间
      */
-    private LocalDateTime created;
+    private LocalDateTime createdAt;
 
     /**
      * 说说更新时间
      */
-    private LocalDateTime updated;
+    private LocalDateTime updatedAt;
 
     /**
      * 说说删除时间（软删除），如果不为空则表示已删除
      */
-    private LocalDateTime deleted;
+    private LocalDateTime deletedAt;
 }
