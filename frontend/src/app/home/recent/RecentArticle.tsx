@@ -8,7 +8,9 @@ const RecentArticle = async () => {
   const articleList = await getLastFiveArticles();
   console.log(articleList);
   return (
-    <div>
+    <div style={{
+      padding: '0 20px',
+    }}>
       <div className="text-2xl font-bold text-start mb-8"> 最近文章</div>
       <RecentArticleMotion list={articleList} />
       <div className="text-end mt-8">

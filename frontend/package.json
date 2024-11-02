@@ -20,6 +20,7 @@
     "@toast-ui/editor-plugin-uml": "^3.0.1",
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.7.7",
+    "cheerio": "^1.0.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "eslint-config": "^0.3.0",

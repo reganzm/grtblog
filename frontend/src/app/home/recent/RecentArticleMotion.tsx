@@ -15,9 +15,11 @@ const staggerContainer = {
 };
 
 const itemMotion = {
-  hidden: { opacity: 0, x: -20 },
+  hidden: { opacity: 0, x: -20, filter: 'blur(10px)', boxShadow: '0 0 10px rgba(var(--foreground), 0.5)' },
   visible: {
     opacity: 1,
+    filter: 'blur(0px)',
+    boxShadow: 'none',
     x: 0,
     transition: {
       duration: 1,

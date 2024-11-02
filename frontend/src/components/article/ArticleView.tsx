@@ -7,6 +7,7 @@ import { clsx } from 'clsx';
 import styles from '@/styles/PostPage.module.scss';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
+import ArticleInlineLink from '@/components/article/ArticleInlineLink';
 
 const ImageComponent = ({ src, alt }: { src: string; alt: string }) => {
   return (
@@ -54,8 +55,8 @@ const ArticleView = ({ post }: { post: Post }) => {
             return <ImageComponent {...props} />;
           },
           a({ ...props }) {
-            return <a {...props} className={clsx(styles.glowAnimation, styles.underlineAnimation)}
-                      target="_blank" rel="noopener noreferrer" />;
+            return <ArticleInlineLink className={clsx(styles.underlineAnimation, styles.glowAnimation)}
+                                      {...props} linkTitle={props.children} linkUrl={props.href} />;
           },
           p({ ...props }) {
             return <p className={'mt-2 mb-2 line'} style={{ lineHeight: '1.5' }} {...props} />;

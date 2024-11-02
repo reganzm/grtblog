@@ -1,0 +1,11 @@
+.responsiveContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 1440px;
+  padding: 2rem;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}

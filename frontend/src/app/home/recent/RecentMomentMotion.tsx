@@ -1,10 +1,75 @@
-import React from 'react';
+'use client';
 
-const RecentMomentMotion = () => {
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import RecentMomentItem from '@/app/home/recent/RecentMomentItem';
+
+const staggerContainer = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+    },
+  },
+};
+
+const itemMotion = {
+  hidden: {
+    opacity: 0,
+    y: 20,
+    rotateX: -90,
+    filter: 'blur(10px)',
+    boxShadow: '0 0 10px rgba(var(--foreground), 0.5)',
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    filter: 'blur(0px)',
+    border: 'none',
+    boxShadow: 'none',
+    transition: {
+      duration: 1,
+    },
+  },
+};
+
+type StatusUpdate = {
+  id: string;
+  description: string;
+  createdAt: string;
+}
+
+interface RecentMomentMomentProps {
+  list: StatusUpdate[];
+}
+
+const RecentMomentMotion = ({ list }: RecentMomentMomentProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const inView = useInView(ref, {
+    once: true,
+  });
+
   return (
-    <div>
-
-    </div>
+    <motion.div
+      ref={ref}
+      variants={staggerContainer}
+      initial="hidden"
+      animate={inView ? 'visible' : 'hidden'}
+    >
+      <div>
+        {list.map((item: StatusUpdate, index: number) => (
+          <motion.div key={index} variants={itemMotion}>
+            <div className="relative">
+              <RecentMomentItem key={item.id} statusUpdate={item} />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
   );
 };
 

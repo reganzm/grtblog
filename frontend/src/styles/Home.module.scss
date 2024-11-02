@@ -38,10 +38,6 @@
   width: 100%;
 }
 
-.glowAnimation {
-  color: var(--primary);
-}
-
 @keyframes glow {
   0% {
     text-shadow: 0 0 10px rgba(var(--primary), 0.5);

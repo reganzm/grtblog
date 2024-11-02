@@ -1,16 +1,13 @@
 .itemCard {
-  // background-color: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px) saturate(180%);
   overflow: hidden;
   position: relative;
   transition: all 0.3s ease;
   padding: 1rem;
-  // border: 1px solid rgba(var(--foreground), 0.1);
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  // box-shadow: 0 4px 6px rgba(var(--foreground), 0.1);
   cursor: pointer;
 
   &::before {
@@ -44,12 +41,50 @@
   }
 }
 
-.arrowIcon {
+.dateContainer {
+  display: flex;
+  flex-direction: column;
+  margin-right: 16px;
+  position: relative;
+  padding-bottom: 4px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: var(--foreground);
+    transform: rotate(-12deg);
+    transform-origin: bottom left;
+  }
+}
+
+.day {
+  position: relative;
+  font-size: 24px;
+  color: var(--foreground);
+  font-weight: bold;
+  padding-right: 6px;
+  padding-bottom: 2px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    right: 0;
+    width: 6px;
+    height: 6px;
+    background-color: var(--background);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+}
+
+.monthYear {
+  font-size: 12px;
   color: var(--foreground);
   opacity: 0.6;
-  transition: transform 0.3s ease;
-  width: 20px;
-  height: 20px;
 }
 
 .itemTitle {
@@ -58,14 +93,7 @@
   color: var(--foreground);
   margin-right: 1rem;
   flex-grow: 1;
-}
-
-.date {
-  font-size: 0.8rem;
-  color: rgba(var(--foreground), 0.6);
-  margin-right: 1rem;
-  width: 6rem;
-  text-align: end;
+  text-decoration: none;
 }
 
 .underlineAnimation {
@@ -80,7 +108,8 @@
     height: 1px;
     bottom: -2px;
     left: 0;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--foreground);
+    opacity: 0.6;
     transform-origin: bottom right;
     transition: transform 0.3s ease-out;
   }
@@ -89,4 +118,12 @@
     transform: scaleX(1);
     transform-origin: bottom left;
   }
+}
+
+.arrowIcon {
+  color: var(--foreground);
+  opacity: 0.6;
+  transition: transform 0.3s ease;
+  width: 20px;
+  height: 20px;
 }

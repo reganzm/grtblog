@@ -4,6 +4,7 @@ import HomePageMomentShow from '@/components/moment/HomePageMomentShow';
 import RecentArticle from '@/app/home/recent/RecentArticle';
 import { Container } from '@radix-ui/themes';
 import RecentMoment from '@/app/home/recent/RecentMoment';
+import styles from '@/styles/HomePage.module.scss';
 
 export default function Home() {
   return (
@@ -12,13 +13,11 @@ export default function Home() {
         <AuthorBanner />
         <HomePageMomentShow />
       </Container>
-      <div style={{
-        width: '70vw',
-        display: 'flex',
-        justifyContent: 'center',
-      }}>
-        <RecentArticle />
-        <RecentMoment />
+      <div className={'flex justify-center'}>
+        <div className={styles.responsiveContainer}>
+          <RecentArticle />
+          <RecentMoment />
+        </div>
       </div>
     </div>
   );

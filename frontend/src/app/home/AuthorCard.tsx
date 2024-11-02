@@ -2,7 +2,7 @@
 
 import React from 'react';
 import styles from '@/styles/Home.module.scss';
-import { Avatar, Container } from '@radix-ui/themes';
+import { Avatar, Container, HoverCard, Text, Flex, Box, Heading } from '@radix-ui/themes';
 import { CodeIcon, GitHubLogoIcon } from '@radix-ui/react-icons';
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
@@ -53,25 +53,79 @@ const AuthorCard = () => {
                 <div className="links flex">
                   <div className="flex items-center space-x-2">
                     <GitHubLogoIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                    <a
-                      href="https://github.com/grtsinry43"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={clsx(styles.underlineAnimation, 'text-blue-700 dark:text-blue-400', styles.glowAnimation)}
-                    >
-                      grtsinry43
-                    </a>
+                    <Text>
+                      <HoverCard.Root>
+                        <HoverCard.Trigger>
+                          <a
+                            href="https://github.com/grtsinry43"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={clsx(styles.underlineAnimation, 'text-blue-700 dark:text-blue-400', styles.glowAnimation)}
+                          >
+                            grtsinry43
+                          </a>
+                        </HoverCard.Trigger>
+                        <HoverCard.Content maxWidth="300px">
+                          <Flex gap="4">
+                            <Avatar
+                              size="3"
+                              fallback="R"
+                              radius="full"
+                              src="https://avatars.githubusercontent.com/u/77447646?v=4"
+                            />
+                            <Box>
+                              <Heading size="3" as="h3">
+                                grtsinry43
+                              </Heading>
+                              <Text as="div" size="2" color="gray" mb="2">
+                                grtsinry43 · he/him
+                              </Text>
+                              <Text as="div" size="2">
+                                Nothing but enthusiasm brightens up the endless years.
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </HoverCard.Content>
+                      </HoverCard.Root>
+                    </Text>
                   </div>
                   <div className="flex items-center space-x-2 ml-4">
                     <CodeIcon className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-                    <a
-                      href="https://www.grtsinry43.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={clsx(styles.underlineAnimation, 'text-blue-700 dark:text-blue-400', styles.glowAnimation)}
-                    >
-                      Home Page
-                    </a>
+                    <Text>
+                      <HoverCard.Root>
+                        <HoverCard.Trigger>
+                          <a
+                            href="https://www.grtsinry43.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={clsx(styles.underlineAnimation, 'text-blue-700 dark:text-blue-400', styles.glowAnimation)}
+                          >
+                            Home Page
+                          </a>
+                        </HoverCard.Trigger>
+                        <HoverCard.Content maxWidth="300px">
+                          <Flex gap="4">
+                            <Avatar
+                              size="3"
+                              fallback="R"
+                              radius="full"
+                              src="https://www.grtsinry43.com/favicon.ico"
+                            />
+                            <Box>
+                              <Heading size="3" as="h3">
+                                学习开发记录
+                              </Heading>
+                              <Text as="div" size="2" color="gray" mb="2">
+                                grtsinry43 的个人主页
+                              </Text>
+                              <Text as="div" size="2">
+                                记录了最近项目，学习进度，折腾历程，以及一些技术分享。
+                              </Text>
+                            </Box>
+                          </Flex>
+                        </HoverCard.Content>
+                      </HoverCard.Root>
+                    </Text>
                   </div>
                 </div>
               </div>
