@@ -2,6 +2,8 @@ package com.grtsinry43.grtblog.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -19,6 +21,7 @@ import lombok.Setter;
 @Setter
 public class Comment implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -75,17 +78,17 @@ public class Comment implements Serializable {
     /**
      * 评论创建时间
      */
-    private LocalDateTime created;
+    private LocalDateTime createdAt;
 
     /**
      * 评论更新时间
      */
-    private LocalDateTime updated;
+    private LocalDateTime updatedAt;
 
     /**
      * 评论删除时间（软删除），如果不为空则表示已删除
      */
-    private LocalDateTime deleted;
+    private LocalDateTime deletedAt;
 
     /**
      * 父评论ID，如果为空则表示是顶级评论，否则是回复评论

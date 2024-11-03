@@ -1,6 +1,7 @@
 package com.grtsinry43.grtblog.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.grtsinry43.grtblog.entity.Article;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -17,15 +18,8 @@ public class ArticleDTO {
     private String cover;
     private Long categoryId;
     private String tags;
-    private String status;
+    private Article.Status status;
 
     public ArticleDTO() {
-    }
-
-    @JsonCreator
-    public ArticleDTO(String title, String content, String status) {
-        this.title = title;
-        this.content = content;
-        this.status = status;
     }
 }
