@@ -12,6 +12,10 @@ const nextConfig = {
   images: {
     domains: ['dogeoss.grtsinry43.com'],
   },
+  // 没办法，先暂时抑制警告了
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api'],
+  }
 };
 
 export default nextConfig;

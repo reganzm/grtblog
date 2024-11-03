@@ -1,0 +1,26 @@
+.tableAuto {
+  border-collapse: collapse;
+  margin: 2rem;
+  border-radius: 0.5em;
+  padding: 1em;
+}
+
+.tableAuto th,
+.tableAuto td {
+  border: 1px solid var(--foreground);
+  padding: 3px 20px;
+}
+
+.tableAuto th {
+  background-color: rgba(var(--primary), 0.5);
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.tableAuto tr:hover {
+  background-color: rgba(var(--foreground), 0.1);
+}
+
+.tableAuto {
+  background: rgba(var(--foreground), 0.1);
+}

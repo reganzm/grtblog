@@ -6,7 +6,6 @@ import { ArrowRightIcon } from '@radix-ui/react-icons';
 
 const RecentArticle = async () => {
   const articleList = await getLastFiveArticles();
-  console.log(articleList);
   return (
     <div style={{
       padding: '0 20px',

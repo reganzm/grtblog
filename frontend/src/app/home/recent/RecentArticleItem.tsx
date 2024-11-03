@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import styles from '@/styles/home/RecentArticleItem.module.scss';
 import { clsx } from 'clsx';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
-import { format, formatDistanceToNow, parseISO } from 'date-fns';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import Link from 'next/link';
 

@@ -1,4 +1,5 @@
 import ArticleView from '@/components/article/ArticleView';
+import CommentArea from '@/components/comment/CommentArea';
 
 // 定义 API 请求的 URL
 const API_URL = 'http://127.0.0.1:8080/api/v1/article';
@@ -30,12 +31,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
   // 获取单篇文章的详细内容
   const res = await fetch(`${API_URL}/${slug}`);
   const post = await res.json();
-  console.log('==========');
-  console.log(post.data);
-
   return (
     <div className="article-container">
       <ArticleView post={post} />
+      <CommentArea id={slug} />
     </div>
   );
 }

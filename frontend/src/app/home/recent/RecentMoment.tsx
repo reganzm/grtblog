@@ -6,7 +6,6 @@ import RecentMomentMotion from '@/app/home/recent/RecentMomentMotion';
 
 const RecentMoment = async () => {
   const shareList = await getLastFourShare();
-  console.log(shareList);
   return (
     <div style={{
       padding: '0 20px',
