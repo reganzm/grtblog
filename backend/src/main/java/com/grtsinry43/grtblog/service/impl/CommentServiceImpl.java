@@ -10,10 +10,7 @@ import com.grtsinry43.grtblog.vo.CommentVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -29,19 +26,24 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua) {
+        System.out.println(form.toString());
         Comment comment = new Comment();
-        BeanUtils.copyProperties(comment, form);
+        BeanUtils.copyProperties(form, comment);
+        comment.setNickName(form.getUserName());
+        comment.setArticleId(Long.parseLong(form.getArticleId()));
+        comment.setParentId(Objects.equals(form.getParentId(), "") ? null : Long.parseLong(form.getParentId()));
         comment.setIp(ip);
         comment.setLocation(location);
         comment.setUa(ua);
+        System.out.println(comment.toString());
         save(comment);
         CommentVO vo = new CommentVO();
-        BeanUtils.copyProperties(vo, comment);
+        BeanUtils.copyProperties(comment, vo);
         return vo;
     }
 
     @Override
-    public Object listCommentByArticleId(Long articleId) {
+    public List<CommentVO> listCommentByArticleId(Long articleId) {
         // 这里比较复杂，根据文章 ID 查询评论列表，然后将评论列表转换为树形结构
         // 1. 查询指定文章的所有评论
         List<Comment> comments = this.baseMapper.selectByArticleId(articleId);
@@ -51,6 +53,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             CommentVO commentVO = new CommentVO();
             BeanUtils.copyProperties(comment, commentVO);
             commentVO.setId(comment.getId().toString());
+            commentVO.setUserName(comment.getNickName());
+            commentVO.setArticleId(comment.getArticleId().toString());
             commentVO.setParentId(comment.getParentId() == null ? null : comment.getParentId().toString());
             return commentVO;
         }).toList();

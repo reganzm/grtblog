@@ -6,47 +6,53 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author grtsinry43
  * @since 2024-10-09
  */
-@Getter
-@Setter
+@Data
 public class Comment implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 评论ID，会由雪花算法生成
+     * 评论 ID，会由雪花算法生成
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /**
-     * 文章ID
+     * 文章 ID
      */
     private Long articleId;
 
     /**
-     * 评论内容（markdown格式）
+     * 评论内容（markdown 格式）
      */
     private String content;
 
     /**
-     * 评论者ID
+     * 评论者 ID
      */
     private Long authorId;
 
     /**
-     * 评论者IP地址
+     * 评论者昵称
+     */
+    private String nickName;
+
+    /**
+     * 评论者 IP 地址
      */
     private String ip;
 
@@ -56,7 +62,7 @@ public class Comment implements Serializable {
     private String location;
 
     /**
-     * 评论者User-Agent
+     * 评论者 User-Agent
      */
     private String ua;
 
@@ -91,7 +97,7 @@ public class Comment implements Serializable {
     private LocalDateTime deletedAt;
 
     /**
-     * 父评论ID，如果为空则表示是顶级评论，否则是回复评论
+     * 父评论 ID，如果为空则表示是顶级评论，否则是回复评论
      */
     private Long parentId;
 }

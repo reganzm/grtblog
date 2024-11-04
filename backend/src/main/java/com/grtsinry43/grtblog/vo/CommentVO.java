@@ -18,7 +18,7 @@ public class CommentVO {
     /**
      * 文章 ID
      */
-    private Long articleId;
+    private String articleId;
 
     /**
      * 评论内容（markdown 格式）

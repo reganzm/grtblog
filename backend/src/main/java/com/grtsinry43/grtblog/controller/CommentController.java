@@ -1,14 +1,15 @@
 package com.grtsinry43.grtblog.controller;
 
+import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.dto.CommentNotLoginForm;
 import com.grtsinry43.grtblog.service.impl.CommentServiceImpl;
+import com.grtsinry43.grtblog.util.IPLocationUtil;
 import com.grtsinry43.grtblog.vo.CommentVO;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,8 +19,9 @@ import org.springframework.stereotype.Controller;
  * @author grtsinry43
  * @since 2024-10-09
  */
-@Controller
+@RestController
 @RequestMapping("/comment")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CommentController {
     private final CommentServiceImpl commentService;
 
@@ -28,17 +30,16 @@ public class CommentController {
     }
 
     @GetMapping("/article/{articleId}")
-    public Object listCommentByArticleId(Long articleId) {
-        return commentService.listCommentByArticleId(articleId);
+    public ApiResponse<List<CommentVO>> listCommentByArticleId(@PathVariable String articleId) {
+        Long articleIdLong = Long.parseLong(articleId);
+        return ApiResponse.success(commentService.listCommentByArticleId(articleIdLong));
     }
 
     @PostMapping
-    public CommentVO addNewComment(@RequestBody CommentNotLoginForm form, HttpServletRequest request) {
+    public ApiResponse<CommentVO> addNewComment(@RequestBody CommentNotLoginForm form, HttpServletRequest request) {
         String ip = request.getRemoteAddr();
-        String location = request.getHeader("X-Real-IP");
+        String location = IPLocationUtil.getIp2region(IPLocationUtil.getIp(request));
         String ua = request.getHeader("User-Agent");
-        return commentService.addNewComment(form, ip, location, ua);
+        return ApiResponse.success(commentService.addNewComment(form, ip, location, ua));
     }
-
-
 }

@@ -37,5 +37,5 @@ public class CommentNotLoginForm {
     /**
      * 父评论ID，如果为空则表示是顶级评论，否则是回复评论
      */
-    private String id;
+    private String parentId;
 }
