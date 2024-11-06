@@ -13,7 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <Container size={'4'}>
+    <Container size={'4'} style={{
+      padding: '0 20px',
+    }}>
       {children}
     </Container>
   );

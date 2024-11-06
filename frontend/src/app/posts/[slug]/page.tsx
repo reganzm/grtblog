@@ -2,7 +2,9 @@ import ArticleView from '@/components/article/ArticleView';
 import CommentArea from '@/components/comment/CommentArea';
 
 // 定义 API 请求的 URL
-const API_URL = 'http://127.0.0.1:8080/api/v1/article';
+const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+console.log(process.env.NEXT_PUBLIC_BASE_URL);
 
 interface Params {
   slug: string;
@@ -10,7 +12,7 @@ interface Params {
 
 export async function generateStaticParams() {
   // 向 Spring Boot 后端获取所有文章的 slug
-  const res = await fetch(API_URL + '/ids');
+  const res = await fetch(API_URL + '/article/ids');
   const posts = await res.json(); // 假设返回的数据是一个包含文章列表的 JSON 数组
   console.log(posts);
 
@@ -29,7 +31,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params; // 确保 params 被解析
 
   // 获取单篇文章的详细内容
-  const res = await fetch(`${API_URL}/${slug}`);
+  const res = await fetch(`${API_URL}/article/${slug}`);
   const post = await res.json();
   return (
     <div className="article-container">

@@ -11,10 +11,14 @@ const BannerTitle = () => {
   }, []);
 
   return (
-    <div className={clsx(
-      styles.bannerInfo,
-      'flex flex-col justify-center flex-1',
-    )}>
+    <div
+      style={{
+        transition: 'all 0.5s',
+      }}
+      className={clsx(
+        styles.bannerInfo,
+        'flex flex-col justify-center flex-1 p-10',
+      )}>
       <div className={clsx(
         varela_round.className,
         styles.title,

@@ -14,7 +14,10 @@ const AuthorCard = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className={styles.bannerCard}>
+      <div style={{
+        transition: 'all 0.5s',
+      }}
+           className={styles.bannerCard}>
         <div className="relative w-full max-w-md">
           <div
             className="absolute -left-16 -bottom-16 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-50 animate-pulse" />

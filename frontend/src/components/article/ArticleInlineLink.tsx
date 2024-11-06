@@ -13,16 +13,20 @@ type SiteInfo = {
   subtitle: string;
 };
 
-async function fetchSiteInfo(url: string): Promise<SiteInfo> {
+async function fetchSiteInfo(url: string): Promise<null> {
   const response = await fetch(`/api/fetchSiteInfo?url=${encodeURIComponent(url)}`);
   if (!response.ok) {
-    throw new Error('Failed to fetch site info');
+    return null;
   }
   return await response.json();
 }
 
 const ArticleInlineLink = ({ linkTitle, linkUrl }: { linkTitle: string; linkUrl: string }) => {
   const [siteInfo, setSiteInfo] = useState<SiteInfo | null>(null);
+  // 如果 siteUrl 没有 http 开头，就加上协议
+  if (!linkUrl.startsWith('http')) {
+    linkUrl = `https://${linkUrl}`;
+  }
 
   console.log('ArticleInlineLink', linkUrl);
 
@@ -31,8 +35,9 @@ const ArticleInlineLink = ({ linkTitle, linkUrl }: { linkTitle: string; linkUrl:
   }, [linkUrl]);
 
   if (!siteInfo) {
-    return <a className={jetbrains_mono.className}
-              href={linkUrl} target="_blank" rel="noopener noreferrer">{linkTitle}</a>;
+    return <a
+      className={clsx(styles.underlineAnimation, 'text-blue-500 dark:text-blue-400', styles.glowAnimation, jetbrains_mono.className)}
+      href={linkUrl} target="_blank" rel="noopener noreferrer">{linkTitle}</a>;
   }
 
   return (

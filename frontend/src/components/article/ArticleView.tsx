@@ -13,12 +13,15 @@ import TableView from '@/components/article/TableView';
 type Post = {
   data: {
     content: string;
+    title: string;
   };
 };
 
 const ArticleView = ({ post }: { post: Post }) => {
+  console.log('ArticleView', post);
   return (
     <div>
+      <h1 className={styles.title}>{post.data.title}</h1>
       <ReactMarkdown
         className={styles.markdown}
         rehypePlugins={[rehypeSanitize]}

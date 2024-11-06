@@ -10,7 +10,8 @@ export async function GET(req: Request) {
   }
 
   try {
-    const response = await fetch(url);
+    // 如果不是以 http 开头的，就加上协议
+    const response = await fetch(url.startsWith('http') ? url : `https://${url}`);
     const html = await response.text();
     const $ = cheerio.load(html);
 

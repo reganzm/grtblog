@@ -1,0 +1,45 @@
+.commentList {
+  list-style-type: none;
+  padding: 1em;
+}
+
+.commentItem {
+  padding: 10px 0;
+}
+
+.commentHeader {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.commentMeta {
+  display: flex;
+  align-items: center;
+  padding-left: 3.4em;
+}
+
+.commentAvatar {
+  margin-right: 1em;
+}
+
+.commentUserName {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.commentLocation {
+  color: gray;
+  font-size: 0.9rem;
+}
+
+.commentTime {
+  color: gray;
+  font-size: 0.9rem;
+  margin-right: 1em;
+}
+
+.commentContent {
+  margin-top: 10px;
+  padding-left: 3.4em;
+}

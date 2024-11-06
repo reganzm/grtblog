@@ -5,6 +5,7 @@ import { addNewComment } from '@/api/comment';
 import { Button, Flex, TextArea, TextField } from '@radix-ui/themes';
 import styles from '@/styles/comment/CommentForm.module.scss';
 import { clsx } from 'clsx';
+import { EnvelopeOpenIcon } from '@radix-ui/react-icons';
 
 const CommentForm = ({ id }: { id: string }) => {
   const [form, setForm] = useState({
@@ -55,7 +56,7 @@ const CommentForm = ({ id }: { id: string }) => {
   const handleInput = () => {
     if (textareaRef.current) {
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight + 20}px`;
     }
   };
 
@@ -63,20 +64,20 @@ const CommentForm = ({ id }: { id: string }) => {
     <form onSubmit={handleSubmit} className="p-4 space-y-4">
       <Flex direction="row" gap="4">
         <TextField.Root
-          style={{ padding: '10px' }}
           value={form.userName}
+          required={true}
           onChange={(e) => setForm({ ...form, userName: e.target.value })}
           placeholder="昵称"
         />
         <TextField.Root
           value={form.email}
-          style={{ padding: '10px' }}
+          required={true}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           placeholder="邮箱"
         />
         <TextField.Root
           value={form.website}
-          style={{ padding: '10px' }}
+          required={true}
           onChange={(e) => setForm({ ...form, website: e.target.value })}
           placeholder="网站"
         />
@@ -85,28 +86,54 @@ const CommentForm = ({ id }: { id: string }) => {
            className="relative overflow-hidden">
         <TextArea
           color={'blue'}
+          required={true}
           variant={'soft'}
           ref={textareaRef}
           style={{
             resize: 'none',
-            minHeight: '5rem',
+            minHeight: '7rem',
             outline: 'none',
             padding: '10px',
             lineHeight: '1.5',
           }}
           className="min-h-14 p-2 transition-all duration-300"
           value={form.content}
-          onChange={(e) => setForm({ ...form, content: e.target.value })}
+          onChange={(e) => {
+            if (e.target.value.length <= 3000) {
+              setForm({ ...form, content: e.target.value });
+            }
+          }}
           onInput={handleInput}
           onMouseDown={handleRipple}
           placeholder="看到你的评论我会很开心哒~"
         />
+        <span style={{
+          position: 'absolute',
+          left: '10px',
+          bottom: '10px',
+          fontSize: '0.8rem',
+          color: 'gray',
+        }}> 支持 Markdown 语法 </span>
+        <span style={{
+          position: 'absolute',
+          right: '10px',
+          bottom: '10px',
+          fontSize: '0.8rem',
+          color: 'gray',
+        }}> {form.content.length} / 3000 </span>
+        <span style={{
+          position: 'absolute',
+          left: '12em',
+          bottom: '10px',
+          fontSize: '0.8rem',
+          color: 'gray',
+        }}> 表情面板 </span>
         <span
           ref={rippleRef}
           className={clsx('absolute rounded-full bg-gray-400 opacity-30 pointer-events-none', styles.ripple)}
         />
       </div>
-      <Button type="submit">Submit</Button>
+      <Button type="submit"><EnvelopeOpenIcon /> 发送 ~~ </Button>
     </form>
   );
 };

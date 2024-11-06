@@ -5,7 +5,7 @@ import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import styles from '@/styles/Main.module.scss';
 import { ThemeProvider } from './theme-provider';
-import Navbar from '@/components/NavBar';
+import NavBar from '@/components/NavBar';
 import { LazyMotion, domAnimation } from 'framer-motion';
 import * as m from 'framer-motion/m';
 import React from 'react';
@@ -29,7 +29,7 @@ export default function RootLayout({
           disableTransitionOnChange={false}
         >
           <Theme>
-            <Navbar />
+            <NavBar />
             <LazyMotion features={domAnimation}>
               <m.div
                 initial={{ opacity: 0 }}
