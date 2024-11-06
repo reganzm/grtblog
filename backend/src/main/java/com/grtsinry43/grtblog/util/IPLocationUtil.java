@@ -110,7 +110,7 @@ public class IPLocationUtil {
         try {
             String ipInfo = searcher.search(ip);
             if (!StringUtils.isEmpty(ipInfo)) {
-                return ipInfo.replace("|0", "").replace("0|", "");
+                return ipInfo.replace("|0", "").replace("0|", "").replace("|", "");
             }
         } catch (Exception e) {
             logger.error("解析IP信息失败: {}", e.getMessage());

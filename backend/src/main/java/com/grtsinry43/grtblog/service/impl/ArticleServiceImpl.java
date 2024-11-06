@@ -69,14 +69,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public List<ArticlePreview> getLastFiveArticleList() {
-        List<Article> articles = this.baseMapper.getLastFiveArticles();
-        return articles.stream().map(article -> {
-            ArticlePreview articlePreview = new ArticlePreview();
-            BeanUtils.copyProperties(article, articlePreview);
-            articlePreview.setId(article.getId().toString());
-            articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
-            articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
-            return articlePreview;
-        }).collect(Collectors.toList());
+        try {
+            List<Article> articles = this.baseMapper.getLastFiveArticles();
+            return articles.stream().map(article -> {
+                ArticlePreview articlePreview = new ArticlePreview();
+                BeanUtils.copyProperties(article, articlePreview);
+                articlePreview.setId(article.getId().toString());
+                articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
+                articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
+                return articlePreview;
+            }).collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + e.getCause().getMessage() + e.getLocalizedMessage());
+        }
+        return null;
     }
 }

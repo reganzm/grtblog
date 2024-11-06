@@ -21,7 +21,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/comment")
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class CommentController {
     private final CommentServiceImpl commentService;
 

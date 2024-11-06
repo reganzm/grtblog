@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface CommentMapper extends BaseMapper<Comment> {
 
-    @Select("select * from comment where article_id = #{articleId}")
+    @Select("select * from comment where article_id = #{articleId} ORDER BY created_at DESC")
     public List<Comment> selectByArticleId(Long articleId);
 
 }

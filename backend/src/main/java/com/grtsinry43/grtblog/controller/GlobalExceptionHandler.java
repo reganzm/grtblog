@@ -9,12 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author grtsinry43
- * @date 2024/7/13 上午12:29
- * @description 规定触发异常时的返回格式，依然是HTTP状态码200，只会根据code字段和msg来提供错误信息
+ * @date 2024/7/13 上午 12:29
+ * @description 规定触发异常时的返回格式，依然是 HTTP 状态码 200，只会根据 code 字段和 msg 来提供错误信息
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -67,7 +68,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleException(Exception ex) {
         String errorMessage = ex.getMessage();
-        ApiResponse<Object> apiResponse = ApiResponse.error(500, errorMessage);
+        System.out.println("==出现错误==");
+        ex.printStackTrace();
+        ApiResponse<Object> apiResponse = ApiResponse.error(500, errorMessage + ex.getCause().getMessage());
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
