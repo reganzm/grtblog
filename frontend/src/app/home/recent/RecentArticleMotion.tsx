@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import RecentArticleItem from '@/app/home/recent/RecentArticleItem';
+import { Article } from '@/types';
 
 const staggerContainer = {
   hidden: { opacity: 1 },
@@ -25,12 +26,6 @@ const itemMotion = {
       duration: 1,
     },
   },
-};
-
-type Article = {
-  id: string;
-  title: string;
-  createdAt: string;
 };
 
 interface RecentArticleMotionProps {

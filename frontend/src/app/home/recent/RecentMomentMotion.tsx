@@ -3,6 +3,7 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import RecentMomentItem from '@/app/home/recent/RecentMomentItem';
+import { StatusUpdate } from '@/types';
 
 const staggerContainer = {
   hidden: { opacity: 1 },
@@ -34,12 +35,6 @@ const itemMotion = {
     },
   },
 };
-
-type StatusUpdate = {
-  id: string;
-  description: string;
-  createdAt: string;
-}
 
 interface RecentMomentMomentProps {
   list: StatusUpdate[];

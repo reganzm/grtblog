@@ -5,8 +5,14 @@ import RecentArticle from '@/app/home/recent/RecentArticle';
 import { Container } from '@radix-ui/themes';
 import RecentMoment from '@/app/home/recent/RecentMoment';
 import styles from '@/styles/HomePage.module.scss';
+import { getLastFiveArticles } from '@/api/article';
+import { getLastFourShare } from '@/api/share';
+import { Article, StatusUpdate } from '@/types';
 
-export default function Home() {
+export default async function Home() {
+  // 通过传递 revalidate 配置实现增量更新
+  const articleList: Article[] = await getLastFiveArticles({ next: { revalidate: 60 } });
+  const shareList: StatusUpdate[] = await getLastFourShare({ next: { revalidate: 60 } });
   return (
     <div>
       <Container size={'4'}>
@@ -15,8 +21,8 @@ export default function Home() {
       </Container>
       <div className={'flex justify-center'}>
         <div className={styles.responsiveContainer}>
-          <RecentArticle />
-          <RecentMoment />
+          <RecentArticle articleList={articleList} />
+          <RecentMoment shareList={shareList} />
         </div>
       </div>
     </div>

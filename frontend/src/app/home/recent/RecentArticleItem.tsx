@@ -5,12 +5,8 @@ import { ArrowRightIcon } from '@radix-ui/react-icons';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import Link from 'next/link';
+import { Article } from '@/types';
 
-type Article = {
-  id: string;
-  title: string;
-  createdAt: string;
-};
 
 const RecentArticleItem: React.FC<{ article: Article }> = ({ article }) => {
   const formattedDate = formatDistanceToNow(parseISO(article.createdAt), { addSuffix: true, locale: zhCN });

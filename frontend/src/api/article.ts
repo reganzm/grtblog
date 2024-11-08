@@ -1,5 +1,5 @@
 import { request } from './request';
 
-export function getLastFiveArticles() {
-  return request('/article/lastFive');
+export function getLastFiveArticles(options = {}) {
+  return request('/article/lastFive', options);
 }

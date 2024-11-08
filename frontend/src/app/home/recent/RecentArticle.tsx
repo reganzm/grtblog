@@ -1,15 +1,16 @@
 import React from 'react';
-import { getLastFiveArticles } from '@/api/article';
 import RecentArticleMotion from '@/app/home/recent/RecentArticleMotion';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
+import { Article } from '@/types';
 
-const RecentArticle = async () => {
-  const articleList = await getLastFiveArticles();
+interface RecentArticleProps {
+  articleList: Article[];
+}
+
+const RecentArticle: React.FC<RecentArticleProps> = ({ articleList }) => {
   return (
-    <div style={{
-      padding: '0 20px',
-    }}>
+    <div style={{ padding: '0 20px' }}>
       <div className="text-2xl font-bold text-start mb-8"> 最近文章</div>
       <RecentArticleMotion list={articleList} />
       <div className="text-end mt-8">

@@ -1,7 +1,7 @@
 import { request } from './request';
 
-export function getLastFourShare() {
-  return request('/statusUpdate/lastFour');
+export function getLastFourShare(options = {}) {
+  return request('/statusUpdate/lastFour', options);
 }
 
 export function getLastShare() {

@@ -1,15 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@radix-ui/react-icons';
-import { getLastFourShare } from '@/api/share';
 import RecentMomentMotion from '@/app/home/recent/RecentMomentMotion';
+import { StatusUpdate } from '@/types';
 
-const RecentMoment = async () => {
-  const shareList = await getLastFourShare();
+interface RecentMomentProps {
+  shareList: StatusUpdate[];
+}
+
+const RecentMoment = ({ shareList }: RecentMomentProps) => {
   return (
-    <div style={{
-      padding: '0 20px',
-    }}>
+    <div style={{ padding: '0 20px' }}>
       <div className="text-2xl font-bold text-start mb-8"> 随手记录</div>
       <RecentMomentMotion list={shareList} />
       <div className="text-end mt-8">
