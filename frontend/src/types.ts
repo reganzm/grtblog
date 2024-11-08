@@ -10,3 +10,16 @@ export type StatusUpdate = {
   description: string;
   createdAt: string;
 }
+
+export interface ArticlePreview {
+  id: string;
+  title: string;
+  summary: string;
+  cover: string;
+  createdAt: string;
+  authorName: string;
+  avatar: string;
+  comments: number;
+  likes: number;
+  views: number;
+}

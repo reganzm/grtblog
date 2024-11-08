@@ -1,5 +1,6 @@
 import ArticleView from '@/components/article/ArticleView';
 import CommentArea from '@/components/comment/CommentArea';
+import RelatedRecommend from '@/components/article/RelatedRecommend';
 
 // 定义 API 请求的 URL
 const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -31,11 +32,14 @@ export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params; // 确保 params 被解析
 
   // 获取单篇文章的详细内容
-  const res = await fetch(`${API_URL}/article/${slug}`);
+  const res = await fetch(`${API_URL}/article/${slug}`, {
+    next: { revalidate: 60 },
+  });
   const post = await res.json();
   return (
     <div className="article-container">
       <ArticleView post={post} />
+      <RelatedRecommend id={slug} />
       <CommentArea id={slug} />
     </div>
   );

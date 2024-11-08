@@ -43,7 +43,7 @@ const RecentMomentItem: React.FC<{ statusUpdate: StatusUpdate }> = ({ statusUpda
         <div className={clsx(styles.day, varela_round.className)}>{day}</div>
         <div className={clsx(styles.monthYear, varela_round.className)}>{monthYear}</div>
       </div>
-      <Link className={styles.itemTitle} href={`/moment/${statusUpdate.id}`}>
+      <Link className={styles.itemTitle} href={`/moments/${statusUpdate.id}`}>
         <span className={styles.underlineAnimation}>{statusUpdate.description}</span>
       </Link>
       <ArrowRightIcon className={styles.arrowIcon} />
