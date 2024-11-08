@@ -65,4 +65,11 @@ public class ArticleController {
         return ApiResponse.success(lastFiveArticles);
     }
 
+    @GetMapping("/recommend/{id}")
+    public ApiResponse<List<ArticlePreview>> getRecommendArticles(@PathVariable String id) {
+        Long idLong = Long.parseLong(id);
+        List<ArticlePreview> recommendArticles = articleService.getRecommendArticleList(idLong);
+        return ApiResponse.success(recommendArticles);
+    }
+
 }

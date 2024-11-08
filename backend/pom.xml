@@ -119,6 +119,12 @@
             <version>2.7.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+            <version>4.1.3</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -127,7 +133,7 @@
         <!--        <directory>src/main/resources</directory>-->
         <!--        <includes>-->
         <!--            <include>*.xml</include>-->
-        <!--            &lt;!&ndash;不清楚需不需要手动引入&ndash;&gt;-->
+        <!--            &lt;!&ndash; 不清楚需不需要手动引入 &ndash;&gt;-->
         <!--            <include>ipdb/*.xdb</include>-->
         <!--        </includes>-->
         <!--    </resource>-->
