@@ -55,23 +55,4 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getUserId()).getNickname());
         return preview;
     }
-
-    @Override
-    public List<Long> getAllStatusUpdateIds() {
-        return this.list().stream().map(StatusUpdate::getId).collect(Collectors.toList());
-    }
-
-    @Override
-    public StatusUpdatePreview viewOneStatusUpdate(Long id) {
-        StatusUpdate statusUpdate = this.getById(id);
-        if (statusUpdate == null) {
-            return null;
-        }
-        StatusUpdatePreview preview = new StatusUpdatePreview();
-        BeanUtils.copyProperties(statusUpdate, preview);
-        preview.setId(statusUpdate.getId().toString());
-        preview.setAuthorName(this.userMapper.selectById(statusUpdate.getUserId()).getNickname());
-        preview.setImages(statusUpdate.getImages() != null ? statusUpdate.getImages().split(",") : new String[0]);
-        return preview;
-    }
 }

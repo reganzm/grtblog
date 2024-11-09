@@ -24,14 +24,4 @@ public interface IStatusUpdateService extends IService<StatusUpdate> {
      * 获取最近的一条
      */
     public StatusUpdatePreview getLastStatusUpdate();
-
-    /**
-     * 获取所有说说 id 的列表
-     */
-    public List<Long> getAllStatusUpdateIds();
-
-    /**
-     * 阅读一条说说
-     */
-    public StatusUpdatePreview viewOneStatusUpdate(Long id);
 }

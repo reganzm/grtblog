@@ -8,26 +8,27 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author grtsinry43
  * @since 2024-10-09
  */
-@Getter
-@Setter
+@Data
 public class User implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * 用户ID，会由雪花算法生成
+     * 用户 ID，会由雪花算法生成
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
@@ -48,19 +49,15 @@ public class User implements Serializable {
     private String password;
 
     /**
-     * 用户角色（USER, WRITER, ADMIN）
-     */
-    private String role;
-
-    /**
      * 用户头像
      */
     private String avatar;
 
     /**
-     * 用户状态（ACTIVE, INACTIVE）
+     * 用户是否激活（0：未激活，1：已激活）
      */
-    private String status;
+    @TableField("is_active")
+    private Boolean isActive;
 
     /**
      * 用户创建时间
@@ -71,7 +68,7 @@ public class User implements Serializable {
     /**
      * 用户更新时间
      */
-    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
 
     /**
@@ -80,12 +77,12 @@ public class User implements Serializable {
     private LocalDateTime deletedAt;
 
     /**
-     * OAuth2.0提供者（如google, github）
+     * OAuth2.0 提供者（如 google, github）
      */
     private String oauthProvider;
 
     /**
-     * OAuth2.0用户ID
+     * OAuth2.0 用户 ID
      */
     private String oauthId;
 }

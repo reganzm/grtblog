@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.grtsinry43.grtblog.mapper.UserMapper">
+    <!-- 通过邮箱查询用户 -->
+    <select id="getUserByUserEmail" resultType="com.grtsinry43.grtblog.entity.User">
+        SELECT *
+        FROM user
+        WHERE email = #{userEmail}
+    </select>
+
+    <!-- 通过 OAuth 提供商和 OAuth 用户 ID 查询用户 -->
+    <select id="getUserByOAuthProviderAndId" resultType="com.grtsinry43.grtblog.entity.User">
+        SELECT *
+        FROM user
+        WHERE oauth_provider = #{oauthProvider}
+          AND oauth_id = #{oauthUserId}
+    </select>
+</mapper>

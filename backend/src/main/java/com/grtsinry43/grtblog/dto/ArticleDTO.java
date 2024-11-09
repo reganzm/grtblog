@@ -18,7 +18,7 @@ public class ArticleDTO {
     private String cover;
     private Long categoryId;
     private String tags;
-    private Article.Status status;
+    private String status;
 
     public ArticleDTO() {
     }

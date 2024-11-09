@@ -55,7 +55,7 @@ public class ArticleVO {
     /**
      * 文章状态（PUBLISHED, DRAFT）
      */
-    private Article.Status status;
+    private String status;
 
     /**
      * 文章创建时间

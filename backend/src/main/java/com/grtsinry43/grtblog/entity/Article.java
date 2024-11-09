@@ -8,8 +8,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * <p>
@@ -19,85 +18,69 @@ import lombok.Setter;
  * @author grtsinry43
  * @since 2024-10-09
  */
-@Getter
-@Setter
+@Data
 public class Article implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 文章 ID，会由雪花算法生成
-     */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
-    /**
-     * 文章标题
-     */
     @TableField("title")
     private String title;
 
-    /**
-     * 文章内容，markdown 格式，交由前端解析
-     */
+    @TableField("summary")
+    private String summary;
+
+    @TableField("toc")
+    private String toc;
+
     @TableField("content")
     private String content;
 
-    /**
-     * 作者 ID，逻辑限制
-     */
     @TableField("author_id")
     private Long authorId;
 
-    /**
-     * 文章封面
-     */
+    @TableField("cover")
     private String cover;
 
-    /**
-     * 文章浏览量
-     */
+    @TableField("category_id")
+    private Long categoryId;
+
+    @TableField("views")
     private Integer views;
 
-    /**
-     * 文章点赞量
-     */
+    @TableField("likes")
     private Integer likes;
 
-    /**
-     * 文章评论量
-     */
+    @TableField("comments")
     private Integer comments;
 
-    /**
-     * 文章状态（PUBLISHED, DRAFT）
-     */
-    private Status status;
+    @TableField("comment_id")
+    private Long commentId;
 
-    /**
-     * 文章创建时间
-     */
+    @TableField("short_url")
+    private String shortUrl;
+
+    @TableField("is_published")
+    private Boolean isPublished;
+
+    @TableField("created_at")
     private LocalDateTime createdAt;
 
-    /**
-     * 文章更新时间
-     */
+    @TableField("updated_at")
     private LocalDateTime updatedAt;
 
-    /**
-     * 文章删除时间（软删除），如果不为空则表示已删除
-     */
+    @TableField("deleted_at")
     private LocalDateTime deletedAt;
 
-    public enum Status {
-        /**
-         * 已发布
-         */
-        PUBLISHED,
-        /**
-         * 草稿
-         */
-        DRAFT
-    }
+    @TableField("is_top")
+    private Boolean isTop;
+
+    @TableField("is_hot")
+    private Boolean isHot;
+
+    @TableField("is_original")
+    private Boolean isOriginal;
 }

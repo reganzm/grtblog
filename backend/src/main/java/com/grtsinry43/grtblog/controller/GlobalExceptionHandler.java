@@ -6,6 +6,7 @@ import com.grtsinry43.grtblog.exception.TestException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -42,6 +43,16 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 处理请求方法错误
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ApiResponse<Object>> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        String errorMessage = ex.getMessage();
+        ApiResponse<Object> apiResponse = ApiResponse.error(400, errorMessage);
+        return new ResponseEntity<>(apiResponse, HttpStatus.OK);
+    }
+
+    /**
      * 处理业务逻辑异常（注释声明即可）
      */
     @ExceptionHandler(BusinessException.class)
@@ -70,7 +81,7 @@ public class GlobalExceptionHandler {
         String errorMessage = ex.getMessage();
         System.out.println("==出现错误==");
         ex.printStackTrace();
-        ApiResponse<Object> apiResponse = ApiResponse.error(500, errorMessage + ex.getCause().getMessage());
+        ApiResponse<Object> apiResponse = ApiResponse.error(500, errorMessage);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

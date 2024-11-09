@@ -1,7 +1,5 @@
 package com.grtsinry43.grtblog.controller;
 
-import com.grtsinry43.grtblog.annotation.AuthCheck;
-import com.grtsinry43.grtblog.common.UserRole;
 //import com.grtsinry43.grtblog.config.MyBatisPlusConfig;
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.entity.Tag;
@@ -12,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
