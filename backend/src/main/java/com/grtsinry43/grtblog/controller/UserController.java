@@ -16,6 +16,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -32,7 +34,6 @@ import java.util.Objects;
  */
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
     private final UserServiceImpl userService;
     private final AuthenticationManager authenticationManager;
@@ -81,4 +82,19 @@ public class UserController {
         return ApiResponse.success(userVO);
     }
 
+    @GetMapping("/info")
+    public ApiResponse<UserVO> getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUserDetails principal = (LoginUserDetails) authentication.getPrincipal();
+        System.out.println(principal);
+        if (Objects.isNull(principal)) {
+            return ApiResponse.error(400, "登录失败，请检查用户名和密码");
+        }
+        // 这里说明登录成功，终于能获取到 User 对象了
+        User user = principal.getUser();
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user, userVO);
+        userVO.setId(user.getId().toString());
+        return ApiResponse.success(userVO);
+    }
 }

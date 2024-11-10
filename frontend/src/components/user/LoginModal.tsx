@@ -13,6 +13,8 @@ import { FaApple, FaGoogle } from 'react-icons/fa';
 import { IoLogoWechat } from 'react-icons/io5';
 import { BiLogoMicrosoft } from 'react-icons/bi';
 import { userLogin, userRegister } from '@/api/user';
+import { UserInfo } from '@/redux/userSlice';
+import { useAppDispatch } from '@/redux/hooks';
 
 const LoginModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [loginForm, setLoginForm] = useState({
@@ -28,6 +30,8 @@ const LoginModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
   const [isFormShow, setIsFormShow] = useState(false);
   const [isLoginForm, setIsLoginForm] = useState(true);
 
+  const dispatch = useAppDispatch();
+
   const submitLoginForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!loginForm.userEmail || !loginForm.password) {
@@ -39,6 +43,8 @@ const LoginModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
         setError('登录失败，请检查用户名和密码');
       } else {
         console.log(res);
+        dispatch({ type: 'user/initUserInfo', payload: res as UserInfo });
+        dispatch({ type: 'user/changeLoginStatus', payload: true });
         onClose();
       }
     });

@@ -1,7 +1,32 @@
 import { ofetch } from 'ofetch';
+import { getToken, setToken } from '@/util/token';
 
 const ins = ofetch.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL || '/api/v1', // 确保在浏览器和 Node.js 环境下都能正常运行
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL || '/api/v1', // Ensure it works in both browser and Node.js environments
+  async onRequest({ options }) {
+    const token = getToken();
+    console.log('===正在请求+token' + token);
+    if (token) {
+      options.headers = new Headers({
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      });
+    }
+  },
+  async onResponse({ response }) {
+    console.log('===正在响应');
+    console.log(response);
+
+    response.headers.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    const token = response.headers.get('Authorization');
+    console.log('===token' + token);
+    if (token) {
+      setToken(token);
+    }
+  },
 });
 
 export const request = async (url: string, options?: RequestInit) => {
@@ -16,7 +41,22 @@ export const request = async (url: string, options?: RequestInit) => {
 };
 
 const ins_bff = ofetch.create({
-  baseURL: process.env.NEXT_PUBLIC_BFF_BASE_URL || '/api/bff', // 确保在浏览器和 Node.js 环境下都能正常运行
+  baseURL: process.env.NEXT_PUBLIC_BFF_BASE_URL || '/api/bff', // Ensure it works in both browser and Node.js environments
+  async onRequest({ options }) {
+    const token = getToken();
+    if (token) {
+      options.headers = new Headers({
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      });
+    }
+  },
+  async onResponse({ response }) {
+    const token = response.headers.get('Authorization');
+    if (token) {
+      setToken(token);
+    }
+  },
 });
 
 export const request_bff = async (url: string, options?: RequestInit) => {

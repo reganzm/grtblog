@@ -26,3 +26,7 @@ export function userRegister(data: LoginForm) {
     body: formData,
   });
 }
+
+export function userInfo() {
+  return request('/user/info');
+}

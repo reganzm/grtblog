@@ -11,6 +11,7 @@ import * as m from 'framer-motion/m';
 import React from 'react';
 import Footer from '@/components/footer/Footer';
 import { InfoCircledIcon } from '@radix-ui/react-icons';
+import StoreProvider from '@/app/store-provider';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -25,43 +26,45 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <ThemeProvider
-          attribute="class"
-          enableSystem
-          disableTransitionOnChange={false}
-        >
-          <Theme>
-            <NavBar />
-            <LazyMotion features={domAnimation}>
-              <m.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-              >
-                <div className={styles.mainContainer}>
-                  <Callout.Root
-                    size={'2'}
-                    style={{
-                      margin: '0 auto',
-                      maxWidth: '1225px',
-                      padding: '1rem',
-                    }}
-                  >
-                    <Callout.Icon>
-                      <InfoCircledIcon />
-                    </Callout.Icon>
-                    <Callout.Text>
-                      本站及对应框架均在开发中，当前不代表最终效果，欢迎大佬们提出建议！
-                      进度可关注我的 github 仓库（grtsinry43/grtblog）。
-                    </Callout.Text>
-                  </Callout.Root>
-                  {children}
-                </div>
-              </m.div>
-            </LazyMotion>
-            <Footer />
-          </Theme>
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider
+            attribute="class"
+            enableSystem
+            disableTransitionOnChange={false}
+          >
+            <Theme>
+              <NavBar />
+              <LazyMotion features={domAnimation}>
+                <m.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 1 }}
+                >
+                  <div className={styles.mainContainer}>
+                    <Callout.Root
+                      size={'2'}
+                      style={{
+                        margin: '0 auto',
+                        maxWidth: '1225px',
+                        padding: '1rem',
+                      }}
+                    >
+                      <Callout.Icon>
+                        <InfoCircledIcon />
+                      </Callout.Icon>
+                      <Callout.Text>
+                        本站及对应框架均在开发中，当前不代表最终效果，欢迎大佬们提出建议！
+                        进度可关注我的 github 仓库（grtsinry43/grtblog）。
+                      </Callout.Text>
+                    </Callout.Root>
+                    {children}
+                  </div>
+                </m.div>
+              </LazyMotion>
+              <Footer />
+            </Theme>
+          </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );

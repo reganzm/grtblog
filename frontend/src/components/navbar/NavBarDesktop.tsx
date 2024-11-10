@@ -7,6 +7,9 @@ import styles from '@/styles/NavBar.module.scss';
 import { useTheme } from 'next-themes';
 import { clsx } from 'clsx';
 import LoginModal from '@/components/user/LoginModal';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { User } from '@/redux/userSlice';
+import { userInfo } from '@/api/user';
 
 export default function NavBarDesktop() {
   const { resolvedTheme, setTheme, theme } = useTheme();
@@ -14,9 +17,18 @@ export default function NavBarDesktop() {
   const [mounted, setMounted] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
+  const user = useAppSelector((state: { user: User }) => state.user);
+  const dispatch = useAppDispatch();
+
   useEffect(() => {
     setMounted(true);
-  }, []);
+    userInfo().then((res) => {
+      if (res) {
+        dispatch({ type: 'user/initUserInfo', payload: res });
+        dispatch({ type: 'user/changeLoginStatus', payload: true });
+      }
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     document.documentElement.classList.add('transition-colors');
@@ -127,11 +139,23 @@ export default function NavBarDesktop() {
                 </motion.div>
               </div>
               <div className={styles.loginButtonWrapper}>
-                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button variant="soft" className={styles.loginButton} onClick={openLoginModal}>
-                    登录
-                  </Button>
-                </motion.div>
+                {user.isLogin ? (
+                  <div className={styles.avatarWrapper}>
+                    <Avatar
+                      size="3"
+                      radius="large"
+                      src={user.userInfo.avatar ? user.userInfo.avatar : undefined}
+                      fallback={user.userInfo.nickname[0]}
+                      className={styles.avatar}
+                    />
+                  </div>
+                ) : (
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button variant="soft" className={styles.loginButton} onClick={openLoginModal}>
+                      登录
+                    </Button>
+                  </motion.div>
+                )}
               </div>
             </div>
           </div>
