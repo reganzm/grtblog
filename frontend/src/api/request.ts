@@ -9,7 +9,7 @@ export const request = async (url: string, options?: RequestInit) => {
   console.log('===正在请求' + url);
   console.log(res);
   if (res.code !== 0) {
-    throw new Error(res.msg);
+    return null;
   } else {
     return res.data;
   }

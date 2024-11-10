@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Heart, MessageCircle, Eye } from 'lucide-react';
 import { ArticlePreview } from '@/types';
+import Link from 'next/link';
 
 export default function RecommendCard({ item }: { item: ArticlePreview }) {
   return (
@@ -29,7 +30,9 @@ export default function RecommendCard({ item }: { item: ArticlePreview }) {
           <div className="bg-card-foreground h-0 w-0" />
         )}
         <div className="p-4">
-          <h2 className="text-xl font-semibold mb-2 line-clamp-2">{item.title}</h2>
+          <Link href={`/posts/${item.id}`}>
+            <h2 className="text-xl font-semibold mb-2 line-clamp-2">{item.title}</h2>
+          </Link>
           <p className="text-muted-foreground mb-4 line-clamp-3">{item.summary}</p>
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center space-x-2">
