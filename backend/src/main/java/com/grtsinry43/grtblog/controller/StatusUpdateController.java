@@ -3,6 +3,7 @@ package com.grtsinry43.grtblog.controller;
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.service.impl.StatusUpdateServiceImpl;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
+import jakarta.annotation.security.PermitAll;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
@@ -27,12 +28,14 @@ public class StatusUpdateController {
         this.statusUpdateService = statusUpdateService;
     }
 
+    @PermitAll
     @GetMapping("/last")
     public ApiResponse<StatusUpdatePreview> getLastStatusUpdate() {
         StatusUpdatePreview lastStatusUpdate = statusUpdateService.getLastStatusUpdate();
         return ApiResponse.success(lastStatusUpdate);
     }
 
+    @PermitAll
     @GetMapping("/lastFour")
     public ApiResponse<List<StatusUpdatePreview>> getLastFourStatusUpdates() {
         List<StatusUpdatePreview> lastFourStatusUpdates = statusUpdateService.getLastFourStatusUpdates();

@@ -86,7 +86,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 return articlePreview;
             }).collect(Collectors.toList());
         } catch (Exception e) {
-            System.out.println(e.getMessage() + e.getCause().getMessage() + e.getLocalizedMessage());
+            System.out.println(e.getMessage());
         }
         return null;
     }

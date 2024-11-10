@@ -5,6 +5,7 @@ import com.grtsinry43.grtblog.dto.CommentNotLoginForm;
 import com.grtsinry43.grtblog.service.impl.CommentServiceImpl;
 import com.grtsinry43.grtblog.util.IPLocationUtil;
 import com.grtsinry43.grtblog.vo.CommentVO;
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
@@ -29,12 +30,14 @@ public class CommentController {
         this.commentService = commentService;
     }
 
+    @PermitAll
     @GetMapping("/article/{articleId}")
     public ApiResponse<List<CommentVO>> listCommentByArticleId(@PathVariable String articleId) {
         Long articleIdLong = Long.parseLong(articleId);
         return ApiResponse.success(commentService.listCommentByArticleId(articleIdLong));
     }
 
+    @PermitAll
     @PostMapping
     public ApiResponse<CommentVO> addNewComment(@RequestBody CommentNotLoginForm form, HttpServletRequest request) {
         String ip = request.getRemoteAddr();

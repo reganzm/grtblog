@@ -7,8 +7,10 @@ import com.grtsinry43.grtblog.service.impl.ArticleServiceImpl;
 import com.grtsinry43.grtblog.vo.ArticlePreview;
 import com.grtsinry43.grtblog.vo.ArticleVO;
 import com.grtsinry43.grtblog.vo.ArticleView;
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +32,7 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    @PreAuthorize("hasRole('admin')")
     @PostMapping
     public ApiResponse<ArticleVO> addArticleApi(@RequestBody ArticleDTO articleDTO, HttpServletRequest request) {
         Long userId = (Long) request.getAttribute("userId");
@@ -42,6 +45,7 @@ public class ArticleController {
     /**
      * 获取所有文章 id 的列表
      */
+    @PermitAll
     @GetMapping("/ids")
     public ApiResponse<List<String>> getAllArticleIds() {
         List<Long> articleIds = articleService.getAllArticleIds();
@@ -51,6 +55,7 @@ public class ArticleController {
     }
 
 
+    @PermitAll
     @GetMapping("/{id}")
     public ApiResponse<ArticleView> viewOneArticleApi(@PathVariable String id) {
         Long idLong = Long.parseLong(id);
@@ -58,6 +63,7 @@ public class ArticleController {
         return ApiResponse.success(articleView);
     }
 
+    @PermitAll
     @GetMapping("/lastFive")
     public ApiResponse<List<ArticlePreview>> getLastFiveArticles() {
         System.out.println("getLastFiveArticles");
@@ -65,6 +71,7 @@ public class ArticleController {
         return ApiResponse.success(lastFiveArticles);
     }
 
+    @PermitAll
     @GetMapping("/recommend/{id}")
     public ApiResponse<List<ArticlePreview>> getRecommendArticles(@PathVariable String id) {
         Long idLong = Long.parseLong(id);

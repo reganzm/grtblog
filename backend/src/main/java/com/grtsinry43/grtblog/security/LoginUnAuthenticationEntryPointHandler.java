@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.cloud.client.loadbalancer.CompletionContext;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class LoginUnAuthenticationEntryPointHandler implements AuthenticationEnt
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
+        response.setStatus(200);
         ApiResponse<Object> result = ApiResponse.error(401, "用户未认证或登录已过期，请重新登录后再访问");
         // 将消息 json 化
         String json = objectMapper.writeValueAsString(result);
