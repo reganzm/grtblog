@@ -8,11 +8,16 @@ const RelatedRecommend = async ({ id }: { id: string }) => {
   console.log(relatedRecommend);
   return (
     <div>
-      <h1>id 推荐区域 </h1>
+      <h1 style={{
+        fontSize: '1.5rem',
+        fontWeight: 'bold',
+        marginBottom: '1rem',
+        marginTop: '1rem',
+      }}> 相关推荐 </h1>
       <div
         style={{
           scrollBehavior: 'smooth',
-          overflowX: 'scroll',
+          overflowX: 'auto',
           display: 'flex',
           flexDirection: 'row',
         }}

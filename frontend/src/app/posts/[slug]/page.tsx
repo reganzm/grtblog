@@ -38,7 +38,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
   const post = await res.json();
   return (
     <div className="article-container">
-      <ArticleView post={post} />
+      <ArticleView post={post.data} />
       <RelatedRecommend id={slug} />
       <CommentArea id={slug} />
     </div>

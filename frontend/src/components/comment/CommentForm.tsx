@@ -61,8 +61,8 @@ const CommentForm = ({ id }: { id: string }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 space-y-4">
-      <Flex direction="row" gap="4">
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <Flex direction="row" gap="4" className={styles.flex}>
         <TextField.Root
           value={form.userName}
           required={true}
@@ -82,21 +82,13 @@ const CommentForm = ({ id }: { id: string }) => {
           placeholder="网站"
         />
       </Flex>
-      <div style={{ width: '70%' }}
-           className="relative overflow-hidden">
+      <div className={styles.textareaContainer}>
         <TextArea
           color={'blue'}
           required={true}
           variant={'soft'}
           ref={textareaRef}
-          style={{
-            resize: 'none',
-            minHeight: '7rem',
-            outline: 'none',
-            padding: '10px',
-            lineHeight: '1.5',
-          }}
-          className="min-h-14 p-2 transition-all duration-300"
+          className={styles.textarea}
           value={form.content}
           onChange={(e) => {
             if (e.target.value.length <= 3000) {
@@ -107,33 +99,17 @@ const CommentForm = ({ id }: { id: string }) => {
           onMouseDown={handleRipple}
           placeholder="看到你的评论我会很开心哒~"
         />
-        <span style={{
-          position: 'absolute',
-          left: '10px',
-          bottom: '10px',
-          fontSize: '0.8rem',
-          color: 'gray',
-        }}> 支持 Markdown 语法 </span>
-        <span style={{
-          position: 'absolute',
-          right: '10px',
-          bottom: '10px',
-          fontSize: '0.8rem',
-          color: 'gray',
-        }}> {form.content.length} / 3000 </span>
-        <span style={{
-          position: 'absolute',
-          left: '12em',
-          bottom: '10px',
-          fontSize: '0.8rem',
-          color: 'gray',
-        }}> 表情面板 </span>
+        <span className={styles.markdownSupport}> 支持 Markdown 语法 </span>
+        <span className={styles.charCount}> {form.content.length} / 3000 </span>
+        <span className={styles.emojiPanel}> 表情面板 </span>
         <span
           ref={rippleRef}
-          className={clsx('absolute rounded-full bg-gray-400 opacity-30 pointer-events-none', styles.ripple)}
+          className={clsx(styles.ripple, 'absolute rounded-full bg-gray-400 opacity-30 pointer-events-none')}
         />
       </div>
-      <Button type="submit"><EnvelopeOpenIcon /> 发送 ~~ </Button>
+      <Button style={{
+        alignSelf: 'flex-end',
+      }} type="submit"><EnvelopeOpenIcon /> 发送 ~~ </Button>
     </form>
   );
 };

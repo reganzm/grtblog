@@ -1,4 +1,60 @@
-// TODO : 全局的动画引入
+.article {
+  margin-top: 4em;
+  width: 100%;
+  max-width: 100%;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: 900;
+  font-size: 1.5rem;
+  color: var(--foreground);
+  line-height: 1.2;
+  max-width: 40ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.articleContainer {
+  padding-top: 2em;
+  display: flex;
+  gap: 2rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.blockquote {
+  border-left: 4px solid rgba(var(--foreground), 0.5);
+  margin: 1.5em 10px;
+  padding: 0 10px;
+}
+
+.tocContainer {
+  position: sticky;
+  top: 100px;
+  height: calc(100vh - 200px);
+  overflow-y: auto;
+  flex: 0 0 200px;
+}
+
+.articleContent {
+  flex: 1;
+  transition: all 1s;
+  min-width: 0;
+  padding: 2rem;
+}
+
+.markdown {
+  transition: color 0.5s;
+  width: 100%;
+}
 
 .underlineAnimation {
   position: relative;
@@ -40,6 +96,51 @@
   animation: glow 1s forwards;
 }
 
-.markdown {
-  transition: color 0.5s;
+.paragraph {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  color: var(--foreground);
+}
+
+.heading1 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.heading2 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.heading3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+@media (max-width: 768px) {
+  .articleContainer {
+    flex-direction: column;
+  }
+
+  .tocContainer {
+    position: static;
+    height: auto;
+    max-height: 300px;
+    flex: none;
+    width: 100%;
+  }
+
+  .articleContent {
+    padding: 1rem;
+  }
 }

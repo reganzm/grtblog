@@ -7,7 +7,7 @@ export interface Article {
 
 export type StatusUpdate = {
   id: string;
-  description: string;
+  title: string;
   createdAt: string;
 }
 

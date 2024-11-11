@@ -11,6 +11,7 @@ import fallbackTheme from '@/components/code/fallbackTheme';
 import styles from '@/styles/CodeBlock.module.scss';
 import { clsx } from 'clsx';
 import { motion } from 'framer-motion';
+import { CheckIcon, CopyIcon } from '@radix-ui/react-icons';
 
 interface CodeBlockProps {
   language: string;
@@ -74,7 +75,13 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
           </Badge>
           <CopyToClipboard text={value} onCopy={handleCopy}>
             <Button variant={'soft'}>
-              {copied ? '已复制!' : '复制'}
+              <motion.div
+                initial={{ scale: 1 }}
+                animate={{ scale: copied ? 1.2 : 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                {copied ? <CheckIcon /> : <CopyIcon />}
+              </motion.div>
             </Button>
           </CopyToClipboard>
         </div>
@@ -83,6 +90,8 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
           style={currentTheme}
           customStyle={{
             fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '14px',
+            padding: '0.5em',
             transition: 'color 0.5s, background-color 0.5s',
           }}
           showLineNumbers

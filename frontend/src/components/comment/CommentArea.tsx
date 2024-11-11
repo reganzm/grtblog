@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { Skeleton } from '@radix-ui/themes';
+import CommentForm from '@/components/comment/CommentForm';
 
-const CommentForm = lazy(() => import('@/components/comment/CommentForm'));
 const CommentList = lazy(() => import('@/components/comment/CommentList'));
 
 const CommentArea = ({ id }: { id: string }) => {

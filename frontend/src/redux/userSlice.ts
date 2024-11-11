@@ -38,6 +38,7 @@ const userSlice = createSlice({
     },
     // 清除用户信息
     clearUserInfo: (state, { payload }) => {
+      console.log('clearUserInfo' + payload);
       state.userInfo = {};
     },
   },

@@ -15,7 +15,7 @@ export default function RecommendCard({ item }: { item: ArticlePreview }) {
       transition={{ duration: 0.5 }}
     >
       <div
-        className="bg-card text-card-foreground rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out w-60">
+        className="bg-card text-card-foreground rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out w-50">
         {item.cover ? (
           <div className="relative h-48">
             <Image
@@ -31,24 +31,17 @@ export default function RecommendCard({ item }: { item: ArticlePreview }) {
         )}
         <div className="p-4">
           <Link href={`/posts/${item.id}`}>
-            <h2 className="text-xl font-semibold mb-2 line-clamp-2">{item.title}</h2>
+            <h2 className="font-semibold mb-2 line-clamp-2">{item.title}</h2>
           </Link>
           <p className="text-muted-foreground mb-4 line-clamp-3">{item.summary}</p>
           <div className="flex items-center justify-between text-sm text-muted-foreground">
             <div className="flex items-center space-x-2">
-              <Image
-                src={item.avatar}
-                alt={item.authorName}
-                width={24}
-                height={24}
-                className="rounded-full"
-              />
               <span>{item.authorName}</span>
             </div>
             <span>{new Date(item.createdAt).toLocaleDateString()}</span>
           </div>
         </div>
-        <div className="bg-muted p-4 flex justify-between items-center text-sm">
+        <div className="bg-muted p-4 flex justify-center gap-6 items-center text-sm">
           <motion.div whileHover={{ scale: 1.1 }}>
             <div className="flex items-center space-x-1">
               <Heart className="w-4 h-4" />
