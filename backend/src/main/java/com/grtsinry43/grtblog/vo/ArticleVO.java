@@ -28,7 +28,22 @@ public class ArticleVO {
     private String content;
 
     /**
-     * 作者 ID
+     * 文章摘要
+     */
+    private String summary;
+
+    /**
+     * 文章目录
+     */
+    private String toc;
+
+    /**
+     * 文章分类名称
+     */
+    private String categoryName;
+
+    /**
+     * 作者名字
      */
     private String authorName;
 

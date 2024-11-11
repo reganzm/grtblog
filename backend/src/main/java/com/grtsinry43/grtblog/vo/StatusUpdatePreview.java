@@ -27,9 +27,9 @@ public class StatusUpdatePreview {
     private String[] images;
 
     /**
-     * 说说内容
+     * 说说标题
      */
-    private String description;
+    private String title;
 
     /**
      * 说说创建时间

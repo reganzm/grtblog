@@ -11,6 +11,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -27,6 +29,20 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Override
     public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua) {
         System.out.println(form.toString());
+        // 正则匹配一下，提取操作系统和浏览器信息
+        String osPattern = "\\(([^;]+);";
+        String browserPattern = "([a-zA-Z]+/[0-9\\.]+)";
+
+        // 操作系统
+        Pattern pattern = Pattern.compile(osPattern);
+        Matcher matcher = pattern.matcher(ua);
+        String os = matcher.find() ? matcher.group(1) : "Unknown OS";
+
+        // 浏览器
+        pattern = Pattern.compile(browserPattern);
+        matcher = pattern.matcher(ua);
+        String browser = matcher.find() ? matcher.group(1) : "Unknown Browser";
+
         Comment comment = new Comment();
         BeanUtils.copyProperties(form, comment);
         comment.setNickName(form.getUserName());
@@ -34,7 +50,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setParentId(Objects.equals(form.getParentId(), "") ? null : Long.parseLong(form.getParentId()));
         comment.setIp(ip);
         comment.setLocation(location);
-        comment.setUa(ua);
+        comment.setPlatform(os);
+        comment.setBrowser(browser);
         System.out.println(comment.toString());
         save(comment);
         CommentVO vo = new CommentVO();

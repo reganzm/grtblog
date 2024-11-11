@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `comment`
     `nick_name`  VARCHAR(45) COMMENT '评论者昵称',
     `ip`         VARCHAR(45) COMMENT '评论者IP地址',
     `location`   VARCHAR(45) COMMENT '评论者归属地',
-    `ua`         VARCHAR(255) COMMENT '评论者User-Agent', -- 这个不会在前端展示
+#     `ua`         VARCHAR(255) COMMENT '评论者User-Agent', -- 这个不会在前端展示
     `platform`   VARCHAR(45) COMMENT '评论者操作系统',
     `browser`    VARCHAR(45) COMMENT '评论者浏览器',      -- 这两个根据 User-Agent 解析，并在前端展示
     `email`      VARCHAR(45) COMMENT '评论者邮箱',

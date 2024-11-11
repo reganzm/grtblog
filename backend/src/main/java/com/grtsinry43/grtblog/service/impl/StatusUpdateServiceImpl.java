@@ -36,9 +36,8 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                     StatusUpdatePreview preview = new StatusUpdatePreview();
                     BeanUtils.copyProperties(statusUpdate, preview);
                     preview.setId(statusUpdate.getId().toString());
-                    preview.setAuthorName(this.userMapper.selectById(statusUpdate.getUserId()).getNickname());
-                    preview.setDescription(statusUpdate.getContent().length() > 50 ? statusUpdate.getContent().substring(0, 50) + "..." : statusUpdate.getContent());
-                    preview.setImages(statusUpdate.getImages() != null ? statusUpdate.getImages().split(",") : new String[0]);
+                    preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
+                    preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
                     return preview;
                 })
                 .collect(Collectors.toList());
@@ -50,9 +49,8 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         StatusUpdatePreview preview = new StatusUpdatePreview();
         BeanUtils.copyProperties(statusUpdate, preview);
         preview.setId(statusUpdate.getId().toString());
-        preview.setDescription(statusUpdate.getContent().substring(0, 50) + "...");
-        preview.setImages(statusUpdate.getImages() != null ? statusUpdate.getImages().split(",") : new String[0]);
-        preview.setAuthorName(this.userMapper.selectById(statusUpdate.getUserId()).getNickname());
+        preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
+        preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         return preview;
     }
 }

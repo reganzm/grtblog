@@ -62,9 +62,14 @@ public class Comment implements Serializable {
     private String location;
 
     /**
-     * 评论者 User-Agent
+     * 评论者操作系统
      */
-    private String ua;
+    private String platform;
+
+    /**
+     * 评论者浏览器
+     */
+    private String browser;
 
     /**
      * 评论者邮箱

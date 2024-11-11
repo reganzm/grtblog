@@ -3,6 +3,7 @@ package com.grtsinry43.grtblog.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.ApiResponse;
@@ -44,7 +45,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = request.getHeader("Authorization");
         if (token != null && token.startsWith("Bearer ")) {
             token = token.substring(7);
-            String username = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(token).getSubject();
+            String username = null;
+            try {
+                username = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(token).getSubject();
+            } catch (JWTVerificationException e) {
+                response.setStatus(HttpServletResponse.SC_OK);
+                response.setContentType("application/json;charset=utf-8");
+                response.getWriter().write(new ObjectMapper().writeValueAsString(ApiResponse.error(401, "未登录或登录已过期")));
+                return;
+            }
             if (username != null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

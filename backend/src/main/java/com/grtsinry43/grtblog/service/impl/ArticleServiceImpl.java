@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
 import com.grtsinry43.grtblog.entity.Article;
@@ -8,6 +9,7 @@ import com.grtsinry43.grtblog.mapper.ArticleMapper;
 import com.grtsinry43.grtblog.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.service.RecommendationService;
+import com.grtsinry43.grtblog.util.ArticleParser;
 import com.grtsinry43.grtblog.vo.ArticlePreview;
 import com.grtsinry43.grtblog.vo.ArticleVO;
 import com.grtsinry43.grtblog.vo.ArticleView;
@@ -41,10 +43,18 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public ArticleVO addArticle(ArticleDTO articleDTO, Long userId) {
+    public ArticleVO addArticle(ArticleDTO articleDTO, Long userId){
         Article article = new Article();
         BeanUtils.copyProperties(articleDTO, article);
         article.setAuthorId(userId);
+        // 解析文章并生成目录
+        String toc = null;
+        try {
+            toc = ArticleParser.generateToc(articleDTO.getContent());
+        } catch (JsonProcessingException e) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR);
+        }
+        article.setToc(toc);
         this.baseMapper.insert(article);
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(article, articleVO);
@@ -65,7 +75,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleView.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
         return articleView;
     }
-
 
 
     @Override

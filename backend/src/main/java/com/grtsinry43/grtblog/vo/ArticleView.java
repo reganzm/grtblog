@@ -30,6 +30,16 @@ public class ArticleView {
     private String content;
 
     /**
+     * 文章摘要
+     */
+    private String summary;
+
+    /**
+     * 文章目录
+     */
+    private String toc;
+
+    /**
      * 作者名字
      */
     private String authorName;
