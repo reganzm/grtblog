@@ -81,4 +81,11 @@ public class ArticleController {
         return ApiResponse.success(recommendArticles);
     }
 
+    @PermitAll
+    @GetMapping("/all")
+    public ApiResponse<List<ArticlePreview>> getArticleListByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        List<ArticlePreview> articleList = articleService.getArticleListByPage(page, pageSize);
+        return ApiResponse.success(articleList);
+    }
+
 }

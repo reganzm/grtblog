@@ -7,4 +7,11 @@
     <!--    order by created_at desc-->
     <!--    limit 5-->
     <!--</select>-->
+    <select id="getArticleListByPage" resultType="com.grtsinry43.grtblog.entity.Article">
+        select *
+        from article
+        where is_published = 1
+        order by is_top desc, created_at desc
+        limit #{start}, #{pageSize}
+    </select>
 </mapper>

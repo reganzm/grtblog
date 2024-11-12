@@ -49,10 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             try {
                 username = JWT.require(Algorithm.HMAC512(SECRET_KEY)).build().verify(token).getSubject();
             } catch (JWTVerificationException e) {
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/json;charset=utf-8");
-                response.getWriter().write(new ObjectMapper().writeValueAsString(ApiResponse.error(401, "未登录或登录已过期")));
-                return;
+                System.out.println("Token 验证失败");
             }
             if (username != null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);

@@ -27,4 +27,6 @@ public interface IArticleService extends IService<Article> {
     List<ArticlePreview> getLastFiveArticleList();
 
     List<ArticlePreview> getRecommendArticleList(Long articleId);
+
+    List<ArticlePreview> getArticleListByPage(Integer page, Integer pageSize);
 }

@@ -25,19 +25,12 @@ public class ArticleParser {
         Matcher matcher = pattern.matcher(content);
         Map<String, Integer> anchorCount = new HashMap<>();
 
+        int lineNumber = 0;
         while (matcher.find()) {
+            lineNumber++;
             int level = matcher.group(1).length();
             String text = matcher.group(2);
-            String baseAnchor = text.toLowerCase().replaceAll("[^a-z0-9\\u4e00-\\u9fa5]+", "-").replaceAll("-+", "-");
-            String anchor = baseAnchor;
-
-            if (anchorCount.containsKey(baseAnchor)) {
-                int count = anchorCount.get(baseAnchor) + 1;
-                anchorCount.put(baseAnchor, count);
-                anchor = baseAnchor + "-" + count;
-            } else {
-                anchorCount.put(baseAnchor, 0);
-            }
+            String anchor = "line-" + lineNumber;
 
             headings.add(new Heading(level, text, anchor));
         }

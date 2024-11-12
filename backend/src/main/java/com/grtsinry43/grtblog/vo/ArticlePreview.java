@@ -56,6 +56,11 @@ public class ArticlePreview {
     private Integer comments;
 
     /**
+     * 是否置顶
+     */
+    private Boolean isTop;
+
+    /**
      * 文章创建时间（发布时间，以这个为准）
      */
     private transient LocalDateTime createdAt;

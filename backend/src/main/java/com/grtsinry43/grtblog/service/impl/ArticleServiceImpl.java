@@ -43,7 +43,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public ArticleVO addArticle(ArticleDTO articleDTO, Long userId){
+    public ArticleVO addArticle(ArticleDTO articleDTO, Long userId) {
         Article article = new Article();
         BeanUtils.copyProperties(articleDTO, article);
         article.setAuthorId(userId);
@@ -108,6 +108,19 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 .toList();
         return recommendArticleIds.stream().map(id -> {
             Article article = this.baseMapper.selectById(id);
+            ArticlePreview articlePreview = new ArticlePreview();
+            BeanUtils.copyProperties(article, articlePreview);
+            articlePreview.setId(article.getId().toString());
+            articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
+            articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
+            return articlePreview;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ArticlePreview> getArticleListByPage(Integer page, Integer pageSize) {
+        List<Article> articles = this.baseMapper.getArticleListByPage((page - 1) * pageSize, pageSize);
+        return articles.stream().map(article -> {
             ArticlePreview articlePreview = new ArticlePreview();
             BeanUtils.copyProperties(article, articlePreview);
             articlePreview.setId(article.getId().toString());
