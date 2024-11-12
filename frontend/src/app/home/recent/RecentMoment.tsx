@@ -10,7 +10,7 @@ interface RecentMomentProps {
 
 const RecentMoment = ({ shareList }: RecentMomentProps) => {
   return (
-    <div style={{ padding: '0 20px' }}>
+    <div style={{ padding: '0 20px', flex: 1 }}>
       <div className="text-2xl font-bold text-start mb-8"> 随手记录</div>
       <RecentMomentMotion list={shareList} />
       <div className="text-end mt-8">

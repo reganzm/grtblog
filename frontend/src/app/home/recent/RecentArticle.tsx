@@ -10,7 +10,7 @@ interface RecentArticleProps {
 
 const RecentArticle: React.FC<RecentArticleProps> = ({ articleList }) => {
   return (
-    <div style={{ padding: '0 20px' }}>
+    <div style={{ padding: '0 20px', flex: 1 }}>
       <div className="text-2xl font-bold text-start mb-8"> 最近文章</div>
       <RecentArticleMotion list={articleList} />
       <div className="text-end mt-8">

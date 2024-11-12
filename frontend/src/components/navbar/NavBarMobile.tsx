@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Avatar, Button } from '@radix-ui/themes';
+import { Avatar, Button, IconButton } from '@radix-ui/themes';
 import { GitHubLogoIcon, HamburgerMenuIcon, MagnifyingGlassIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import styles from '@/styles/NavBarMobile.module.scss';
 
@@ -45,12 +45,11 @@ const NavBarMobile = () => {
         transition={{ type: 'spring', stiffness: 120, damping: 20 }}
       >
         <nav
-          className="w-full bg-background/80 backdrop-blur-xl text-foreground p-4 sticky top-0 z-10 shadow-md transition-all duration-200">
-          <div className="max-w-7xl mx-auto flex justify-between items-center">
-            <button onClick={togglePanel}
-                    className="px-4 py-2 bg-primary text-primary-foreground rounded-md transition-colors duration-200 hover:bg-primary/90">
+          className={styles.navbar}>
+          <div className={styles.navbarContainer}>
+            <IconButton variant={'ghost'} onClick={togglePanel}>
               <HamburgerMenuIcon className="w-5 h-5" />
-            </button>
+            </IconButton>
             <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}
                         transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
               <Avatar

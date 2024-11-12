@@ -13,7 +13,7 @@ export const varela_round = Varela_Round({
 export const noto_sans_sc = Noto_Sans_SC({
   subsets: ['vietnamese'],
   display: 'swap',
-  weight: ['300'],
+  weight: ['400'],
 });
 
 export const playwrite_us_modern = Playwrite_US_Modern({

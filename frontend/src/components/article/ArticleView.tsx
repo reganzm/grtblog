@@ -14,6 +14,7 @@ import Toc from '@/components/article/Toc';
 import { article_font } from '@/app/fonts/font';
 import ArticleMetadata from '@/components/article/ArticleMetaData';
 import FloatingTocMobile from '@/components/article/FloatingTocMobile';
+import ArticleTopPaddingAnimate from '@/components/article/ArticleTopPaddingAnimate';
 
 type Post = {
   id: string;
@@ -42,6 +43,7 @@ const ArticleView = ({ post }: { post: Post }) => {
           {post.toc && <Toc toc={JSON.parse(post.toc)} />}
         </aside>
         <main className={styles.articleContent}>
+          <ArticleTopPaddingAnimate />
           <h1 className={styles.title}>{post.title}</h1>
           <ArticleMetadata
             authorName={post.authorName}

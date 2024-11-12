@@ -4,6 +4,7 @@ import './globals.css';
 import { Theme } from '@radix-ui/themes';
 import '@radix-ui/themes/styles.css';
 import { ThemeProvider } from './theme-provider';
+import styles from '@/styles/Main.module.scss';
 import NavBar from '@/components/navbar/NavBar';
 import React from 'react';
 import Footer from '@/components/footer/Footer';
@@ -30,7 +31,9 @@ export default function RootLayout({
           >
             <Theme>
               <NavBar />
-              {children}
+              <div className={styles.mainContainer}>
+                {children}
+              </div>
               <Footer />
             </Theme>
           </ThemeProvider>
