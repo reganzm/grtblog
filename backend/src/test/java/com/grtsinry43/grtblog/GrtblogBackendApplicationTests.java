@@ -16,176 +16,239 @@ class GrtblogBackendApplicationTests {
 
     @Test
     public void testGenerateToc() throws JsonProcessingException {
-        String content = "在 22 年刚创建个人主页的时候，由于我的技术水平不够，只能用一些 wordpress typecho 这种直观的工具，后来因为换域名等等一系列的问题就被搁置了...再后来为了过备案，用图形化工具和 bootstrap 糊了一个，而如今熟练掌握 Vue 和 React 等框架之后，也到了完全重写的时候了，于是就有了这段记录。\n" +
+        String content = "# 第一章 绪论\n" +
                 "\n" +
-                "<!--more-->\n" +
+                "## 1.1 课题背景\n" +
                 "\n" +
-                "关键词：Vue SSR，Nuxt.js\n" +
+                "[这是一段正文内容]\n" +
                 "\n" +
-                "> 网页的开发一直在持续哇...本文章会持续跟进更新\n" +
+                ">引用他人的论点论据，用来佐证本文的背景及意义。\n" +
+                ">\n" +
+                ">——引文出处，适当增加尾注[^1]\n" +
                 "\n" +
-                "最后链接：https://www.grtsinry43.com/\n" +
+                "[这是一段正文内容]\n" +
                 "\n" +
-                "## 框架选择\n" +
+                "## 1.2 信息化管理\n" +
                 "\n" +
-                "首先，对于这种主页类的网站，单纯的 Vue React SPA（单页面应用）肯定是不行的，比如说这里我们使用 pure-admin 模板创建的一个后台系统（Vue3），对于搜索引擎来说不会等待页面完全加载和渲染，而抓到的这些内容无法分析网站的关键词和主题等，导致很难被搜索引擎排名考前，因此我们不得不从历史中汲取经验，从服务端生成静态网页，到了客户端渲染的单页面应用，又回到了服务端渲染\n" +
+                "## 1.3 系统设计目的和内容\n" +
                 "\n" +
-                "![这样是很难做好 SEO 的](https://dogeoss.grtsinry43.com/2024/08/screenshot_20240830_183309.png)\n" +
+                "[^1]: 绪论尾注 1 的内容。\n" +
                 "\n" +
-                "对于个人主页这种比较小的项目，我更喜欢使用 Vue 来完成开发，也就是其对应的 SSR 框架——Nuxt.js\n" +
+                "# 第二章 需求分析\n" +
                 "\n" +
-                "## 快速上手\n" +
+                "## 2.1 可行性分析\n" +
                 "\n" +
-                "由于要使用 `NuxtUI`，我们便可以使用官方的创建工程的脚手架\n" +
+                "### 2.1.1 技术可行性\n" +
                 "\n" +
-                "```bash\n" +
-                "npx nuxi@latest init -t ui [项目名称]\n" +
-                "```\n" +
+                "同类产品技术解决方案：\n" +
                 "\n" +
-                "创建好项目之后，我们便可以像正常写 Vue 一样来进行开发啦\n" +
+                "- XX 公司实现的产品，用了 XX 技术；\n" +
+                "- XX 公司实现的产品，用了 XX 技术；\n" +
+                "- XX 公司实现的产品，用了 XX 技术。\n" +
                 "\n" +
-                "### 前置准备工作\n" +
+                "### 2.1.2 经济可行性\n" +
                 "\n" +
-                "在代码块以及项目名称中，我们选用一个等宽而且适用于代码的字体 `JetBrains Mono`，于是我们可以在 `assets/fonts.css` 中这样进行引入\n" +
+                "\u200B```mermaid\n" +
+                "pie title 市场分析\n" +
+                "    \"已改造\" : 386\n" +
+                "    \"未改造\" : 85\n" +
+                "\u200B```\n" +
                 "\n" +
-                "```css\n" +
-                "@font-face {\n" +
-                "    font-family: 'JetBrains Mono';\n" +
-                "    src: url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono/web/woff2/JetBrainsMono-Medium.woff2') format('woff2');\n" +
-                "    font-weight: 500;\n" +
-                "    font-style: normal;\n" +
-                "}\n" +
+                "<center>图1：市场分析图</center>\n" +
                 "\n" +
-                ".font-jb-mono {\n" +
-                "    /* 设置fallback防止出现宋体 */\n" +
-                "    font-family: 'JetBrains Mono', 'Courier New', Courier, 'Lucida Sans Typewriter', 'Lucida Console', 'Microsoft YaHei', 'WenQuanYi Micro Hei', monospace;\n" +
-                "}\n" +
-                "```\n" +
+                "### 2.1.3 管理可行性\n" +
                 "\n" +
-                "注意这里要设置好 fallback 字体，因为某些 Windows 系统（雾）默认会回落到宋体，导致中文字体不堪入目\n" +
+                "## 2.2 需求分析\n" +
                 "\n" +
-                "以后当我们需要使用的时候只需要挂上这个类名就好\n" +
+                "### 2.2.1 功能需求\n" +
                 "\n" +
-                "### 防止掉头发\n" +
+                "- 功能点1\n" +
+                "  - 子功能点 1-1\n" +
+                "  - 子功能点 1-2\n" +
+                "  - 子功能点 1-3\n" +
+                "- 功能点2\n" +
+                "  - 子功能点 2-1\n" +
+                "  - 子功能点 2-2\n" +
+                "- 功能点3\n" +
                 "\n" +
-                "经典防止掉头发几件套：`assets/global.css`\n" +
+                "### 2.2.2 环境需求\n" +
                 "\n" +
-                "```css\n" +
-                "* {\n" +
-                "    margin: 0;\n" +
-                "    padding: 0;\n" +
-                "    box-sizing: border-box;\n" +
-                "}\n" +
+                "| 需求项   | 需求指标  |\n" +
+                "| -------- | --------- |\n" +
+                "| 操作系统 | CentOS 7  |\n" +
+                "| 数据库   | Mysql 5.7 |\n" +
+                "| 内存     | 8G        |\n" +
+                "| 硬盘     | 100G      |\n" +
                 "\n" +
-                "a {\n" +
-                "    text-decoration: none;\n" +
-                "    color: inherit;\n" +
-                "}\n" +
+                "## 2.3 数据项分析\n" +
                 "\n" +
-                "ul {\n" +
-                "    list-style: none;\n" +
-                "}\n" +
-                "```\n" +
+                "数据表整理\n" +
                 "\n" +
-                "## 疑难解决方案与创新点\n" +
+                "| 数据对象 | 简述               | 来源     | 核心数据项   | 主键   |\n" +
+                "| -------- | ------------------ | -------- | ------------ | ------ |\n" +
+                "| 管理员表 | 保存系统管理员信息 | 注册     | 登录名       | 登录名 |\n" +
+                "| 学生表   | 保存学员信息       | 批量导入 | 姓名、学号   | 学号   |\n" +
+                "| 老师表   | 保存教职工信息     | 批量导入 | 姓名、职工号 | 职工号 |\n" +
+                "| 部门表   | 保存部门、班级信息 | 批量导入 | 名称、编号   | 编号   |\n" +
                 "\n" +
-                "### 桌面与移动端导航栏适配\n" +
+                "# 第三章 概要设计\n" +
                 "\n" +
-                "为了达到最完美的使用效果，我直接写了 `NavBar` 和 `NavBarMobile` 两个组件，通过简单的媒体查询来进行切换\n" +
+                "## 3.1 数据表设计\n" +
                 "\n" +
-                "```css\n" +
-                "@media (max-width: 800px) {\n" +
-                "  .nav-bar-desktop {\n" +
-                "    display: none;\n" +
+                "**管理员表**\n" +
+                "\n" +
+                "管理员表的描述文字。\n" +
+                "\n" +
+                "*表1：管理员表结构*\n" +
+                "\n" +
+                "| 列名     | 数据类型    | 长度 | 非空 | 主键 |\n" +
+                "| -------- | ----------- | ---- | ---- | ---- |\n" +
+                "| id       | UUID        | 64   | √    | √    |\n" +
+                "| account     | VARCHAR(32) | 32   | √    |      |\n" +
+                "| password | VARCHAR(32) | 32   |      |      |\n" +
+                "\n" +
+                "**学生信息表**\n" +
+                "\n" +
+                "学生信息表的描述文字。\n" +
+                "\n" +
+                "*表2：管理员表结构*\n" +
+                "\n" +
+                "| 列名     | 数据类型    | 长度 | 非空 | 主键 |\n" +
+                "| -------- | ----------- | ---- | ---- | ---- |\n" +
+                "| id       | UUID        | 64   | √    | √    |\n" +
+                "| name     | VARCHAR(32) | 32   | √    |      |\n" +
+                "| age | Integer | 8   |      |      |\n" +
+                "\n" +
+                "## 3.2 数据表关系图\n" +
+                "\n" +
+                "\u200B```mermaid\n" +
+                "classDiagram\n" +
+                "\t学员表 --> 部门表 : 关联\n" +
+                "\t职工表\t--> 部门表 : 关联\n" +
+                "\tclass 学员表 {\n" +
+                "    id\n" +
+                "    部门 ID <fk>\n" +
+                "\t}\n" +
+                "\tclass 职工表 {\n" +
+                "    id\n" +
+                "    部门 ID <fk>\n" +
+                "\t}\n" +
+                "\tclass 部门表 {\n" +
+                "    id\n" +
+                "\t}\n" +
+                "\u200B```\n" +
+                "\n" +
+                "<center>图3-1：数据关系表</center>\n" +
+                "\n" +
+                "## 3.3 功能结构图\n" +
+                "\n" +
+                "\u200B```mermaid\n" +
+                "graph LR\n" +
+                "\tXX管理系统 --> 管理员登录\n" +
+                "\t管理员登录 --> 系统设置\n" +
+                "\t管理员登录 --> 学员管理\n" +
+                "  管理员登录 --> 教师管理\n" +
+                " \t管理员登录 --> 部门管理\n" +
+                " \t部门管理 --> 增加\n" +
+                " \t部门管理 --> 修改\n" +
+                " \t部门管理 --> 删除\n" +
+                " \t部门管理 --> 批量导入\n" +
+                "\u200B```\n" +
+                "\n" +
+                "<center>图3-2：功能结构图</center>\n" +
+                "\n" +
+                "\n" +
+                "# 第四章 功能实现\n" +
+                "\n" +
+                "## 4.1 后台代码实现\n" +
+                "\n" +
+                "\u200B```java\n" +
+                "public class Starter {\n" +
+                "\tpublic static void main(String[] args) {\n" +
+                "  \tSystem.out.println(\"Hello world\");\n" +
                 "  }\n" +
-                "\n" +
-                "  .nav-bar-mobile {\n" +
-                "    display: block;\n" +
-                "  }\n" +
                 "}\n" +
-                "```\n" +
+                "\u200B```\n" +
                 "\n" +
-                "对于移动段的 Navbar，我选择了可收起菜单来优化体验\n" +
+                "## 4.2 前端代码实现\n" +
                 "\n" +
-                "```html\n" +
-                "const toggleMenu = () => {\n" +
-                "  isMenuOpen.value = !isMenuOpen.value\n" +
+                "前端 HTML 代码：\n" +
+                "\n" +
+                "\u200B```html\n" +
+                "<!DOCTYPE HTML>\n" +
+                "<html>\n" +
+                "  <head></head>\n" +
+                "  <body>\n" +
+                "    <p>Hello world.</p>\n" +
+                "  </body>\n" +
+                "</html>\n" +
+                "\u200B```\n" +
+                "\n" +
+                "前端脚本代码：\n" +
+                "\n" +
+                "\u200B```javascript\n" +
+                "function main() {\n" +
+                "\talert(\"Hello world!\");\n" +
                 "}\n" +
                 "\n" +
-                "const toggleLocale = () => {\n" +
-                "  locale.value = locale.value === 'en' ? 'zh' : 'en';\n" +
-                "};\n" +
-                "</script>\n" +
+                "window.onload = main;\n" +
+                "\u200B```\n" +
                 "\n" +
-                "<template>\n" +
-                "  <div\n" +
-                "      class=\"nav-container fixed w-full bg-opacity-80 bg-blue-50 text-blue-950 dark:bg-opacity-80 dark:bg-black dark:text-white\">\n" +
-                "    <UContainer class=\"flex flex-row items-center justify-between nav-inner\">\n" +
-                "      <div class=\"nav-logo\">\n" +
-                "        <NuxtLink :to=\"localePath('/')\" class=\"font-bold\">{{ $t('homePageTitle') }}</NuxtLink>\n" +
-                "      </div>\n" +
-                "      <!-- Toggle Button for Mobile Menu -->\n" +
-                "      <UButton class=\"lg:hidden bg-opacity-0 dark:bg-opacity-0\" @click=\"toggleMenu\"\n" +
-                "               icon=\"i-heroicons:bars-3-bottom-right\"\n" +
-                "               square\n" +
-                "               color=\"gray\"\n" +
-                "      >\n" +
-                "      </UButton>\n" +
-                "      <!-- Theme Toggle Button -->\n" +
-                "      <div class=\"theme-option lg:block\">\n" +
-                "        <UToggle\n" +
-                "            on-icon=\"i-heroicons-moon-20-solid\"\n" +
-                "            off-icon=\"i-heroicons-sun-20-solid\"\n" +
-                "            :model-value=\"colorMode.preference === 'dark'\"\n" +
-                "            @change=\"toggleTheme\"\n" +
-                "        />\n" +
-                "      </div>\n" +
-                "      <!-- Icons Container -->\n" +
-                "      <div class=\"actions-container hidden lg:grid\">\n" +
-                "        <Icon class=\"language-toggle-icon hover:text-blue-400 dark:hover:text-blue-600\" name=\"i-heroicons-language\" @click=\"toggleLocale\"/>\n" +
-                "        <Icon class=\"rss-icon hover:text-blue-400 dark:hover:text-blue-600\" name=\"i-heroicons-rss\"/>\n" +
-                "        <a href=\"https://github.com/grtsinry43/home-web\" target=\"_blank\">\n" +
-                "          <Icon class=\"github-icon hover:text-blue-400 dark:hover:text-blue-600\" name=\"i-grommet-icons:github\"/>\n" +
-                "        </a>\n" +
-                "      </div>\n" +
-                "    </UContainer>\n" +
+                "## 4.3 配置文件代码\n" +
                 "\n" +
-                "    <!-- Mobile Navigation Menu -->\n" +
-                "    <div v-show=\"isMenuOpen\"\n" +
-                "         class=\"nav-extend-container flex flex-col items-center bg-blue-50 bg-opacity-85 dark:bg-black dark:bg-opacity-80 backdrop-blur-lg\">\n" +
-                "      这里就是菜单项目啦\n" +
-                "    </div>\n" +
-                "  </div>\n" +
-                "</template>\n" +
-                "```\n" +
+                "properties 类型的配置文件：\n" +
                 "\n" +
-                "###  深浅色模式的极不优雅解决方案\n" +
+                "\u200B```properties\n" +
+                "jdbc.driver=com.mysql.jdbc.Driver\n" +
+                "jdbc.url=jdbc:mysql://localhost:3306/helloworld?characterEncoding=utf8\n" +
+                "jdbc.username=root\n" +
+                "jdbc.password=root\n" +
+                "\u200B```\n" +
                 "\n" +
-                "```js\n" +
-                "import {onMounted} from \"vue\";\n" +
-                "const colorMode = useColorMode();\n" +
+                "## 4.4 运行及启动日志\n" +
                 "\n" +
-                "const toggleTheme = () => {\n" +
-                "  if (colorMode.preference === 'system') {\n" +
-                "    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';\n" +
-                "    buttonState.value = colorMode.preference === 'dark';\n" +
-                "  } else {\n" +
-                "    colorMode.preference = colorMode.preference === 'dark' ? 'light' : 'dark';\n" +
-                "    buttonState.value = colorMode.preference === 'dark';\n" +
-                "  }\n" +
-                "};\n" +
+                "\u200B```bash\n" +
+                "java Starter\n" +
+                "---\n" +
+                "Hello world\n" +
+                "\u200B```\n" +
                 "\n" +
-                "const buttonState = ref(false);\n" +
+                "网页截图：\n" +
                 "\n" +
-                "onMounted(() => {\n" +
-                "  // 根据最开始的主题设置按钮的图标\n" +
-                "  buttonState.value = colorMode.value === 'dark';\n" +
-                "})\n" +
-                "```\n" +
+                "![](../images/4-1.png)\n" +
                 "\n" +
-                "这里深色模式的实现有点太不优雅了，我发现 NuxtUI 官网确实有一个跟随主题的开关，但是自己实现起来就是很奇怪，对于输出的 `colorMode` 有两个用的上的属性，一个是 `preference` 对应偏好主题（light dark system），一个是 `value` 对应当前主题（light dark），由于偏好能被保存下来，于是选择在切换按钮时改变 `preference` 的对应的值\n" +
+                "<center>图4-1：访问效果图</center>\n" +
                 "\n" +
-                "当组件被挂载（onMounted），首先根据 value 设置初始的状态，当点击切换时，对于当前是否偏好系统要采取不同的方式来切换，不知道大佬们有没有什么好办法，或者过几天我再看看 Nuxt 源码";
+                "# 第五章 系统测试\n" +
+                "\n" +
+                "## 5.1 功能点完成情况对照\n" +
+                "\n" +
+                "- [x] 数据库创建\n" +
+                "- [x] 后端开发\n" +
+                "- [x] 前端开发\n" +
+                "- [x] 接口联调\n" +
+                "- [ ] 日志归档\n" +
+                "\n" +
+                "## 5.2 测试结果\n" +
+                "\n" +
+                "| 功能点       | 是否测试                     | 是否通过                     | 备注 |\n" +
+                "| ------------ | ---------------------------- | ---------------------------- | ---- |\n" +
+                "| 登录         | <font color=\"green\">√</font> | <font color=\"green\">√</font> | 无   |\n" +
+                "| 登出         | <font color=\"green\">√</font> | <font color=\"red\">×</font>   | 无   |\n" +
+                "| 增加学员信息 | <font color=\"red\">×</font>   | <font color=\"red\">×</font>   | 无   |\n" +
+                "\n" +
+                "\n" +
+                "正文某处[^1]\n" +
+                "\n" +
+                "正文某处[^2]\n" +
+                "\n" +
+                "正文某处[^3]\n" +
+                "\n" +
+                "# 参考 文献\n" +
+                "\n" +
+                "[^1]: XXX，图书管理系统设计。北京：北京大学出版社，2008。\n" +
+                "[^2]: XXX，师生管理系统设计。北京：清华大学出版社，2009。\n" +
+                "[^3]: XXX，软件工程（三）。北京：邮电大学出版社，2019。\n";
         String actualToc = ArticleParser.generateToc(content);
         System.out.println(actualToc);
     }

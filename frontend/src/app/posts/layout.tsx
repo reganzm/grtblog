@@ -15,6 +15,7 @@ export default function RootLayout({
   return (
     <Container size={'4'} style={{
       padding: '0 20px',
+      scrollBehavior: 'smooth',
     }}>
       {children}
     </Container>

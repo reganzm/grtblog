@@ -20,34 +20,54 @@ import java.util.regex.Pattern;
 public class ArticleParser {
 
     public static String generateToc(String content) throws JsonProcessingException {
-        List<Heading> headings = new ArrayList<>();
+        List<HeadingNode> toc = new ArrayList<>();
         Pattern pattern = Pattern.compile("^(#{1,6})\\s*(.+)$", Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(content);
-        Map<String, Integer> anchorCount = new HashMap<>();
+        Map<Integer, List<HeadingNode>> levelMap = new HashMap<>();
+        int anchorIndex = 1;
+        int minLevel = Integer.MAX_VALUE;
 
-        int lineNumber = 0;
+        // 找出最小的标题级别
         while (matcher.find()) {
-            lineNumber++;
+            int level = matcher.group(1).length();
+            minLevel = Math.min(minLevel, level);
+        }
+        matcher.reset();  // 重置匹配器以重新开始解析
+
+        // 根据最小标题级别构建 TOC，这样是为了防止我这种不写一级标题的（）
+        while (matcher.find()) {
             int level = matcher.group(1).length();
             String text = matcher.group(2);
-            String anchor = "line-" + lineNumber;
+            String anchor = "article-md-title-" + anchorIndex++;
+            HeadingNode node = new HeadingNode(text, anchor);
 
-            headings.add(new Heading(level, text, anchor));
+//            System.out.println("Matched heading: " + text + " with level: " + level);
+
+            if (level == minLevel) {
+                toc.add(node);
+            } else {
+                List<HeadingNode> parentList = levelMap.get(level - 1);
+                if (parentList != null && !parentList.isEmpty()) {
+                    HeadingNode parent = parentList.get(parentList.size() - 1);
+                    parent.getChildren().add(node);
+                }
+            }
+
+            levelMap.computeIfAbsent(level, k -> new ArrayList<>()).add(node);
         }
 
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(headings);
+        return objectMapper.writeValueAsString(toc);
     }
 
     @Data
-    public static class Heading {
-        private final int level;
-        private final String text;
+    public static class HeadingNode {
+        private final String name;
         private final String anchor;
+        private final List<HeadingNode> children = new ArrayList<>();
 
-        public Heading(int level, String text, String anchor) {
-            this.level = level;
-            this.text = text;
+        public HeadingNode(String name, String anchor) {
+            this.name = name;
             this.anchor = anchor;
         }
     }

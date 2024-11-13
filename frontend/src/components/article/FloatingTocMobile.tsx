@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { FloatingPanel, Search, ConfigProvider } from 'react-vant';
 import 'react-vant/lib/index.css';
 import '@vant/touch-emulator';
@@ -9,11 +9,13 @@ import { TocItem } from '@/components/article/Toc';
 import { TableOfContentsIcon } from 'lucide-react';
 import useIsMobile from '@/hooks/useIsMobile';
 import { motion } from 'framer-motion';
+import emitter from '@/utils/eventBus';
 
 const FloatingTocMobile = ({ toc }: { toc: TocItem[] }) => {
   const isMobile = useIsMobile();
   const [anchors, setAnchors] = useState([0, 0, 0]);
   const [showPanel, setShowPanel] = useState(false);
+  const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
 
   const showPanelHandle = () => {
     setShowPanel(true);
@@ -27,13 +29,13 @@ const FloatingTocMobile = ({ toc }: { toc: TocItem[] }) => {
   };
 
   const themeVars = {
-    '--rv-floating-panel-z-index': 1001, // 面板堆叠显示优先级
-    '--rv-floating-panel-background-color': 'rgba(var(--background), 0.8)', // 背景颜色
-    '--rv-floating-panel-header-background-color': 'var(--rv-background)', // 头部背景颜色
-    '--rv-floating-panel-header-padding': '8px', // 头部内边距
-    '--rv-floating-panel-thumb-background-color': 'var(--rv-gray-5)', // 滑块颜色
-    '--rv-floating-panel-thumb-width': '20px', // 滑块宽度
-    '--rv-floating-panel-thumb-height': '4px', // 滑块高度
+    '--rv-floating-panel-z-index': 1001,
+    '--rv-floating-panel-background-color': 'rgba(var(--background), 0.8)',
+    '--rv-floating-panel-header-background-color': 'var(--rv-background)',
+    '--rv-floating-panel-header-padding': '8px',
+    '--rv-floating-panel-thumb-background-color': 'var(--rv-gray-5)',
+    '--rv-floating-panel-thumb-width': '20px',
+    '--rv-floating-panel-thumb-height': '4px',
     '--rv-search-background-color': 'var(--background)',
     '--rv-search-content-background-color': 'rgba(var(--foreground), 0.05)',
     '--rv-search-left-icon-color': 'var(--foreground)',
@@ -59,7 +61,7 @@ const FloatingTocMobile = ({ toc }: { toc: TocItem[] }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05, // 稍微错开
+        staggerChildren: 0.05,
       },
     },
   };
@@ -67,6 +69,80 @@ const FloatingTocMobile = ({ toc }: { toc: TocItem[] }) => {
   const itemVariants = {
     hidden: { x: -100, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: spring },
+  };
+
+  const debounce = useCallback((func: (...args: unknown[]) => void, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: unknown[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  }, []);
+
+  const getDoms = useCallback((items: TocItem[]): HTMLElement[] => {
+    const doms: HTMLElement[] = [];
+    const addToDoms = (items: TocItem[]) => {
+      for (const item of items) {
+        const dom = document.getElementById(item.anchor);
+        if (dom) {
+          doms.push(dom);
+        }
+        if (item.children && item.children.length) {
+          addToDoms(item.children);
+        }
+      }
+    };
+    addToDoms(items);
+    return doms;
+  }, []);
+
+  const doms = getDoms(toc);
+
+  useEffect(() => {
+    const handleScroll = debounce(() => {
+      const range = window.innerHeight;
+      let newActiveAnchor = '';
+      for (const dom of doms) {
+        if (!dom) continue;
+        const top = dom.getBoundingClientRect().top;
+        if (top >= 0 && top <= range) {
+          newActiveAnchor = dom.id;
+          break;
+        } else if (top > range) {
+          break;
+        } else {
+          newActiveAnchor = dom.id;
+        }
+      }
+      if (newActiveAnchor !== activeAnchor) {
+        setActiveAnchor(newActiveAnchor);
+      }
+    }, 50);
+
+    emitter.on('scroll', handleScroll);
+    return () => {
+      emitter.off('scroll', handleScroll);
+    };
+  }, [doms, activeAnchor, debounce]);
+
+  const renderTocItems = (items: TocItem[]) => {
+    return items.map((item, index) => (
+      <motion.div
+        key={index}
+        style={{ marginLeft: `${(item.level - 2) * 20}px`, margin: '5px' }}
+        variants={itemVariants}
+        layout
+      >
+        <li className={item.anchor === activeAnchor ? 'font-semibold text-primary' : 'font-normal'}>
+          <a href={`#${item.anchor}`}>{item.name}</a>
+        </li>
+        {item.children && item.children.length > 0 && (
+          <ul>
+            {renderTocItems(item.children)}
+          </ul>
+        )}
+      </motion.div>
+    ));
   };
 
   return isMobile ? (
@@ -115,15 +191,7 @@ const FloatingTocMobile = ({ toc }: { toc: TocItem[] }) => {
                 animate="visible"
                 variants={containerVariants}
               >
-                {toc.length > 0 && toc.map((item, index) => (
-                  <motion.li
-                    key={index}
-                    style={{ marginLeft: `${(item.level - 2) * 20}px`, marginBottom: '5px' }}
-                    variants={itemVariants}
-                  >
-                    <a href={`#${item.anchor}`}>{item.text}</a>
-                  </motion.li>
-                ))}
+                {toc.length > 0 && renderTocItems(toc)}
               </motion.ul>
             </FloatingPanel>
           </ConfigProvider>

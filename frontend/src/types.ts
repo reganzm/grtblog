@@ -23,3 +23,17 @@ export interface ArticlePreview {
   likes: number;
   views: number;
 }
+
+export type Comment = {
+  id: string;
+  articleId: string;
+  avatarUrl: string;
+  children: Comment[];
+  content: string;
+  createdAt: string;
+  location: string;
+  parentId: string;
+  updatedAt: string;
+  userName: string;
+  website: string;
+};

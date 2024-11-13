@@ -1,24 +1,33 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useTheme } from 'next-themes';
 import useIsMobile from '@/hooks/useIsMobile';
-import { motion } from 'framer-motion';
+import emitter from '@/utils/eventBus';
 
 export type TocItem = {
-  level: number;
-  text: string;
-  anchor: string;
-};
+  level: number
+  name: string
+  isSelect?: boolean
+  anchor: string
+  children?: TocItem[]
+}
 
-const Toc = ({ toc }: { toc: TocItem[] }) => {
+export default function Toc({ toc }: { toc: TocItem[] }) {
   const isMobile = useIsMobile();
+  const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  const tocRef = useRef<HTMLDivElement>(null);
+  const [activeItemRef, setActiveItemRef] = useState<HTMLLIElement | null>(null);
 
   const spring = {
     type: 'spring',
     stiffness: 300,
-    damping: 10,
+    damping: 30,
     mass: 0.2,
-    bounce: 0.5,
+    bounce: 0.7,
   };
 
   const containerVariants = {
@@ -26,48 +35,167 @@ const Toc = ({ toc }: { toc: TocItem[] }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05, // 稍微错开
+        staggerChildren: 0.05,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { x: -100, opacity: 0 },
+    hidden: { x: -20, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: spring },
   };
 
-  console.log('toc', toc);
-  return isMobile ? null : (
-    <div style={{
-      position: 'sticky',
-      transition: 'all 0.3s',
-      width: '200px',
-      zIndex: 1,
-      top: '100px',
-      left: '20px',
-      overflowY: 'auto',
-    }}>
-      <motion.ul
+  const debounce = useCallback((func: (...args: unknown[]) => void, wait: number) => {
+    let timeout: NodeJS.Timeout;
+    return (...args: unknown[]) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func(...args), wait);
+    };
+  }, []);
+
+  const getTOCWithSelect = useCallback((items: TocItem[], currentActiveAnchor: string | null): TocItem[] => {
+    return items.map((item) => ({
+      ...item,
+      isSelect: item.anchor === currentActiveAnchor || (item.children && item.children.some(child => child.anchor === currentActiveAnchor)),
+      children: item.children ? getTOCWithSelect(item.children, currentActiveAnchor) : [],
+    }));
+  }, []);
+
+  const tocWithSelect = getTOCWithSelect(toc, activeAnchor);
+
+  const getDoms = useCallback((items: TocItem[]): HTMLElement[] => {
+    const doms: HTMLElement[] = [];
+    const addToDoms = (items: TocItem[]) => {
+      for (const item of items) {
+        const dom = document.getElementById(item.anchor);
+        if (dom) {
+          doms.push(dom);
+        }
+        if (item.children && item.children.length) {
+          addToDoms(item.children);
+        }
+      }
+    };
+    addToDoms(items);
+    return doms;
+  }, []);
+
+  const doms = getDoms(toc);
+
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const handleScroll = debounce((scrollDom: HTMLElement) => {
+      if (!scrollDom) return;
+      const range = window.innerHeight;
+      let newActiveAnchor = '';
+      for (const dom of doms) {
+        if (!dom) continue;
+        const top = dom.getBoundingClientRect().top;
+        if (top >= 0 && top <= range) {
+          newActiveAnchor = dom.id;
+          break;
+        } else if (top > range) {
+          break;
+        } else {
+          newActiveAnchor = dom.id;
+        }
+      }
+      if (newActiveAnchor !== activeAnchor) {
+        setActiveAnchor(newActiveAnchor);
+      }
+    }, 50);
+
+    emitter.on('scroll', handleScroll);
+    return () => {
+      emitter.off('scroll', handleScroll);
+    };
+  }, [doms, activeAnchor, debounce]);
+
+  const setItemRef = useCallback((el: HTMLLIElement | null, isSelect: boolean | undefined) => {
+    if (isSelect && el) {
+      setActiveItemRef(el);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (activeItemRef && tocRef.current) {
+      const tocContainer = tocRef.current;
+      const containerRect = tocContainer.getBoundingClientRect();
+      const activeItemRect = activeItemRef.getBoundingClientRect();
+
+      const isItemVisible = (
+        activeItemRect.top >= containerRect.top &&
+        activeItemRect.bottom <= containerRect.bottom
+      );
+
+      if (!isItemVisible) {
+        activeItemRef.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+        });
+      }
+    }
+  }, [activeItemRef]);
+
+  const renderTocItems = useCallback((items: TocItem[]) => {
+    return items.map((item, index) => (
+      <motion.div
+        key={`${item.anchor}-${index}`}
         style={{
-          overflow: 'hidden',
-          padding: '20px',
+          paddingLeft: `${(item.level - 2) * 12}px`,
         }}
+        variants={itemVariants}
+        ref={(el) => setItemRef(el as HTMLLIElement, item.isSelect)}
+      >
+        <li className={`mb-2 transition-all duration-300 ease-in-out ${
+          item.isSelect ? 'font-semibold' : 'font-normal'
+        }`}>
+          <a
+            href={`#${item.anchor}`}
+            className={`block py-1 px-2 rounded transition-colors duration-300 ${
+              item.isSelect
+                ? 'text-primary bg-primary/10'
+                : `${isDark ? 'text-gray-300 hover:text-gray-100' : 'text-gray-600 hover:text-gray-900'}`
+            }`}
+          >
+            {item.name}
+          </a>
+        </li>
+        <AnimatePresence>
+          {item.isSelect && item.children && item.children.length > 0 && (
+            <motion.ul
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={containerVariants}
+            >
+              <ul className="mt-1 ml-2 border-l border-primary/30 transition">
+                {renderTocItems(item.children)}
+              </ul>
+            </motion.ul>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    ));
+  }, [isDark, itemVariants, containerVariants, setItemRef]);
+
+  if (isMobile) return null;
+
+  return (
+    <nav
+      className="sticky top-24 h-[25em] overflow-y-auto w-56 pr-4 scroll-smooth text-sm"
+      ref={tocRef}
+    >
+      <motion.div
         initial="hidden"
         animate="visible"
         variants={containerVariants}
       >
-        {toc.length > 0 && toc.map((item, index) => (
-          <motion.li
-            key={index}
-            style={{ marginLeft: `${(item.level - 2) * 20}px`, marginBottom: '5px' }}
-            variants={itemVariants}
-          >
-            <a href={`#${item.anchor}`}>{item.text}</a>
-          </motion.li>
-        ))}
-      </motion.ul>
-    </div>
+        <ul className="space-y-1 py-4 transition">
+          {tocWithSelect.length > 0 && renderTocItems(tocWithSelect)}
+        </ul>
+      </motion.div>
+    </nav>
   );
-};
-
-export default Toc;
+}

@@ -73,3 +73,22 @@
         transition-timing-function: ease-in-out;
     }
 }
+
+.anchorFocus {
+    animation: focusAndBlur 1s ease-out;
+}
+
+@keyframes focusAndBlur {
+    0% {
+        filter: blur(4px);
+        transform: scale(0.95);
+    }
+    50% {
+        filter: blur(0);
+        transform: scale(1.05);
+    }
+    100% {
+        filter: blur(0);
+        transform: scale(1);
+    }
+}

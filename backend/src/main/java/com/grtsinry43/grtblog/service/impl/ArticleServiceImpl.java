@@ -32,12 +32,14 @@ import java.util.stream.Collectors;
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements IArticleService {
     private final ArticleTagServiceImpl articleTagService;
     private final TagServiceImpl tagService;
+    private final CategoryServiceImpl categoryService;
     private final UserServiceImpl userService;
     private final RecommendationService recommendationService;
 
-    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, UserServiceImpl userService, RecommendationService recommendationService) {
+    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, CategoryServiceImpl categoryService, UserServiceImpl userService, RecommendationService recommendationService) {
         this.articleTagService = articleTagService;
         this.tagService = tagService;
+        this.categoryService = categoryService;
         this.userService = userService;
         this.recommendationService = recommendationService;
     }
@@ -124,6 +126,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             ArticlePreview articlePreview = new ArticlePreview();
             BeanUtils.copyProperties(article, articlePreview);
             articlePreview.setId(article.getId().toString());
+            articlePreview.setSummary(!"".equals(article.getSummary()) ? article.getSummary() : article.getContent().length() > 100 ?
+                    article.getContent().substring(0, 100) : article.getContent());
+            articlePreview.setCategoryName(article.getCategoryId() != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
             articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
             articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
             return articlePreview;

@@ -1,5 +1,5 @@
 import { ofetch } from 'ofetch';
-import { getToken, setToken } from '@/util/token';
+import { getToken, setToken } from '@/utils/token';
 
 const ins = ofetch.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL || '/api/v1', // Ensure it works in both browser and Node.js environments
