@@ -26,12 +26,31 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     public Tag addNewTag(String tagName) {
         Tag tag = new Tag();
         tag.setName(tagName);
-        tag.setCreated(LocalDateTime.now());
+        tag.setCreatedAt(LocalDateTime.now());
         try {
             save(tag);
         } catch (Exception e) {
             throw new TestException(500, e.getMessage());
         }
         return tag;
+    }
+
+    @Override
+    public Long getOrCreateTagId(String tagName) {
+        Tag tag = getTagByName(tagName);
+        if (tag == null) {
+            tag = addNewTag(tagName);
+        }
+        return tag.getId();
+    }
+
+    @Override
+    public Tag getTagByName(String tagName) {
+        return lambdaQuery().eq(Tag::getName, tagName).one();
+    }
+
+    @Override
+    public Long[] getArticlesByTagId(Long tagId) {
+        return baseMapper.getArticlesByTagId(tagId);
     }
 }

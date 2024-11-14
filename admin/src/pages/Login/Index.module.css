@@ -1,0 +1,87 @@
+.formContainer {
+    width: 800px;
+    display: flex;
+    /* border: 1px solid #ccc; */
+    padding: 30px;
+    margin: 150px auto;
+    border-radius: 15px;
+    box-shadow: 0 0 5px gainsboro;
+    position: relative;
+    z-index: 99;
+    background-color: rgba(252, 252, 252, 0.4);
+    backdrop-filter: blur(3px);
+}
+
+.leftContainer {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.title {
+    text-align: center;
+    margin: 20px auto;
+    font-weight: 500;
+    font-size: 3em;
+    color: #001d40;
+}
+
+.subTitle {
+    text-align: center;
+    margin: 20px auto;
+    font-weight: 400;
+    font-size: 2em;
+}
+
+.rightContainer {
+    padding: 20px;
+    flex: 1;
+}
+
+.inputContainer {
+    margin-bottom: 20px;
+}
+
+.captchaImg {
+    width: 130px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.rightTitle {
+    text-align: center;
+    margin: 20px auto 10px;
+    font-weight: 500;
+    font-size: 2em;
+    color: #001d40;
+}
+
+.rightSubTitle {
+    text-align: center;
+    margin: 20px auto 10px;
+    font-weight: 400;
+    font-size: 1.5em;
+}
+
+.captchaContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.captcha {
+    height: 40px;
+    border-radius: 5px;
+}
+

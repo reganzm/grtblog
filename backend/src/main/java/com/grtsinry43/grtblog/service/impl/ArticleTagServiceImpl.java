@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author grtsinry43
@@ -16,5 +16,20 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ArticleTagServiceImpl extends ServiceImpl<ArticleTagMapper, ArticleTag> implements IArticleTagService {
-
+    /**
+     * 同步文章标签（先删除原有标签再添加新标签）
+     *
+     * @param articleId 文章 ID
+     * @param tagIds    标签 ID 数组
+     */
+    @Override
+    public void syncArticleTag(Long articleId, Long[] tagIds) {
+        lambdaUpdate().eq(ArticleTag::getArticleId, articleId).remove();
+        for (Long tagId : tagIds) {
+            ArticleTag articleTag = new ArticleTag();
+            articleTag.setArticleId(articleId);
+            articleTag.setTagId(tagId);
+            save(articleTag);
+        }
+    }
 }

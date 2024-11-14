@@ -34,16 +34,6 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @PreAuthorize("hasRole('admin')")
-    @PostMapping
-    public ApiResponse<ArticleVO> addArticleApi(@RequestBody ArticleDTO articleDTO, HttpServletRequest request) {
-        Long userId = (Long) request.getAttribute("userId");
-        // TODO test
-        userId = 1850462330131976194L;
-        ArticleVO article = articleService.addArticle(articleDTO, userId);
-        return ApiResponse.success(article);
-    }
-
     /**
      * 获取所有文章 id 的列表
      */
@@ -56,13 +46,11 @@ public class ArticleController {
         return ApiResponse.success(articleIdStr);
     }
 
-
     @PermitAll
-    @GetMapping("/{id}")
-    public ApiResponse<ArticleView> viewOneArticleApi(@PathVariable String id) {
-        Long idLong = Long.parseLong(id);
-        ArticleView articleView = articleService.viewOneArticle(idLong);
-        return ApiResponse.success(articleView);
+    @GetMapping("/all")
+    public ApiResponse<List<ArticlePreview>> getArticleListByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        List<ArticlePreview> articleList = articleService.getArticleListByPage(page, pageSize);
+        return ApiResponse.success(articleList);
     }
 
     @PermitAll
@@ -81,11 +69,14 @@ public class ArticleController {
         return ApiResponse.success(recommendArticles);
     }
 
+    // 这个匹配的一定要放在最后，不然会被 /all 匹配
     @PermitAll
-    @GetMapping("/all")
-    public ApiResponse<List<ArticlePreview>> getArticleListByPage(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        List<ArticlePreview> articleList = articleService.getArticleListByPage(page, pageSize);
-        return ApiResponse.success(articleList);
+    @GetMapping("/{id}")
+    public ApiResponse<ArticleView> viewOneArticleApi(@PathVariable String id) {
+        Long idLong = Long.parseLong(id);
+        ArticleView articleView = articleService.viewOneArticle(idLong);
+        return ApiResponse.success(articleView);
     }
+
 
 }

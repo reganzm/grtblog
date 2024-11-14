@@ -16,7 +16,7 @@ export interface AddArticleApiParams {
   tags?: string;
 
   /* */
-  status?: string;
+  isPublished?: boolean;
 }
 
 // 响应接口

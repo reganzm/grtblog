@@ -70,9 +70,20 @@ public class ArticlePreview {
      */
     private transient LocalDateTime createdAt;
 
+    /**
+     * 文章更新时间
+     */
+    private transient LocalDateTime updatedAt;
+
     @JsonProperty("createdAt")
     public String getCreatedAt() {
         // 格式化时间：2024-10-27 19:43:00
         return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    @JsonProperty("updatedAt")
+    public String getUpdatedAt() {
+        // 格式化时间：2024-10-27 19:43:00
+        return updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.grtsinry43.grtblog.mapper.PermissionMapper">
     <select id="batchGetPermissionsByPermissionIds" resultType="com.grtsinry43.grtblog.entity.Permission">
-        SELECT * FROM permission WHERE permission_id IN
+        SELECT * FROM permission WHERE id IN
         <foreach item="permissionId" collection="list" open="(" separator="," close=")">
             #{permissionId}
         </foreach>

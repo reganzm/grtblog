@@ -1,11 +1,10 @@
 package com.grtsinry43.grtblog.client;
 
 import com.grtsinry43.grtblog.dto.ApiResponse;
+import com.grtsinry43.grtblog.dto.ArticleRecommendUpdate;
 import com.grtsinry43.grtblog.vo.ArticleRecommendation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author grtsinry43
@@ -18,4 +17,7 @@ public interface RecommenderClient {
 
     @GetMapping("/{article_id}")
     ApiResponse<ArticleRecommendation> getRecommendations(@PathVariable("article_id") String articleId, @RequestParam("count") Integer size);
+
+    @PostMapping("/{article_id}")
+    ApiResponse<Object> updateArticleStatus(@PathVariable("article_id") String articleId, @RequestBody ArticleRecommendUpdate articleRecommendUpdate);
 }

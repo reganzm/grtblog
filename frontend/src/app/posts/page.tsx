@@ -1,26 +1,18 @@
-import React from 'react';
-import { Container } from '@radix-ui/themes';
 import { getAllArticlesByPage } from '@/api/article';
-import ArticlePageItem, { ArticlePreview } from '@/components/article/ArticlePageItem';
+import { ArticlePreview } from '@/components/article/ArticlePageItem';
 import { noto_sans_sc } from '@/app/fonts/font';
+import AllPostPageClient from './AllPostPageClient';
 
-const AllPostPage = async () => {
-  const res = await getAllArticlesByPage(1);
+export default async function AllPostPage() {
+  const pageSize = 10;
+  const initialArticles: ArticlePreview[] = await getAllArticlesByPage(1, pageSize, { next: { revalidate: 60 } });
 
   return (
-    <Container
-      className={noto_sans_sc.className}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        padding: '20px 0',
-      }} size={'2'}>
-      {res && res.map((item: ArticlePreview) => {
-        return <ArticlePageItem post={item} key={item.id} />;
-      })}
-    </Container>
+    <div style={{ maxWidth: '850px', margin: '0 auto', padding: '2em' }}>
+      <h1 style={{ fontSize: '2em', fontWeight: 'bolder', marginBottom: '1em' }} className={noto_sans_sc.className}>
+        全部文章
+      </h1>
+      <AllPostPageClient initialArticles={initialArticles} />
+    </div>
   );
-};
-
-export default AllPostPage;
+}

@@ -14,4 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface ITagService extends IService<Tag> {
     Tag addNewTag(String tagName);
 
+    Long getOrCreateTagId(String tagName);
+
+    Tag getTagByName(String tagName);
+
+    Long[] getArticlesByTagId(Long tagId);
+
 }

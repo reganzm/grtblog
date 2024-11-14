@@ -16,6 +16,7 @@ const FloatingTocMobile = ({ toc }: { toc: TocItem[] }) => {
   const [anchors, setAnchors] = useState([0, 0, 0]);
   const [showPanel, setShowPanel] = useState(false);
   const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
+  const [doms, setDoms] = useState<HTMLElement[]>([]);
 
   const showPanelHandle = () => {
     setShowPanel(true);
@@ -92,11 +93,17 @@ const FloatingTocMobile = ({ toc }: { toc: TocItem[] }) => {
         }
       }
     };
-    addToDoms(items);
+    if (typeof document !== 'undefined' && items.length) {
+      addToDoms(items);
+    }
     return doms;
   }, []);
 
-  const doms = getDoms(toc);
+  useEffect(() => {
+    if (typeof document !== 'undefined') {
+      setDoms(getDoms(toc));
+    }
+  }, [toc, getDoms]);
 
   useEffect(() => {
     const handleScroll = debounce(() => {

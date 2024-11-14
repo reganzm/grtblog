@@ -19,6 +19,7 @@ export default function Toc({ toc }: { toc: TocItem[] }) {
   const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
   const { theme } = useTheme();
   const isDark = theme === 'dark';
+  const [curTheme, setCurTheme] = useState('');
   const tocRef = useRef<HTMLDivElement>(null);
   const [activeItemRef, setActiveItemRef] = useState<HTMLLIElement | null>(null);
 
@@ -54,6 +55,10 @@ export default function Toc({ toc }: { toc: TocItem[] }) {
   }, []);
 
   const getTOCWithSelect = useCallback((items: TocItem[], currentActiveAnchor: string | null): TocItem[] => {
+    // 如果 items 不是数组，直接返回
+    if (!Array.isArray(items)) {
+      return [];
+    }
     return items.map((item) => ({
       ...item,
       isSelect: item.anchor === currentActiveAnchor || (item.children && item.children.some(child => child.anchor === currentActiveAnchor)),
@@ -76,13 +81,16 @@ export default function Toc({ toc }: { toc: TocItem[] }) {
         }
       }
     };
-    addToDoms(items);
+    if (typeof document !== 'undefined' && items.length) {
+      addToDoms(items);
+    }
     return doms;
   }, []);
 
   const doms = getDoms(toc);
 
   useEffect(() => {
+    setCurTheme(isDark ? 'text-gray-300 hover:text-gray-100' : 'text-gray-600 hover:text-gray-900');
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const handleScroll = debounce((scrollDom: HTMLElement) => {
@@ -156,7 +164,7 @@ export default function Toc({ toc }: { toc: TocItem[] }) {
             className={`block py-1 px-2 rounded transition-colors duration-300 ${
               item.isSelect
                 ? 'text-primary bg-primary/10'
-                : `${isDark ? 'text-gray-300 hover:text-gray-100' : 'text-gray-600 hover:text-gray-900'}`
+                : `${curTheme}`
             }`}
           >
             {item.name}

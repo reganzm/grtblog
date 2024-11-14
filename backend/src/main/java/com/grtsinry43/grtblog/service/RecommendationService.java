@@ -8,6 +8,8 @@ package com.grtsinry43.grtblog.service;
 
 import com.grtsinry43.grtblog.client.RecommenderClient;
 import com.grtsinry43.grtblog.dto.ApiResponse;
+import com.grtsinry43.grtblog.dto.ArticleRecommendUpdate;
+import com.grtsinry43.grtblog.entity.Article;
 import com.grtsinry43.grtblog.vo.ArticleRecommendation;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,17 @@ public class RecommendationService {
             return res.getData().getRecommendation();
         } else {
             return new String[0];
+        }
+    }
+
+    public void updateArticleStatus(Article article) {
+        ArticleRecommendUpdate articleRecommendUpdate = new ArticleRecommendUpdate();
+        articleRecommendUpdate.setId(article.getId().toString());
+        articleRecommendUpdate.setTitle(article.getTitle());
+        articleRecommendUpdate.setContent(article.getContent());
+        ApiResponse<Object> objectApiResponse = recommenderClient.updateArticleStatus(article.getId().toString(), articleRecommendUpdate);
+        if (objectApiResponse.getCode() != 0) {
+            throw new RuntimeException("更新文章状态失败");
         }
     }
 }

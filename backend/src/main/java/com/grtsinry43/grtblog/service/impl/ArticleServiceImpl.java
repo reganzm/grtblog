@@ -57,7 +57,20 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
         article.setToc(toc);
+        if (!categoryService.isCategoryExist(articleDTO.getCategoryId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 处理标签
+        String[] tagNames = articleDTO.getTags().split(",");
+        Long[] tagIds = Arrays.stream(tagNames)
+                .map(tagService::getOrCreateTagId)
+                .toArray(Long[]::new);
+        if (article.getSummary() == null) {
+            article.setSummary(article.getContent().length() > 200 ? article.getContent().substring(0, 200) : article.getContent());
+        }
         this.baseMapper.insert(article);
+        articleTagService.syncArticleTag(article.getId(), tagIds);
+        recommendationService.updateArticleStatus(article);
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(article, articleVO);
         articleVO.setId(article.getId().toString());
@@ -126,8 +139,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             ArticlePreview articlePreview = new ArticlePreview();
             BeanUtils.copyProperties(article, articlePreview);
             articlePreview.setId(article.getId().toString());
-            articlePreview.setSummary(!"".equals(article.getSummary()) ? article.getSummary() : article.getContent().length() > 100 ?
-                    article.getContent().substring(0, 100) : article.getContent());
+            articlePreview.setSummary(!"".equals(article.getSummary()) ? article.getSummary() : article.getContent().length() > 200 ?
+                    article.getContent().substring(0, 200) + "..." : article.getContent());
             articlePreview.setCategoryName(article.getCategoryId() != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
             articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
             articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());

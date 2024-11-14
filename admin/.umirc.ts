@@ -3,11 +3,12 @@ import { defineConfig } from '@umijs/max';
 export default defineConfig({
   antd: {},
   access: {},
+  dva: {},
   model: {},
   initialState: {},
   request: {},
   layout: {
-    title: '@umijs/max',
+    title: 'Grtblog 后台管理系统',
   },
   routes: [
     {
@@ -45,10 +46,22 @@ export default defineConfig({
       path: '/table',
       component: './Table',
     },
+    {
+      name: '登录',
+      path: '/login',
+      component: './Login',
+      hideInMenu: true,
+      menuRender: false,
+    },
   ],
   npmClient: 'pnpm',
   proxy: {
     '/api': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+      pathRewrite: { '^/api': '' },
+    },
+    '/captcha': {
       target: 'http://127.0.0.1:8080',
       changeOrigin: true,
     },

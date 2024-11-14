@@ -13,11 +13,17 @@ const ArticleScrollSync = ({ children }: { children: React.ReactNode }) => {
         // 获取元素顶部与视口顶部的距离，然后除以元素的高度，得到滚动百分比
         const scrollLength = -articleRef.current.getBoundingClientRect().top;
         const elementHeight = articleRef.current.clientHeight;
-        const scrollPercentage = scrollLength / elementHeight * 100 > 100 ? 100 : scrollLength / elementHeight * 100;
+        const windowHeight = window.innerHeight;
+        let scrollPercentage = Math.min((scrollLength / (elementHeight - windowHeight)) * 100, 100);
+        if (scrollPercentage < 0) {
+          scrollPercentage = 0;
+        }
+
+        // 这里最后一屏的问题，如果文章底部进入视口，那么滚动百分比就是 100
 
         // 发布事件，直接将 articleRef.current 作为参数传递
         eventBus.emit('scroll', articleRef.current);
-        eventBus.emit('scrollPosition', scrollPercentage);
+        eventBus.emit('readingProgress', scrollPercentage);
       }
     };
 

@@ -64,11 +64,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // 防止跨站请求伪造
-                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 取消 session
+                .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 取消 session
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/user/login", "/user/logout", "/oauth2/authorization/**", "/login**").permitAll() // 登录和未登录的人都可以访问
+                        .requestMatchers("/user/login", "/user/logout", "/oauth2/authorization/**", "/login**", "/captcha", "/admin/login").permitAll() // 登录和未登录的人都可以访问
                         // 这里感觉还是把对外的接口放在统一的路径，而需要权限认证和登录的或者管理员接口每个都需要校验
-                        .requestMatchers("/article/**","/statusUpdate/**","/comment/**").permitAll()
+                        .requestMatchers("/article/**", "/statusUpdate/**", "/comment/**").permitAll()
                         // TODO : 仅开发使用
                         .requestMatchers("/doc.html", "/swagger-resources/**", "/webjars/**", "/swagger-ui*/**", "/swagger-ui*/*swagger-initializer.js").permitAll() // 允许访问 Knife4j 和 Swagger 相关的端点
                         .anyRequest().authenticated() // 除了上面设置的地址可以匿名访问, 其它所有的请求地址需要认证访问

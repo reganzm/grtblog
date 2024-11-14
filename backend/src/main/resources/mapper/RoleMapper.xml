@@ -8,8 +8,8 @@
     <!-- 批量查询角色 -->
     <select id="batchGetRolesByRoleIds" parameterType="java.util.List"
             resultType="com.grtsinry43.grtblog.entity.Role">
-        SELECT * FROM roles
-        WHERE role_id IN
+        SELECT * FROM role
+        WHERE id IN
         <foreach item="roleId" collection="list" open="(" separator="," close=")">
             #{roleId}
         </foreach>
@@ -18,7 +18,7 @@
     <!-- 通过角色名查询角色 ID -->
     <select id="getRoleIdsByRoleNames" resultType="java.lang.Long"
             parameterType="java.util.List">
-        SELECT role_id FROM roles WHERE role_name IN
+        SELECT id FROM role WHERE role_name IN
         <foreach item="roleName" collection="list" open="(" separator="," close=")">
             #{roleName}
         </foreach>

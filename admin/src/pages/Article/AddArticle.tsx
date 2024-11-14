@@ -5,13 +5,20 @@ import { Form, Input, message, Select, Upload } from 'antd';
 import { AddArticleApiParams } from '@/services/article/typings';
 import { ProForm } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from '@umijs/max';
 import ArticleController from '@/services/article/ArticleController';
 
 const AddArticle = () => {
   const editorRef = useRef<Editor>(null);
+  const { list } = useSelector((state: any) => state.category);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('123');
+    if (list.length === 0) {
+      dispatch({
+        type: 'category/initCategoryList',
+      });
+    }
   }, []);
 
   const [form, setForm] = useState<AddArticleApiParams>({
@@ -20,7 +27,7 @@ const AddArticle = () => {
     cover: '',
     categoryId: 0,
     tags: '',
-    status: '',
+    isPublished: false,
   });
   const onValueChange = (key: string, value: any) => {
     setForm({
@@ -36,7 +43,7 @@ const AddArticle = () => {
     });
     console.log(form);
     // 检查一下是否有空的字段，除了封面
-    if (!form.title || !form.content || !form.categoryId || !form.tags || !form.status) {
+    if (!form.title || !form.content || !form.categoryId || !form.tags) {
       message.error('请填写完整的文章信息');
       return;
     }
@@ -112,10 +119,11 @@ const AddArticle = () => {
             optionFilterProp="children"
             onChange={(value) => onValueChange('categoryId', value)}
           >
-            <Select.Option value="0"> JavaScript </Select.Option>
-            <Select.Option value="1"> TypeScript </Select.Option>
-            <Select.Option value="2"> React </Select.Option>
-            <Select.Option value="3"> Vue </Select.Option>
+            {list.map((item: any) => (
+              <Select.Option key={item.id} value={item.id}>
+                {item.name}
+              </Select.Option>
+            ))}
           </Select>
         </Form.Item>
         <Form.Item
@@ -130,10 +138,10 @@ const AddArticle = () => {
         <Form.Item label="状态" name="status"
                    rules={[{ required: true, message: '请选择文章状态' }]}>
           <Select style={{ width: 200 }} placeholder="选择文章的状态"
-                  onChange={(value) => onValueChange('status', value)}
+                  onChange={(value) => onValueChange('isPublished', value)}
           >
-            <Select.Option value="DRAFT"> 草稿 </Select.Option>
-            <Select.Option value="PUBLISHED"> 发布 </Select.Option>
+            <Select.Option value={false}> 草稿 </Select.Option>
+            <Select.Option value={true}> 发布 </Select.Option>
           </Select>
         </Form.Item>
       </ProForm>
