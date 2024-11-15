@@ -4,12 +4,16 @@ import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.entity.Tag;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.exception.TestException;
+import com.grtsinry43.grtblog.mapper.ArticleTagMapper;
 import com.grtsinry43.grtblog.mapper.TagMapper;
 import com.grtsinry43.grtblog.service.ITagService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.vo.TagVO;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -21,6 +25,11 @@ import java.time.LocalDateTime;
  */
 @Service
 public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagService {
+    private final ArticleTagMapper articleTagMapper;
+
+    public TagServiceImpl(ArticleTagMapper articleTagMapper) {
+        this.articleTagMapper = articleTagMapper;
+    }
 
     @Override
     public Tag addNewTag(String tagName) {
@@ -53,4 +62,17 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
     public Long[] getArticlesByTagId(Long tagId) {
         return baseMapper.getArticlesByTagId(tagId);
     }
+
+    @Override
+    public List<TagVO> getTagInfoList() {
+        List<Tag> tags = list();
+        return tags.stream().map(tag -> {
+            TagVO tagVO = new TagVO();
+            tagVO.setTagId(tag.getId().toString());
+            tagVO.setTagName(tag.getName());
+            tagVO.setArticleCount(articleTagMapper.countArticlesByTagId(tag.getId()));
+            return tagVO;
+        }).collect(Collectors.toList());
+    }
+
 }

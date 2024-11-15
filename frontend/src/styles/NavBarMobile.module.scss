@@ -14,7 +14,8 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  box-shadow: 0 2px 10px rgba(var(--foreground), 0.1);
+  // box-shadow: 0 2px 10px rgba(var(--foreground), 0.1);
+  border-bottom: 1px solid rgba(var(--foreground), 0.1);
   transition: all 0.2s ease;
 }
 
@@ -141,13 +142,13 @@
 
 .loginButton {
   color: var(--foreground);
-  border: none;
-  padding: 8px 16px;
+  margin: auto 0;
   cursor: pointer;
+  border: rgba(var(--foreground), 0.1) 1px solid;
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(var(--primary), 0.8);
+    background-color: rgba(var(--primary), 0.2);
   }
 }
 

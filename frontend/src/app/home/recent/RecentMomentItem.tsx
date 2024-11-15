@@ -30,24 +30,27 @@ const RecentMomentItem: React.FC<{ statusUpdate: StatusUpdate }> = ({ statusUpda
   };
 
   return (
-    <div
-      ref={cardRef}
-      className={styles.itemCard}
-      onMouseMove={handleMouseMove}
-      style={{
-        '--mouse-x': `${mousePosition.x}px`,
-        '--mouse-y': `${mousePosition.y}px`,
-      } as React.CSSProperties}
-    >
-      <div className={styles.dateContainer}>
-        <div className={clsx(styles.day, varela_round.className)}>{day}</div>
-        <div className={clsx(styles.monthYear, varela_round.className)}>{monthYear}</div>
+    <Link href={`/moments/${statusUpdate.id}`}>
+      <div
+        ref={cardRef}
+        className={styles.itemCard}
+        onMouseMove={handleMouseMove}
+        style={{
+          '--mouse-x': `${mousePosition.x}px`,
+          '--mouse-y': `${mousePosition.y}px`,
+        } as React.CSSProperties}
+      >
+        <div className={styles.dateContainer}>
+          <div className={clsx(styles.day, varela_round.className)}>{day}</div>
+          <div className={clsx(styles.monthYear, varela_round.className)}>{monthYear}</div>
+        </div>
+
+        <div className={styles.itemTitle}>
+          <span className={styles.underlineAnimation}>{statusUpdate.title}</span>
+        </div>
+        <ArrowRightIcon className={styles.arrowIcon} />
       </div>
-      <Link className={styles.itemTitle} href={`/moments/${statusUpdate.id}`}>
-        <span className={styles.underlineAnimation}>{statusUpdate.title}</span>
-      </Link>
-      <ArrowRightIcon className={styles.arrowIcon} />
-    </div>
+    </Link>
   );
 };
 

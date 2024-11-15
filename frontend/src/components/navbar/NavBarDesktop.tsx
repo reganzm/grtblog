@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Avatar, Button } from '@radix-ui/themes';
+import { Avatar, Button, IconButton } from '@radix-ui/themes';
 import { MoonIcon, SunIcon, GitHubLogoIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import styles from '@/styles/NavBar.module.scss';
 import { useTheme } from 'next-themes';
@@ -10,6 +10,7 @@ import LoginModal from '@/components/user/LoginModal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { User } from '@/redux/userSlice';
 import { userInfo } from '@/api/user';
+import { UserRoundPlusIcon } from 'lucide-react';
 
 export default function NavBarDesktop() {
   const { resolvedTheme, setTheme, theme } = useTheme();
@@ -151,9 +152,10 @@ export default function NavBarDesktop() {
                   </div>
                 ) : (
                   <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                    <Button variant="soft" className={styles.loginButton} onClick={openLoginModal}>
-                      登录
-                    </Button>
+                    <IconButton variant="ghost" radius={'full'} color={'gray'} className={styles.loginButton}
+                                onClick={openLoginModal}>
+                      <UserRoundPlusIcon width={16} height={16} />
+                    </IconButton>
                   </motion.div>
                 )}
               </div>

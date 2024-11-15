@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Avatar, Button, IconButton } from '@radix-ui/themes';
 import { GitHubLogoIcon, HamburgerMenuIcon, MagnifyingGlassIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import styles from '@/styles/NavBarMobile.module.scss';
+import { UserRoundPlusIcon } from 'lucide-react';
 
 const NavBarMobile = () => {
   const { resolvedTheme, setTheme } = useTheme();
@@ -94,9 +95,9 @@ const NavBarMobile = () => {
               </div>
               <div className={styles.loginButtonWrapper}>
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                  <Button variant="soft" className={styles.loginButton}>
-                    登录
-                  </Button>
+                  <IconButton variant="ghost" radius={'full'} color={'gray'} className={styles.loginButton}>
+                    <UserRoundPlusIcon width={16} height={16} />
+                  </IconButton>
                 </motion.div>
               </div>
             </div>

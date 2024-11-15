@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { Progress, ProgressProps } from 'antd';
 import emitter from '@/utils/eventBus';
 import { useTheme } from 'next-themes';
-import { IconButton } from '@radix-ui/themes';
 import { ArrowUpIcon } from 'lucide-react';
 
 const ReadingProgress = () => {

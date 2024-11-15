@@ -24,22 +24,23 @@ const RecentArticleItem: React.FC<{ article: Article }> = ({ article }) => {
   };
 
   return (
-    <div
-      ref={cardRef}
-      className={styles.itemCard}
-      onMouseMove={handleMouseMove}
-      style={{
-        '--mouse-x': `${mousePosition.x}px`,
-        '--mouse-y': `${mousePosition.y}px`,
-      } as React.CSSProperties}
-    >
-
-      <Link className={clsx(styles.itemTitle)} href={`/posts/${article.id}`}>
-        <span className={styles.underlineAnimation}>{article.title}</span>
-      </Link>
-      <span className={styles.date}>{formattedDate}</span>
-      <ArrowRightIcon className={styles.arrowIcon} />
-    </div>
+    <Link href={`/posts/${article.id}`}>
+      <div
+        ref={cardRef}
+        className={styles.itemCard}
+        onMouseMove={handleMouseMove}
+        style={{
+          '--mouse-x': `${mousePosition.x}px`,
+          '--mouse-y': `${mousePosition.y}px`,
+        } as React.CSSProperties}
+      >
+        <div className={clsx(styles.itemTitle)}>
+          <span className={styles.underlineAnimation}>{article.title}</span>
+        </div>
+        <span className={styles.date}>{formattedDate}</span>
+        <ArrowRightIcon className={styles.arrowIcon} />
+      </div>
+    </Link>
   );
 };
 

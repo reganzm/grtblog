@@ -2,6 +2,7 @@ package com.grtsinry43.grtblog.mapper;
 
 import com.grtsinry43.grtblog.entity.ArticleTag;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
@@ -13,4 +14,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
 
+    @Select("SELECT COUNT(*) FROM article_tag WHERE tag_id = #{tagId}")
+    int countArticlesByTagId(Long tagId);
 }

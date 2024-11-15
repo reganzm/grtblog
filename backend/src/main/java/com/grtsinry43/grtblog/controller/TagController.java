@@ -1,17 +1,18 @@
 package com.grtsinry43.grtblog.controller;
 
-//import com.grtsinry43.grtblog.config.MyBatisPlusConfig;
+// import com.grtsinry43.grtblog.config.MyBatisPlusConfig;
+
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.entity.Tag;
 import com.grtsinry43.grtblog.service.impl.TagServiceImpl;
+import com.grtsinry43.grtblog.vo.TagVO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -39,5 +40,10 @@ public class TagController {
         Tag tag = tagService.addNewTag(tagName);
         System.out.println(GlobalExceptionHandler.getBusinessExceptionCount());
         return ApiResponse.success(tag);
+    }
+
+    @GetMapping
+    public ApiResponse<List<TagVO>> listTagsApi() {
+        return ApiResponse.success(tagService.getTagInfoList());
     }
 }
