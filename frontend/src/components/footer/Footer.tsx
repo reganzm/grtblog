@@ -4,7 +4,7 @@ import FooterInfo from '@/components/footer/FooterInfo';
 
 const Footer = () => {
   return (
-    <div className={styles.footerContainer}>
+    <div className={`${styles.footerContainer} ${styles.textureOverlay}`}>
       <footer>
         <FooterInfo />
       </footer>

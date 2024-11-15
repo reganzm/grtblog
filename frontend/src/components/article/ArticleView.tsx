@@ -47,8 +47,8 @@ const ArticleView = ({ post }: { post: Post }) => {
       {post.toc && <FloatingTocMobile toc={JSON.parse(post.toc)} />}
       <div className={styles.articleContainer}>
         <aside className={styles.tocContainer}>
-          {post.toc && <Toc toc={JSON.parse(post.toc)} />}
           <ReadingProgress />
+          {post.toc && <Toc toc={JSON.parse(post.toc)} />}
         </aside>
         <main className={styles.articleContent}>
           <ArticleScrollSync>

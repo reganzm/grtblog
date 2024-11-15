@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Avatar, Button, IconButton } from '@radix-ui/themes';
+import { Avatar, IconButton } from '@radix-ui/themes';
 import { MoonIcon, SunIcon, GitHubLogoIcon, MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import styles from '@/styles/NavBar.module.scss';
 import { useTheme } from 'next-themes';
@@ -64,10 +64,21 @@ export default function NavBarDesktop() {
     setIsLoginModalOpen(false);
   };
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className={styles.navbarWrapper}>
       <motion.div initial={{ y: -100 }} animate={{ y: 0 }} transition={{ type: 'spring', stiffness: 120, damping: 20 }}>
-        <nav className={styles.navbar}>
+        <nav className={clsx(styles.navbar, scrolled ? styles.scrolled : '')}>
           <div className={styles.navbarContainer}>
             <div className={styles.avatarWrapper}>
               <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}

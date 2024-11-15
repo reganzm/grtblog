@@ -20,9 +20,9 @@ const AuthorCard = () => {
            className={styles.bannerCard}>
         <div className="relative w-full max-w-md">
           <div
-            className="absolute -left-16 -bottom-16 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-50 animate-pulse" />
+            className={clsx('absolute -left-16 -bottom-16 w-32 h-32 bg-blue-500 rounded-full blur-2xl opacity-50 animate-pulse', styles.bannerCardDotLeft)} />
           <div
-            className="absolute -right-16 -top-16 w-32 h-32 bg-orange-500 rounded-full blur-2xl opacity-50 animate-pulse" />
+            className={clsx('absolute -right-16 -top-16 w-32 h-32 bg-orange-500 rounded-full blur-2xl opacity-50 animate-pulse', styles.bannerCardDotRight)} />
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}

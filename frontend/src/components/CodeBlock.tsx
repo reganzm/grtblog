@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { Badge, Button } from '@radix-ui/themes';
+import { Badge, Button, ScrollArea } from '@radix-ui/themes';
 import { useTheme } from 'next-themes';
 import { jetbrains_mono } from '@/app/fonts/font';
 import theme from '@/components/code/customTheme';
@@ -44,11 +44,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
   }, [resolvedTheme]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
+    <ScrollArea radius={"full"} asChild>
       <div className={clsx(styles.codeBlock, jetbrains_mono.className, bgClass)} style={{
         scrollbarColor: 'var(--scrollbar-color)',
         scrollbarWidth: 'thin',
@@ -109,7 +105,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
           {value}
         </SyntaxHighlighter>
       </div>
-    </motion.div>
+    </ScrollArea>
   );
 };
 

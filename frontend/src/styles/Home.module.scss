@@ -16,6 +16,26 @@
   height: 60vh;
 }
 
+// 媒体查询
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .subtitle {
+    font-size: 1.25rem;
+  }
+  .bannerCard {
+    height: 35vh;
+    font-size: 0.75em;
+  }
+  .bannerCardDotLeft {
+    left: 2rem;
+  }
+  .bannerCardDotRight {
+    right: 2rem;
+  }
+}
+
 // TODO : 全局的动画引入
 
 .underlineAnimation {

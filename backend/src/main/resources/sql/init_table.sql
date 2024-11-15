@@ -117,6 +117,12 @@ CREATE TABLE IF NOT EXISTS `page`
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT '页面ID，会由雪花算法生成',
     `title`      VARCHAR(255) NOT NULL COMMENT '页面标题',
     `ref_path`   VARCHAR(255) NOT NULL COMMENT '页面路径',
+    `toc`        JSON         NOT NULL COMMENT '页面内容目录，由后端根据页面内容生成',
+    `content`    TEXT         NOT NULL COMMENT '页面内容，markdown格式，交由前端解析',
+    `views`      INT       DEFAULT 0 COMMENT '浏览量',
+    `likes`      INT       DEFAULT 0 COMMENT '点赞量',
+    `comments`   INT       DEFAULT 0 COMMENT '评论量',
+    `comment_id` BIGINT COMMENT '挂载的评论ID',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '页面创建时间',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '页面更新时间',
     `deleted_at` TIMESTAMP COMMENT '页面删除时间（软删除），如果不为空则表示已删除',
@@ -161,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `comment`
     `location`   VARCHAR(45) COMMENT '评论者归属地',
 #     `ua`         VARCHAR(255) COMMENT '评论者User-Agent', -- 这个不会在前端展示
     `platform`   VARCHAR(45) COMMENT '评论者操作系统',
-    `browser`    VARCHAR(45) COMMENT '评论者浏览器',      -- 这两个根据 User-Agent 解析，并在前端展示
+    `browser`    VARCHAR(45) COMMENT '评论者浏览器', -- 这两个根据 User-Agent 解析，并在前端展示
     `email`      VARCHAR(45) COMMENT '评论者邮箱',
     `website`    VARCHAR(255) COMMENT '评论者网站',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '评论创建时间',

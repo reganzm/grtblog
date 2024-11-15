@@ -22,6 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta charSet="UTF-8" />
+        <link rel="icon" href="/favicon.ico" />
+        {/* 防止触摸屏异常滑动 */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <title> 一个认真学习前端的大二学生 总之岁月漫长，然而值得等待 - Grtsinry43 &#39;s Blog</title>
+      </head>
       <body>
         <StoreProvider>
           <ThemeProvider
@@ -40,5 +47,6 @@ export default function RootLayout({
         </StoreProvider>
       </body>
     </html>
-  );
+  )
+    ;
 }

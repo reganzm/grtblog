@@ -4,10 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Avatar, Button, IconButton } from '@radix-ui/themes';
+import { Avatar, IconButton } from '@radix-ui/themes';
 import { GitHubLogoIcon, HamburgerMenuIcon, MagnifyingGlassIcon, MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import styles from '@/styles/NavBarMobile.module.scss';
 import { UserRoundPlusIcon } from 'lucide-react';
+import { clsx } from 'clsx';
 
 const NavBarMobile = () => {
   const { resolvedTheme, setTheme } = useTheme();
@@ -38,6 +39,17 @@ const NavBarMobile = () => {
     setShowPanel(!showPanel);
   };
 
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div className="fixed w-full z-10">
       <motion.div
@@ -46,7 +58,7 @@ const NavBarMobile = () => {
         transition={{ type: 'spring', stiffness: 120, damping: 20 }}
       >
         <nav
-          className={styles.navbar}>
+          className={clsx(styles.navbar, scrolled ? styles.scrolled : '')}>
           <div className={styles.navbarContainer}>
             <IconButton variant={'ghost'} onClick={togglePanel}>
               <HamburgerMenuIcon className="w-5 h-5" />
