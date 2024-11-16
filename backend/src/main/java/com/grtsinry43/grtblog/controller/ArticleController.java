@@ -35,15 +35,13 @@ public class ArticleController {
     }
 
     /**
-     * 获取所有文章 id 的列表
+     * 获取所有文章短链接
      */
     @PermitAll
-    @GetMapping("/ids")
-    public ApiResponse<List<String>> getAllArticleIds() {
-        List<Long> articleIds = articleService.getAllArticleIds();
-        // 转成字符串防止精度丢失
-        List<String> articleIdStr = articleIds.stream().map(String::valueOf).toList();
-        return ApiResponse.success(articleIdStr);
+    @GetMapping("/shortLinks")
+    public ApiResponse<List<String>> getAllArticleShortLinks() {
+        List<String> articleShortLinks = articleService.getAllArticleShortLinks();
+        return ApiResponse.success(articleShortLinks);
     }
 
     @PermitAll
@@ -62,19 +60,24 @@ public class ArticleController {
     }
 
     @PermitAll
-    @GetMapping("/recommend/{id}")
-    public ApiResponse<List<ArticlePreview>> getRecommendArticles(@PathVariable String id) {
-        Long idLong = Long.parseLong(id);
-        List<ArticlePreview> recommendArticles = articleService.getRecommendArticleList(idLong);
+    @GetMapping("/recommend/{shortUrl}")
+    public ApiResponse<List<ArticlePreview>> getRecommendArticles(@PathVariable String shortUrl) {
+        List<ArticlePreview> recommendArticles = articleService.getRecommendArticleList(shortUrl);
         return ApiResponse.success(recommendArticles);
+    }
+
+    @PermitAll
+    @GetMapping("/category/{shortUrl}")
+    public ApiResponse<List<ArticlePreview>> getArticleListByCategory(@RequestParam Integer page, @RequestParam Integer pageSize, @PathVariable String shortUrl) {
+        List<ArticlePreview> articleList = articleService.getArticleListByCategory(shortUrl, page, pageSize);
+        return ApiResponse.success(articleList);
     }
 
     // 这个匹配的一定要放在最后，不然会被 /all 匹配
     @PermitAll
-    @GetMapping("/{id}")
-    public ApiResponse<ArticleView> viewOneArticleApi(@PathVariable String id) {
-        Long idLong = Long.parseLong(id);
-        ArticleView articleView = articleService.viewOneArticle(idLong);
+    @GetMapping("/{shortUrl}")
+    public ApiResponse<ArticleView> viewOneArticleApi(@PathVariable String shortUrl) {
+        ArticleView articleView = articleService.viewOneArticle(shortUrl);
         return ApiResponse.success(articleView);
     }
 

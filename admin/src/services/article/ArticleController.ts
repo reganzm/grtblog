@@ -1,5 +1,6 @@
 import { request } from '@umijs/max';
-import { AddArticleApiParams, AddArticleApiRes } from '@/services/article/typings';
+import { AddArticleApiParams, AddArticleApiRes, ArticleVO } from '@/services/article/typings';
+import { ApiResponse } from '@/services/typings';
 
 const addArticle = async (data: AddArticleApiParams): Promise<AddArticleApiRes> => {
   return request('/api/admin/article', {
@@ -8,6 +9,16 @@ const addArticle = async (data: AddArticleApiParams): Promise<AddArticleApiRes> 
   });
 };
 
+const getArticleList = async ({ page = 1, pageSize = 10 }: {
+  page: number;
+  pageSize: number
+}): Promise<ApiResponse<ArticleVO[]>> => {
+  return request(`/api/admin/article/all?page=${page}&pageSize=${pageSize}`, {
+    method: 'GET',
+  });
+};
+
 export default {
   addArticle,
+  getArticleList,
 };

@@ -23,6 +23,7 @@ mybatis-plus:
 # enable log for web request (develop only)
 logging:
   level:
+    com.grtsinry43.grtblog.mapper: DEBUG
     org:
       springframework:
         web: DEBUG

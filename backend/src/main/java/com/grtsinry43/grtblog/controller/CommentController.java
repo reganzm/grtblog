@@ -30,10 +30,10 @@ public class CommentController {
     }
 
     @PermitAll
-    @GetMapping("/article/{articleId}")
-    public ApiResponse<List<CommentVO>> listCommentByArticleId(@PathVariable String articleId) {
-        Long articleIdLong = Long.parseLong(articleId);
-        return ApiResponse.success(commentService.listCommentByArticleId(articleIdLong));
+    @GetMapping("/article/{shortUrl}")
+    public ApiResponse<List<CommentVO>> listCommentByArticleId(@PathVariable String shortUrl) {
+        System.out.println(shortUrl);
+        return ApiResponse.success(commentService.listCommentByArticleId(shortUrl));
     }
 
     @PermitAll

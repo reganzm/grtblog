@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.mapper.CategoryMapper;
@@ -23,11 +24,14 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public Category addNewCategory(String categoryName) {
+    public CategoryVO addNewCategory(String categoryName) {
         Category category = new Category();
         category.setName(categoryName);
         save(category);
-        return category;
+        CategoryVO categoryVO = new CategoryVO();
+        categoryVO.setId(category.getId().toString());
+        categoryVO.setName(category.getName());
+        return categoryVO;
     }
 
     @Override
@@ -43,7 +47,20 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             CategoryVO categoryVO = new CategoryVO();
             categoryVO.setId(category.getId().toString());
             categoryVO.setName(category.getName());
+            categoryVO.setShortUrl(category.getShortUrl());
             return categoryVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public Long getCategoryIdByShortUrl(String shortUrl) {
+        Category category = getOne(new QueryWrapper<Category>().eq("short_url", shortUrl));
+        return category != null ? category.getId() : null;
+    }
+
+    @Override
+    public List<String> getAllCategoryShortLinks() {
+        List<Category> categories = list();
+        return categories.stream().map(Category::getShortUrl).collect(Collectors.toList());
     }
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { getAllArticlesByPage } from '@/api/article';
+import { getAllArticlesByPage, getArticleByCategory } from '@/api/article';
 import ArticlePageItem, { ArticlePreview } from '@/components/article/ArticlePageItem';
 import { Skeleton, Text } from '@radix-ui/themes';
 import { motion } from 'framer-motion';
@@ -9,7 +9,10 @@ import { HashtagIcon, TagIcon } from '@heroicons/react/24/outline';
 import { Calendar, Eye, ThumbsUpIcon } from 'lucide-react';
 import { AiOutlineComment } from 'react-icons/ai';
 
-const AllPostPageClient = ({ initialArticles }: { initialArticles: ArticlePreview[] }) => {
+const AllPostPageClient = ({ initialArticles, category }: {
+  category?: string,
+  initialArticles: ArticlePreview[]
+}) => {
   const [articles, setArticles] = useState<ArticlePreview[]>(initialArticles);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -25,13 +28,23 @@ const AllPostPageClient = ({ initialArticles }: { initialArticles: ArticlePrevie
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         setLoading(true);
-        getAllArticlesByPage(page + 1, 10, { next: { revalidate: 60 } })
-          .then(newArticles => {
-            setArticles(prevArticles => [...prevArticles, ...newArticles]);
-            setPage(prevPage => prevPage + 1);
-            setHasMore(newArticles.length > 0);
-            setLoading(false);
-          });
+        if (category != null) {
+          getArticleByCategory(category, page + 1, 10, { next: { revalidate: 60 } })
+            .then(newArticles => {
+              setArticles(prevArticles => [...prevArticles, ...newArticles]);
+              setPage(prevPage => prevPage + 1);
+              setHasMore(newArticles.length > 0);
+              setLoading(false);
+            });
+        } else {
+          getAllArticlesByPage(page + 1, 10, { next: { revalidate: 60 } })
+            .then(newArticles => {
+              setArticles(prevArticles => [...prevArticles, ...newArticles]);
+              setPage(prevPage => prevPage + 1);
+              setHasMore(newArticles.length > 0);
+              setLoading(false);
+            });
+        }
       }
     });
 
@@ -48,7 +61,7 @@ const AllPostPageClient = ({ initialArticles }: { initialArticles: ArticlePrevie
           return (
             <motion.div
               ref={lastArticleElementRef}
-              key={item.id}
+              key={item.shortUrl}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: 'spring', stiffness: 500, damping: 100, delay, bounce: 0.7, mass: 0.5 }}
@@ -59,7 +72,7 @@ const AllPostPageClient = ({ initialArticles }: { initialArticles: ArticlePrevie
         } else {
           return (
             <motion.div
-              key={item.id}
+              key={item.shortUrl}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ type: 'spring', stiffness: 100, damping: 10, delay, bounce: 0.3 }}

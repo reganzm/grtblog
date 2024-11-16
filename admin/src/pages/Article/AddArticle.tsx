@@ -1,15 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Editor } from '@toast-ui/react-editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
-import { Form, Input, message, Select, Upload } from 'antd';
+import { Form, Input, message, Select, Upload, Modal, Button } from 'antd';
 import { AddArticleApiParams } from '@/services/article/typings';
 import { ProForm } from '@ant-design/pro-components';
 import { PlusOutlined } from '@ant-design/icons';
-import { useSelector, useDispatch } from '@umijs/max';
+import { useSelector, useDispatch, useNavigate } from '@umijs/max';
 import ArticleController from '@/services/article/ArticleController';
+import CategoryController from '@/services/category/CategoryController';
 
 const AddArticle = () => {
   const editorRef = useRef<Editor>(null);
+  const navigate = useNavigate();
   const { list } = useSelector((state: any) => state.category);
   const dispatch = useDispatch();
 
@@ -29,6 +31,11 @@ const AddArticle = () => {
     tags: '',
     isPublished: false,
   });
+  const [addCategoryForm, setAddCategoryForm] = useState({
+    name: '',
+  });
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const onValueChange = (key: string, value: any) => {
     setForm({
       ...form,
@@ -42,18 +49,40 @@ const AddArticle = () => {
       content: editorRef.current?.getInstance().getMarkdown(),
     });
     console.log(form);
-    // 检查一下是否有空的字段，除了封面
     if (!form.title || !form.content || !form.categoryId || !form.tags) {
       message.error('请填写完整的文章信息');
       return;
     }
     ArticleController.addArticle(form).then((res) => {
-      console.log(res);
+      if (res) {
+        message.success('文章添加成功').then(() => {
+          navigate('/article/list');
+        });
+      }
     });
   };
+
+  const handleAddCategory = () => {
+    if (!addCategoryForm.name) {
+      message.error('请输入分类名称');
+      return;
+    }
+    CategoryController.addCategoryApi(addCategoryForm).then((res) => {
+      if (res) {
+        message.success('分类添加成功');
+        setIsModalVisible(false);
+        setAddCategoryForm({ name: '' });
+        dispatch({
+          type: 'category/initCategoryList',
+        });
+      } else {
+        message.error('分类添加失败');
+      }
+    });
+  };
+
   return (
     <div>
-      {/* 标题 */}
       <ProForm
         title="添加文章"
         size="large"
@@ -126,6 +155,10 @@ const AddArticle = () => {
             ))}
           </Select>
         </Form.Item>
+        <Button type="link" onClick={() => setIsModalVisible(true)}>
+          <span className="text-sm"> 没有合适的分类？新建一个叭 </span>
+        </Button>
+
         <Form.Item
           label="标签"
           name="tags"
@@ -145,6 +178,21 @@ const AddArticle = () => {
           </Select>
         </Form.Item>
       </ProForm>
+
+      <Modal
+        title="新建分类"
+        open={isModalVisible}
+        onOk={handleAddCategory}
+        onCancel={() => setIsModalVisible(false)}
+      >
+        <Form.Item label="分类名称" required>
+          <Input
+            placeholder="请输入分类名称"
+            value={addCategoryForm.name}
+            onChange={(e) => setAddCategoryForm({ name: e.target.value })}
+          />
+        </Form.Item>
+      </Modal>
     </div>
   );
 };

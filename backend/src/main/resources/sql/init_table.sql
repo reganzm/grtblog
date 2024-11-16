@@ -15,6 +15,13 @@ CREATE TABLE IF NOT EXISTS `user`
     PRIMARY KEY (`id`)
 );
 
+-- 插入默认用户
+INSERT INTO `user` (`id`, `nickname`, `email`, `password`, `avatar`, `is_active`, `created_at`, `updated_at`,
+                    `deleted_at`, `oauth_provider`, `oauth_id`)
+VALUES (1, 'admin', '123@example.com', '$2a$10$O/cweIllO3qX.WlfM55i9.MYBSqgQPB.f4WDXMX7V7Bshyy7D7pgu',
+        'https://www.w3school.com.cn/i/photo/tulip.jpg', 1, NOW(), NOW(), NULL, NULL,
+        NULL);
+
 -- 创建角色表（超级管理员、管理员、合作作者、普通用户、封禁用户）
 CREATE TABLE IF NOT EXISTS `role`
 (
@@ -23,6 +30,14 @@ CREATE TABLE IF NOT EXISTS `role`
     PRIMARY KEY (`id`)
 );
 
+-- 插入角色表
+INSERT INTO `role` (`id`, `role_name`)
+VALUES (1, '超级管理员'),
+       (2, '管理员'),
+       (3, '合作作者'),
+       (4, '普通用户'),
+       (5, '封禁用户');
+
 -- 创建权限表（文章管理、评论管理、用户管理、角色管理、权限管理、系统配置、友链管理、说说管理）
 CREATE TABLE IF NOT EXISTS `permission`
 (
@@ -30,6 +45,50 @@ CREATE TABLE IF NOT EXISTS `permission`
     `permission_name` VARCHAR(100) NOT NULL COMMENT '权限名',
     PRIMARY KEY (`id`)
 );
+
+-- 插入权限表
+INSERT INTO `permission` (`id`, `permission_name`)
+VALUES (1, 'article:add'),
+       (2, 'article:edit'),
+       (3, 'article:delete'),
+       (4, 'article:view'),
+       (5, 'comment:add'),
+       (6, 'comment:edit'),
+       (7, 'comment:delete'),
+       (8, 'comment:view'),
+       (9, 'user:add'),
+       (10, 'user:edit'),
+       (11, 'user:delete'),
+       (12, 'user:view'),
+       (13, 'role:add'),
+       (14, 'role:edit'),
+       (15, 'role:delete'),
+       (16, 'role:view'),
+       (17, 'permission:add'),
+       (18, 'permission:edit'),
+       (19, 'permission:delete'),
+       (20, 'permission:view'),
+       (21, 'config:add'),
+       (22, 'config:edit'),
+       (23, 'config:delete'),
+       (24, 'config:view'),
+       (25, 'friend_link:add'),
+       (26, 'friend_link:edit'),
+       (27, 'friend_link:delete'),
+       (28, 'friend_link:view'),
+       (29, 'share:add'),
+       (30, 'share:edit'),
+       (31, 'share:delete'),
+       (32, 'share:view'),
+       (33, 'thinking:add'),
+       (34, 'thinking:edit'),
+       (35, 'thinking:delete'),
+       (36, 'thinking:view'),
+       (37, 'category:add'),
+       (38, 'category:edit'),
+       (39, 'category:delete'),
+       (40, 'category:view');
+
 
 -- 创建用户角色关联表
 CREATE TABLE IF NOT EXISTS `user_role`
@@ -41,6 +100,10 @@ CREATE TABLE IF NOT EXISTS `user_role`
     FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 );
 
+-- 默认用户角色关联
+INSERT INTO `user_role` (`user_id`, `role_id`)
+VALUES (1, 1);
+
 -- 创建角色权限关联表
 CREATE TABLE IF NOT EXISTS `role_permission`
 (
@@ -50,6 +113,36 @@ CREATE TABLE IF NOT EXISTS `role_permission`
     FOREIGN KEY (`role_id`) REFERENCES `role` (`id`),
     FOREIGN KEY (`permission_id`) REFERENCES `permission` (`id`)
 );
+
+-- 角色与权限关联，超级管理员拥有所有权限，管理员拥有除了删除和权限增删改之外的所有权限，合作作者拥有文章管理权限，普通用户拥有文章评论等查看权限，封禁用户没有任何权限
+-- 超级管理员拥有所有权限
+INSERT INTO `role_permission` (`role_id`, `permission_id`)
+SELECT 1, id
+FROM `permission`;
+
+-- 管理员拥有除了删除和权限增删改之外的所有权限
+INSERT INTO `role_permission` (`role_id`, `permission_id`)
+SELECT 2, id
+FROM `permission`
+WHERE `permission_name` NOT IN
+      ('article:delete', 'category:delete', 'comment:delete', 'user:delete', 'role:delete', 'permission:delete',
+       'config:delete', 'friend_link:delete', 'share:delete', 'permission:add', 'permission:edit', 'permission:delete');
+
+-- 合作作者拥有文章管理权限
+INSERT INTO `role_permission` (`role_id`, `permission_id`)
+SELECT 3, id
+FROM `permission`
+WHERE `permission_name` LIKE 'article:%';
+
+-- 普通用户拥有文章评论等查看权限
+INSERT INTO `role_permission` (`role_id`, `permission_id`)
+SELECT 4, id
+FROM `permission`
+WHERE `permission_name` IN ('article:view', 'comment:view', 'category:view', 'share:view', 'friend_link:view');
+
+-- 封禁用户没有任何权限
+-- No insert needed for role_id 5 as they have no permissions
+
 
 -- 这个是标准的文章
 CREATE TABLE IF NOT EXISTS `article`
@@ -76,6 +169,95 @@ CREATE TABLE IF NOT EXISTS `article`
     `is_original`  TINYINT   DEFAULT 1 COMMENT '是否原创（0：否，1：是）',
     PRIMARY KEY (`id`)
 );
+
+-- 插入一篇示例文章
+INSERT INTO `article` (`id`, `title`, `summary`, `toc`, `content`, `author_id`, `cover`, `category_id`, `views`,
+                       `likes`, `comments`, `comment_id`, `short_url`, `is_published`, `created_at`, `updated_at`,
+                       `deleted_at`, `is_top`, `is_hot`, `is_original`)
+VALUES (1, 'Hello World', 'Hello World', '[
+  {
+    "name": "简要介绍",
+    "anchor": "article-md-title-1",
+    "children": [
+      {
+        "name": "组成",
+        "anchor": "article-md-title-2",
+        "children": []
+      },
+      {
+        "name": "markdown支持",
+        "anchor": "article-md-title-3",
+        "children": []
+      },
+      {
+        "name": "文章推荐",
+        "anchor": "article-md-title-4",
+        "children": []
+      }
+    ]
+  },
+  {
+    "name": "现在你应该做什么",
+    "anchor": "article-md-title-5",
+    "children": []
+  }
+]', '** 恭喜，站点初始化成功！**
+
+---
+
+** 欢迎使用 Grtblog！**
+
+## 简要介绍
+
+### 组成
+
+网站主要由 [文章](/posts])，[分享](/shares)，还有 [简短句子（类似一言）分享](/thinking) 组成
+
+提供了归档，标签，留言板，友链，一日一言，文章 / 分享默认页面
+
+### markdown 支持
+
+其中所有页面覆盖 `markdown` 支持，可以使用几乎完整的标准 markdown 语法（其中评论区拒绝了解析 HTML 图片）
+
+```js
+console.log("对于代码块进行了一定的优化")
+```
+
+```html
+<!DOCTYPE HTML>
+<html>
+  <head></head>
+  <body>
+    <p>Hello world.</p>
+  </body>
+</html>
+```
+
+自定义了表格样式（以下仅是示例）
+
+* 表 1：管理员表结构 *
+
+| 列名     | 数据类型    | 长度 | 非空 | 主键 |
+| -------- | ----------- | ---- | ---- | ---- |
+| id       | UUID        | 64   | √    | √    |
+| account  | VARCHAR(32) | 32   | √    |      |
+| password | VARCHAR(32) | 32   |      |      |
+
+当你创建或修改文章，将会自动根据 md 标题解析对应的目录（比如本文）
+
+### 文章推荐
+
+系统实现了文章相关推荐和用户喜好推荐，可以基于用户信息或单次会话进行推荐
+
+## 现在你应该做什么
+
+当你看到这个页面的时候，证明你已经完成了相关设置，现在，你可以前往管理面板探索啦！
+
+> 总之岁月漫长，然而值得等待
+
+** 希望这个小小的框架能陪伴你的写作之旅，分享收获与记录生活，用指尖灵动的文字书写着不期而遇的惊喜 **', 1,
+        'https://www.w3school.com.cn/i/photo/tulip.jpg', NULL, 0, 0, 0, 1, 'hello-world', 1, NOW(), NOW(), NULL, 0,
+        0, 1);
 
 CREATE TABLE IF NOT EXISTS `status_update`
 (
@@ -111,23 +293,59 @@ CREATE TABLE IF NOT EXISTS `one_word`
     PRIMARY KEY (`id`)
 );
 
+-- 插入一条示例一日一言
+INSERT INTO `one_word` (`id`, `content`, `created_at`, `updated_at`)
+VALUES (1, '世界上最快乐的事，莫过于为理想而奋斗。', NOW(), NOW());
+
+-- 评论区表（全站通用的评论区表，可以挂载在文章、分享、页面等上）
+CREATE TABLE IF NOT EXISTS `comment_area`
+(
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT COMMENT '评论区ID，会由雪花算法生成',
+    `area_name`  VARCHAR(45) NOT NULL COMMENT '评论区名称',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '评论区创建时间',
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '评论区更新时间',
+    PRIMARY KEY (`id`)
+);
+
+-- 为系统内置的文章和页面创建评论区
+INSERT INTO `comment_area` (`id`, `area_name`, `created_at`, `updated_at`)
+VALUES (1, '文章:Hello World', NOW(), NOW()),
+       (2, '页面:留言板', NOW(), NOW()),
+       (3, '页面:友链', NOW(), NOW());
+
+
 -- 页面表
 CREATE TABLE IF NOT EXISTS `page`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT '页面ID，会由雪花算法生成',
     `title`      VARCHAR(255) NOT NULL COMMENT '页面标题',
     `ref_path`   VARCHAR(255) NOT NULL COMMENT '页面路径',
+    `enable`     TINYINT   DEFAULT 1 COMMENT '是否启用（0：否，1：是）',
+    `can_delete` TINYINT   DEFAULT 1 COMMENT '是否可以删除（0：否，1：是）',
     `toc`        JSON         NOT NULL COMMENT '页面内容目录，由后端根据页面内容生成',
     `content`    TEXT         NOT NULL COMMENT '页面内容，markdown格式，交由前端解析',
     `views`      INT       DEFAULT 0 COMMENT '浏览量',
     `likes`      INT       DEFAULT 0 COMMENT '点赞量',
     `comments`   INT       DEFAULT 0 COMMENT '评论量',
-    `comment_id` BIGINT COMMENT '挂载的评论ID',
+    `comment_id` BIGINT COMMENT '挂载的评论ID（如果为空则表示不开启评论）',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '页面创建时间',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '页面更新时间',
     `deleted_at` TIMESTAMP COMMENT '页面删除时间（软删除），如果不为空则表示已删除',
     PRIMARY KEY (`id`)
 );
+
+-- 插入系统内置页面
+INSERT INTO `page` (`id`, `title`, `ref_path`, `enable`, `can_delete`, `toc`, `content`, `views`, `likes`, `comments`,
+                    `comment_id`, `created_at`, `updated_at`, `deleted_at`)
+VALUES (1, '归档', '/archive', 1, 0, '[]', '## 归档', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (2, '标签', '/tags', 1, 0, '[]', '## 标签', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (3, '留言板', '/message', 1, 0, '[]', '## 留言板', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (4, '友链', '/links', 1, 0, '[]', '## 友链', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (5, '思考', '/thinking', 1, 0, '[]', '## 思考', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (6, '文章', '/posts', 1, 0, '[]', '## 文章', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (7, '记录', '/moments', 1, 0, '[]', '## 记录', 0, 0, 0, NULL, NOW(), NOW(), NULL);
+
+# （其中归档，标签，留言板，友链，一日一言，文章 / 分享是系统内置的），其他页面可以由用户自定义
 
 -- 首页导航栏配置
 CREATE TABLE IF NOT EXISTS `nav_menu`
@@ -135,7 +353,7 @@ CREATE TABLE IF NOT EXISTS `nav_menu`
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT '导航栏ID，会由雪花算法生成',
     `name`       VARCHAR(45)  NOT NULL COMMENT '导航栏名称',
     `url`        VARCHAR(255) NOT NULL COMMENT '导航栏URL',
-    `sort`       INT          NOT NULL COMMENT '导航栏排序',
+    `sort`       INT          NOT NULL COMMENT '导航栏排序（父组件和子组件都是0,1,2,3...）',
     `parent_id`  BIGINT COMMENT '父导航栏ID',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '导航栏创建时间',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '导航栏更新时间',
@@ -143,12 +361,23 @@ CREATE TABLE IF NOT EXISTS `nav_menu`
     PRIMARY KEY (`id`)
 );
 
+-- 插入默认导航栏配置
+INSERT INTO `nav_menu` (`id`, `name`, `url`, `sort`, `parent_id`, `created_at`, `updated_at`, `deleted_at`)
+VALUES (1, '首页', '/', 0, 0, NOW(), NOW(), NULL),
+       (2, '文章', '/posts', 1, 0, NOW(), NOW(), NULL),
+       (3, '记录', '/moments', 2, 0, NOW(), NOW(), NULL),
+       (4, '留言板', '/message', 0, 1, NOW(), NOW(), NULL),
+       (5, '友链', '/friends', 1, 1, NOW(), NOW(), NULL),
+       (6, '归档', '/archive', 3, 0, NOW(), NOW(), NULL),
+       (7, '标签', '/tags', 4, 0, NOW(), NOW(), NULL),
+       (8, '思考', '/thinking', 5, 0, NOW(), NOW(), NULL);
 
 -- 创建分类表（这个一般用 Badge 展示）
 CREATE TABLE IF NOT EXISTS `category`
 (
     `id`         BIGINT      NOT NULL AUTO_INCREMENT COMMENT '分类ID，会由雪花算法生成',
     `name`       VARCHAR(45) NOT NULL COMMENT '分类名称',
+    `short_url`  VARCHAR(255) COMMENT '分类短链接',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '分类创建时间',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '分类更新时间',
     `deleted_at` TIMESTAMP COMMENT '分类删除时间（软删除），如果不为空则表示已删除',
@@ -159,7 +388,7 @@ CREATE TABLE IF NOT EXISTS `category`
 CREATE TABLE IF NOT EXISTS `comment`
 (
     `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT '评论ID，会由雪花算法生成',
-    `article_id` BIGINT NOT NULL COMMENT '文章ID',
+    `area_id`    BIGINT NOT NULL COMMENT '评论区ID',
     `content`    TEXT   NOT NULL COMMENT '评论内容（markdown格式）',
     `author_id`  BIGINT COMMENT '评论者ID',
     `nick_name`  VARCHAR(45) COMMENT '评论者昵称',
@@ -206,9 +435,10 @@ CREATE TABLE IF NOT EXISTS `user_follow`
 
 CREATE TABLE IF NOT EXISTS `user_like`
 (
-    `id`         BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户点赞关系ID，会由雪花算法生成',
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT COMMENT '用户点赞关系ID，会由雪花算法生成',
     `user_id`    BIGINT COMMENT '用户ID，可以为空',
-    `article_id` BIGINT NOT NULL COMMENT '文章ID',
+    `type`       VARCHAR(45) NOT NULL COMMENT '点赞类型（文章、评论等）',
+    `target_id`  BIGINT      NOT NULL COMMENT '点赞目标ID',
     `session_id` VARCHAR(255) COMMENT '唯一会话ID，用于标识未登录用户',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '点赞关系创建时间',
     PRIMARY KEY (`id`)

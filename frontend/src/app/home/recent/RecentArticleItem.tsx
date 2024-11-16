@@ -24,7 +24,7 @@ const RecentArticleItem: React.FC<{ article: Article }> = ({ article }) => {
   };
 
   return (
-    <Link href={`/posts/${article.id}`}>
+    <Link href={`/posts/${article.shortUrl}`}>
       <div
         ref={cardRef}
         className={styles.itemCard}

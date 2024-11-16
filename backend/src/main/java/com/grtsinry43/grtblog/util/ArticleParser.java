@@ -3,6 +3,7 @@ package com.grtsinry43.grtblog.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
+import net.sourceforge.pinyin4j.PinyinHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -70,5 +71,24 @@ public class ArticleParser {
             this.name = name;
             this.anchor = anchor;
         }
+    }
+
+    public static String generateShortUrl(String title) {
+        // 去掉标题中非英文字符，空格替换为 -，汉字替换为拼音，所有字母小写
+        StringBuilder pinyinTitle = new StringBuilder();
+        for (char c : title.toCharArray()) {
+            if (Character.toString(c).matches("[\\u4e00-\\u9fa5]")) {
+                String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c);
+                if (pinyinArray != null) {
+                    pinyinTitle.append(pinyinArray[0]);
+                }
+            } else {
+                pinyinTitle.append(c);
+            }
+        }
+
+        return pinyinTitle.toString().replaceAll("[^a-zA-Z0-9]", "")
+                .replace(" ", "-")
+                .toLowerCase();
     }
 }

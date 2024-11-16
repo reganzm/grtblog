@@ -12,7 +12,9 @@ import { User } from '@/redux/userSlice';
 import { userInfo } from '@/api/user';
 import { UserRoundPlusIcon } from 'lucide-react';
 
-export default function NavBarDesktop() {
+export default function NavBarDesktop({ items }: {
+  items: { name: string; href: string; children?: { name: string; href: string }[] }[]
+}) {
   const { resolvedTheme, setTheme, theme } = useTheme();
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -38,14 +40,7 @@ export default function NavBarDesktop() {
     };
   }, [theme]);
 
-  const navItems = [
-    { name: '首页', href: '/', children: [{ name: '留言板', href: '/comments' }, { name: '友链', href: '/friends' }] },
-    { name: '关于', href: '/about' },
-    { name: '分类', href: '/categories' },
-    { name: '文章', href: '/posts' },
-    { name: '项目', href: '/projects' },
-    { name: '标签', href: '/tags' },
-  ];
+  const navItems = items;
 
   const handleMouseEnter = (name: string) => {
     setActiveItem(name);
@@ -100,7 +95,7 @@ export default function NavBarDesktop() {
                     </div>
                   </Link>
                   <AnimatePresence>
-                    {item.children && activeItem === item.name && (
+                    {item.children && item.children.length > 0 && activeItem === item.name && (
                       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
                                   exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
                         <div className={styles.submenu}>

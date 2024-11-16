@@ -24,4 +24,22 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * 分页查询文章
      */
     List<Article> getArticleListByPage(@Param("start") Integer start, @Param("pageSize") Integer pageSize);
+
+    /**
+     * 获取所有文章的短链接
+     */
+    @Select("SELECT short_url FROM article")
+    List<String> getAllArticleShortLinks();
+
+    /**
+     * 根据文章短链接获取文章
+     */
+    @Select("SELECT * FROM article WHERE short_url = #{shortUrl}")
+    Article getArticleByShortUrl(String shortUrl);
+
+    /**
+     * 根据分类 id 分页获取文章列表
+     */
+    @Select("SELECT * FROM article WHERE category_id = #{categoryId} AND is_published = 1 ORDER BY created_at DESC LIMIT #{start}, #{pageSize}")
+    List<Article> getArticleListByCategory(@Param("categoryId") Long categoryId, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
 }

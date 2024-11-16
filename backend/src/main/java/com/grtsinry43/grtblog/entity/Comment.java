@@ -32,9 +32,9 @@ public class Comment implements Serializable {
     private Long id;
 
     /**
-     * 文章 ID
+     * 评论区id
      */
-    private Long articleId;
+    private Long areaId;
 
     /**
      * 评论内容（markdown 格式）
@@ -80,11 +80,6 @@ public class Comment implements Serializable {
      * 评论者网站
      */
     private String website;
-
-    /**
-     * 评论状态（PUBLISHED, DRAFT）
-     */
-    private String status;
 
     /**
      * 评论创建时间

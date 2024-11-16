@@ -17,7 +17,7 @@ export type ArticlePreview = {
   createdAt: string,
   updatedAt: string,
   categoryName: string,
-  id: string,
+  shortUrl: string,
   isTop: boolean,
   likes: number,
   summary: string,
@@ -44,7 +44,7 @@ const ArticlePageItem = ({ post }: { post: ArticlePreview }) => {
         }}
         transition={{ type: 'spring', stiffness: 300, mass: 0.3 }}
       >
-        <Link href={`/posts/${post.id}`}>
+        <Link href={`/posts/${post.shortUrl}`}>
           <h1 className="text-xl font-bold transition">{post.title}</h1>
           <div
             className="text-gray-500 text-sm mt-2">{isMobile ? post.summary.length > 100 ? post.summary.slice(0, 100) + '...' : post.summary : post.summary}</div>

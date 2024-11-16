@@ -17,6 +17,6 @@ public interface ICommentService extends IService<Comment> {
 
     public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua);
 
-    public Object listCommentByArticleId(Long articleId);
+    public Object listCommentByArticleId(String shortUrl);
 
 }

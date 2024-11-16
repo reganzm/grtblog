@@ -24,4 +24,10 @@ public interface IStatusUpdateService extends IService<StatusUpdate> {
      * 获取最近的一条
      */
     public StatusUpdatePreview getLastStatusUpdate();
+
+    /**
+     * 分页获取所有说说
+     */
+    public List<StatusUpdatePreview> listStatusUpdatesByPage(int page, int pageSize);
+
 }

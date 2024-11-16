@@ -26,4 +26,10 @@ public interface StatusUpdateMapper extends BaseMapper<StatusUpdate> {
      */
     @Select("SELECT * FROM status_update ORDER BY created_at DESC LIMIT 1")
     public StatusUpdate selectLastStatusUpdate();
+
+    /**
+     * 分页获取所有说说
+     */
+    @Select("SELECT * FROM status_update ORDER BY created_at DESC LIMIT #{page}, #{pageSize}")
+    public List<StatusUpdate> listStatusUpdatesByPage(int page, int pageSize);
 }

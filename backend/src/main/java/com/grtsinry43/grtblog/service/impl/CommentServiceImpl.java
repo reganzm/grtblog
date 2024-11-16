@@ -2,6 +2,7 @@ package com.grtsinry43.grtblog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.grtsinry43.grtblog.dto.CommentNotLoginForm;
+import com.grtsinry43.grtblog.entity.Article;
 import com.grtsinry43.grtblog.entity.Comment;
 import com.grtsinry43.grtblog.mapper.CommentMapper;
 import com.grtsinry43.grtblog.service.ICommentService;
@@ -25,6 +26,11 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
+    private final ArticleServiceImpl articleService;
+
+    public CommentServiceImpl(ArticleServiceImpl articleService) {
+        this.articleService = articleService;
+    }
 
     @Override
     public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua) {
@@ -46,7 +52,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         Comment comment = new Comment();
         BeanUtils.copyProperties(form, comment);
         comment.setNickName(form.getUserName());
-        comment.setArticleId(Long.parseLong(form.getArticleId()));
+        // 这里要将评论区的 id 作为评论的 areaId
+        Article article = articleService.getBaseMapper().getArticleByShortUrl(form.getShortUrl());
+        Long commentId = article.getCommentId();
+        comment.setAreaId(commentId);
         comment.setParentId(Objects.equals(form.getParentId(), "") ? null : Long.parseLong(form.getParentId()));
         comment.setIp(ip);
         comment.setLocation(location);
@@ -60,10 +69,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
-    public List<CommentVO> listCommentByArticleId(Long articleId) {
-        // 这里比较复杂，根据文章 ID 查询评论列表，然后将评论列表转换为树形结构
-        // 1. 查询指定文章的所有评论
-        List<Comment> comments = this.baseMapper.selectByArticleId(articleId);
+    public List<CommentVO> listCommentByArticleId(String shortUrl) {
+        Article article = articleService.getBaseMapper().getArticleByShortUrl(shortUrl);
+        // 这里比较复杂，根据文章查询评论列表，然后将评论列表转换为树形结构
+        // 1. 查询指定文章的评论id
+        Long commentId = article.getCommentId();
+        List<Comment> comments = list(new QueryWrapper<Comment>().lambda().eq(Comment::getAreaId, commentId));
 
         // 2. 将 Comment 转换为 CommentVO
         List<CommentVO> commentVOList = comments.stream().map(comment -> {
@@ -71,7 +82,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             BeanUtils.copyProperties(comment, commentVO);
             commentVO.setId(comment.getId().toString());
             commentVO.setUserName(comment.getNickName());
-            commentVO.setArticleId(comment.getArticleId().toString());
             commentVO.setParentId(comment.getParentId() == null ? null : comment.getParentId().toString());
             return commentVO;
         }).toList();

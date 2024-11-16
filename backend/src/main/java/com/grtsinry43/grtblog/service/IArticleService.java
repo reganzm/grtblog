@@ -20,13 +20,19 @@ import java.util.List;
 public interface IArticleService extends IService<Article> {
     ArticleVO addArticle(ArticleDTO articleDTO, Long userId);
 
-    ArticleView viewOneArticle(Long id);
+    ArticleVO updateArticle(Long articleId, ArticleDTO articleDTO, Long userId);
 
-    List<Long> getAllArticleIds();
+    ArticleView viewOneArticle(String shortUrl);
+
+    List<String> getAllArticleShortLinks();
 
     List<ArticlePreview> getLastFiveArticleList();
 
-    List<ArticlePreview> getRecommendArticleList(Long articleId);
+    List<ArticlePreview> getRecommendArticleList(String shortUrl);
 
     List<ArticlePreview> getArticleListByPage(Integer page, Integer pageSize);
+
+    List<ArticlePreview> getArticleListByCategory(String shortUrl, Integer page, Integer pageSize);
+
+    List<ArticleVO> getArticleListAdmin(Integer page, Integer pageSize);
 }

@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.controller;
 
+import com.grtsinry43.grtblog.dto.AddCategory;
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
 import com.grtsinry43.grtblog.entity.Category;
@@ -103,4 +104,26 @@ public class AdminController {
     public ApiResponse<List<CategoryVO>> listAllCategories() {
         return ApiResponse.success(categoryService.listAllCategories());
     }
+
+    @PreAuthorize("hasAuthority('article:edit')")
+    @PatchMapping("/article/{id}")
+    public ApiResponse<ArticleVO> updateArticleApi(@PathVariable Long id, @RequestBody ArticleDTO articleDTO) {
+        Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
+        ArticleVO articleVO = articleService.updateArticle(id, articleDTO, userId);
+        return ApiResponse.success(articleVO);
+    }
+
+    @PreAuthorize("hasAuthority('category:add')")
+    @PostMapping("/category")
+    public ApiResponse<CategoryVO> addCategoryApi(@RequestBody AddCategory addCategory) {
+        CategoryVO categoryVO = categoryService.addNewCategory(addCategory.getName());
+        return ApiResponse.success(categoryVO);
+    }
+
+    @PreAuthorize("hasAuthority('article:edit')")
+    @GetMapping("/article/all")
+    public ApiResponse<List<ArticleVO>> listAllArticlesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return ApiResponse.success(articleService.getArticleListAdmin(page, pageSize));
+    }
+
 }

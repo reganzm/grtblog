@@ -14,9 +14,13 @@ import java.util.List;
 public interface ICategoryService extends IService<Category> {
     Boolean isCategoryExist(Long categoryId);
 
-    Category addNewCategory(String categoryName);
+    CategoryVO addNewCategory(String categoryName);
 
     String removeCategory(Long categoryId);
 
     List<CategoryVO> listAllCategories();
+
+    Long getCategoryIdByShortUrl(String shortUrl);
+
+    List<String> getAllCategoryShortLinks();
 }

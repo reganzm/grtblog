@@ -45,12 +45,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
 
   return (
     <ScrollArea radius={"full"} asChild>
-      <div className={clsx(styles.codeBlock, jetbrains_mono.className, bgClass)} style={{
-        scrollbarColor: 'var(--scrollbar-color)',
-        scrollbarWidth: 'thin',
-        scrollbarGutter: 'auto',
-        scrollBehavior: 'smooth',
-      }}>
+      <div className={clsx(styles.codeBlock, jetbrains_mono.className, bgClass)}>
         <div className="quick-action"
              style={{
                position: 'absolute',
@@ -89,6 +84,7 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ language, value }) => {
             fontSize: '14px',
             padding: '0.5em',
             transition: 'color 0.5s, background-color 0.5s',
+            marginRight: '5em', // 防止代码块被遮挡
           }}
           showLineNumbers
           lineNumberStyle={{

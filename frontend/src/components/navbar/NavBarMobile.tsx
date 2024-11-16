@@ -10,7 +10,9 @@ import styles from '@/styles/NavBarMobile.module.scss';
 import { UserRoundPlusIcon } from 'lucide-react';
 import { clsx } from 'clsx';
 
-const NavBarMobile = () => {
+const NavBarMobile = ({ items }: {
+  items: { name: string; href: string; children?: { name: string; href: string }[] }[]
+}) => {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [showPanel, setShowPanel] = useState(false);
@@ -19,21 +21,7 @@ const NavBarMobile = () => {
     setMounted(true);
   }, []);
 
-  const navItems = [
-    {
-      name: '首页',
-      href: '/',
-      children: [
-        { name: '留言板', href: '/comments' },
-        { name: '友链', href: '/friends' },
-      ],
-    },
-    { name: '关于', href: '/about' },
-    { name: '分类', href: '/categories' },
-    { name: '文章', href: '/posts' },
-    { name: '项目', href: '/projects' },
-    { name: '标签', href: '/tags' },
-  ];
+  const navItems = items;
 
   const togglePanel = () => {
     setShowPanel(!showPanel);
@@ -133,7 +121,7 @@ const NavBarMobile = () => {
                           className="block text-lg font-medium text-foreground hover:text-primary transition-colors duration-200">
                       {item.name}
                     </Link>
-                    {item.children && (
+                    {item.children && item.children.length > 0 && (
                       <div className="pl-4 space-y-2">
                         {item.children.map((child) => (
                           <Link

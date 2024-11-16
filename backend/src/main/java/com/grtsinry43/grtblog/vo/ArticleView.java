@@ -15,9 +15,9 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class ArticleView {
     /**
-     * 文章 ID，会由雪花算法生成
+     * 文章短链接
      */
-    private String id;
+    private String shortUrl;
 
     /**
      * 文章标题

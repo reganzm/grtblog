@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Data
 public class StatusUpdatePreview {
     /**
-     * 说说 ID，会由雪花算法生成
+     * 说说短链接
      */
-    private String id;
+    private String shortUrl;
 
     /**
      * 作者名字
@@ -30,6 +30,26 @@ public class StatusUpdatePreview {
      * 说说标题
      */
     private String title;
+
+    /**
+     * 说说摘要
+     */
+    private String summary;
+
+    /**
+     * 查看次数
+     */
+    private Integer views;
+
+    /**
+     * 评论次数
+     */
+    private Integer comments;
+
+    /**
+     * 点赞次数
+     */
+    private Integer likes;
 
     /**
      * 说说创建时间

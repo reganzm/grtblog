@@ -21,6 +21,11 @@ public class ArticlePreview {
     private String title;
 
     /**
+     * 文章短链接
+     */
+    private String shortUrl;
+
+    /**
      * 作者名字
      */
     private String authorName;

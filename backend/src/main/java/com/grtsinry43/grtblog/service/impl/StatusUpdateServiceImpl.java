@@ -35,7 +35,6 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                 .map(statusUpdate -> {
                     StatusUpdatePreview preview = new StatusUpdatePreview();
                     BeanUtils.copyProperties(statusUpdate, preview);
-                    preview.setId(statusUpdate.getId().toString());
                     preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
                     preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
                     return preview;
@@ -48,9 +47,24 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         StatusUpdate statusUpdate = baseMapper.selectLastStatusUpdate();
         StatusUpdatePreview preview = new StatusUpdatePreview();
         BeanUtils.copyProperties(statusUpdate, preview);
-        preview.setId(statusUpdate.getId().toString());
         preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         return preview;
+    }
+
+    @Override
+    public List<StatusUpdatePreview> listStatusUpdatesByPage(int page, int pageSize) {
+        int offset = (page - 1) * pageSize;
+        List<StatusUpdate> statusUpdates = baseMapper.listStatusUpdatesByPage(offset, pageSize);
+        return statusUpdates.stream()
+                .map(statusUpdate -> {
+                    StatusUpdatePreview preview = new StatusUpdatePreview();
+                    BeanUtils.copyProperties(statusUpdate, preview);
+                    preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
+                    preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
+                    preview.setSummary(statusUpdate.getSummary() != null ? statusUpdate.getSummary() : statusUpdate.getContent().length() > 200 ? statusUpdate.getContent().substring(0, 200) : statusUpdate.getContent());
+                    return preview;
+                })
+                .collect(Collectors.toList());
     }
 }

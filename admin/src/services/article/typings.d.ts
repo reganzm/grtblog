@@ -66,3 +66,62 @@ export interface AddArticleApiRes {
     deleted: Record<string, unknown>;
   };
 }
+
+export interface ArticleVO {
+  /* */
+  id: string;
+
+  /* */
+  title: string;
+
+  /* */
+  summary: string;
+
+  /* */
+  toc: string;
+
+  /* */
+  content: string;
+
+  /* */
+  author: string;
+
+  /* */
+  cover: string;
+
+  /* */
+  category: string;
+
+  /* */
+  views: number;
+
+  /* */
+  likes: number;
+
+  /* */
+  comments: number;
+
+  /* */
+  shortUrl: string;
+
+  /* */
+  isPublished: boolean;
+
+  /* */
+  createdAt: Record<string, unknown>;
+
+  /* */
+  updatedAt: Record<string, unknown>;
+
+  /* */
+  deletedAt: Record<string, unknown>;
+
+  /* */
+  isTop: boolean;
+
+  /* */
+  isHot: boolean;
+
+  /* */
+  isOriginal: boolean;
+}

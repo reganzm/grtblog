@@ -12,78 +12,41 @@ import java.time.LocalDateTime;
  */
 @Data
 public class ArticleVO {
-    /**
-     * 文章 ID，会由雪花算法生成
-     */
     private String id;
 
-    /**
-     * 文章标题
-     */
     private String title;
 
-    /**
-     * 文章内容，markdown 格式，交由前端解析
-     */
-    private String content;
-
-    /**
-     * 文章摘要
-     */
     private String summary;
 
-    /**
-     * 文章目录
-     */
     private String toc;
 
-    /**
-     * 文章分类名称
-     */
-    private String categoryName;
+    private String content;
 
-    /**
-     * 作者名字
-     */
-    private String authorName;
+    private String author;
 
-    /**
-     * 文章封面
-     */
     private String cover;
 
-    /**
-     * 文章浏览量
-     */
+    private String category;
+
     private Integer views;
 
-    /**
-     * 文章点赞量
-     */
     private Integer likes;
 
-    /**
-     * 文章评论量
-     */
     private Integer comments;
 
-    /**
-     * 文章状态（PUBLISHED, DRAFT）
-     */
-    private String status;
+    private String shortUrl;
 
-    /**
-     * 文章创建时间
-     */
+    private Boolean isPublished;
+
     private LocalDateTime createdAt;
 
-    /**
-     * 文章更新时间
-     */
     private LocalDateTime updatedAt;
 
-    /**
-     * 文章删除时间（软删除），如果不为空则表示已删除
-     */
     private LocalDateTime deletedAt;
+
+    private Boolean isTop;
+
+    private Boolean isHot;
+
+    private Boolean isOriginal;
 }

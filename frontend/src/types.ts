@@ -1,6 +1,7 @@
 export interface Article {
   id: number;
   title: string;
+  shortUrl: string;
   content: string;
   createdAt: string;
 }
@@ -15,6 +16,7 @@ export interface ArticlePreview {
   id: string;
   title: string;
   summary: string;
+  shortUrl: string;
   cover: string;
   createdAt: string;
   authorName: string;

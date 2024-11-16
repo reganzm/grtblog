@@ -4,7 +4,14 @@ import React, { useState, useEffect } from 'react';
 import NavBarDesktop from './NavBarDesktop';
 import NavBarMobile from './NavBarMobile';
 
-const NavBar = () => {
+type NavItem = {
+  name: string;
+  href: string;
+  children?: NavItem[];
+}
+
+const NavBar = ({ items }: { items: NavItem[] }) => {
+  console.log(items);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -22,7 +29,7 @@ const NavBar = () => {
 
   return (
     <div>
-      {isMobile ? <NavBarMobile /> : <NavBarDesktop />}
+      {isMobile ? <NavBarMobile items={items} /> : <NavBarDesktop items={items} />}
     </div>
   );
 };

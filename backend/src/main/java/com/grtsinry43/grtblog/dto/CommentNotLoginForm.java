@@ -12,7 +12,7 @@ public class CommentNotLoginForm {
     /**
      * 文章ID
      */
-    private String articleId;
+    private String shortUrl;
 
     /**
      * 评论内容（markdown格式）

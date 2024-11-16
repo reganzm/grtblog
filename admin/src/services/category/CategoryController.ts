@@ -6,7 +6,7 @@ export const getCategoryListApi = async () => {
   });
 };
 
-export const addCategoryApi = async (data: any) => {
+export const addCategoryApi = async (data: { name: string }) => {
   return request('/api/admin/category', {
     method: 'POST',
     data,

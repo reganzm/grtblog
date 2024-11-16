@@ -11,4 +11,5 @@ import lombok.Data;
 public class CategoryVO {
     String id;
     String name;
+    String shortUrl;
 }

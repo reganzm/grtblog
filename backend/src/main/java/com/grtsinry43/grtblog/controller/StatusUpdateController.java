@@ -7,6 +7,7 @@ import jakarta.annotation.security.PermitAll;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -40,6 +41,14 @@ public class StatusUpdateController {
     public ApiResponse<List<StatusUpdatePreview>> getLastFourStatusUpdates() {
         List<StatusUpdatePreview> lastFourStatusUpdates = statusUpdateService.getLastFourStatusUpdates();
         return ApiResponse.success(lastFourStatusUpdates);
+    }
+
+    @PermitAll
+    @GetMapping("/all")
+    public ApiResponse<List<StatusUpdatePreview>> getAllStatusUpdates(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                                      @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+        List<StatusUpdatePreview> allStatusUpdates = statusUpdateService.listStatusUpdatesByPage(page, pageSize);
+        return ApiResponse.success(allStatusUpdates);
     }
 
 }

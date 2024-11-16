@@ -60,6 +60,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if (!categoryService.isCategoryExist(articleDTO.getCategoryId())) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        // 添加短链接
+        article.setShortUrl(ArticleParser.generateShortUrl(articleDTO.getTitle()));
         // 处理标签
         String[] tagNames = articleDTO.getTags().split(",");
         Long[] tagIds = Arrays.stream(tagNames)
@@ -74,27 +76,60 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(article, articleVO);
         articleVO.setId(article.getId().toString());
-        articleVO.setAuthorName(userService.getById(userId).getNickname());
+        articleVO.setAuthor(userService.getById(userId).getNickname());
         return articleVO;
     }
 
     @Override
-    public ArticleView viewOneArticle(Long id) {
-        Article article = this.baseMapper.selectById(id);
+    public ArticleVO updateArticle(Long articleId, ArticleDTO articleDTO, Long userId) {
+        Article article = this.baseMapper.selectById(articleId);
+        BeanUtils.copyProperties(articleDTO, article);
+        article.setAuthorId(userId);
+        // 解析文章并生成目录
+        String toc = null;
+        try {
+            toc = ArticleParser.generateToc(articleDTO.getContent());
+        } catch (JsonProcessingException e) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR);
+        }
+        article.setToc(toc);
+        if (!categoryService.isCategoryExist(articleDTO.getCategoryId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        // 处理标签
+        String[] tagNames = articleDTO.getTags().split(",");
+        Long[] tagIds = Arrays.stream(tagNames)
+                .map(tagService::getOrCreateTagId)
+                .toArray(Long[]::new);
+        if (article.getSummary() == null) {
+            article.setSummary(article.getContent().length() > 200 ? article.getContent().substring(0, 200) : article.getContent());
+        }
+        this.baseMapper.updateById(article);
+        articleTagService.syncArticleTag(article.getId(), tagIds);
+        recommendationService.updateArticleStatus(article);
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtils.copyProperties(article, articleVO);
+        articleVO.setId(article.getId().toString());
+        articleVO.setAuthor(userService.getById(userId).getNickname());
+        return articleVO;
+    }
+
+    @Override
+    public ArticleView viewOneArticle(String shortUrl) {
+        Article article = this.baseMapper.getArticleByShortUrl(shortUrl);
         if (article == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND);
         }
         ArticleView articleView = new ArticleView();
         BeanUtils.copyProperties(article, articleView);
-        articleView.setId(article.getId().toString());
         articleView.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
         return articleView;
     }
 
 
     @Override
-    public List<Long> getAllArticleIds() {
-        return this.list().stream().map(Article::getId).collect(Collectors.toList());
+    public List<String> getAllArticleShortLinks() {
+        return this.baseMapper.getAllArticleShortLinks();
     }
 
     @Override
@@ -116,7 +151,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
-    public List<ArticlePreview> getRecommendArticleList(Long articleId) {
+    public List<ArticlePreview> getRecommendArticleList(String shortUrl) {
+        Long articleId = this.baseMapper.getArticleByShortUrl(shortUrl).getId();
         String[] recommendArticleIdsArray = recommendationService.getRecommendations(articleId, 5);
         List<Long> recommendArticleIds = Arrays.stream(recommendArticleIdsArray)
                 .map(Long::parseLong)
@@ -147,4 +183,36 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             return articlePreview;
         }).collect(Collectors.toList());
     }
+
+    @Override
+    public List<ArticlePreview> getArticleListByCategory(String shortUrl, Integer page, Integer pageSize) {
+        Long categoryId = categoryService.getCategoryIdByShortUrl(shortUrl);
+        List<Article> articles = this.baseMapper.getArticleListByCategory(categoryId, (page - 1) * pageSize, pageSize);
+        return articles.stream().map(article -> {
+            ArticlePreview articlePreview = new ArticlePreview();
+            BeanUtils.copyProperties(article, articlePreview);
+            articlePreview.setId(article.getId().toString());
+            articlePreview.setSummary(!"".equals(article.getSummary()) ? article.getSummary() : article.getContent().length() > 200 ?
+                    article.getContent().substring(0, 200) + "..." : article.getContent());
+            articlePreview.setCategoryName(article.getCategoryId() != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
+            articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
+            articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
+            return articlePreview;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ArticleVO> getArticleListAdmin(Integer page, Integer pageSize) {
+        List<Article> articles = this.baseMapper.getArticleListByPage((page - 1) * pageSize, pageSize);
+        return articles.stream().map(article -> {
+            ArticleVO articleVO = new ArticleVO();
+            BeanUtils.copyProperties(article, articleVO);
+            articleVO.setId(article.getId().toString());
+            articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
+            articleVO.setCategory(categoryService.getById(article.getCategoryId()) != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
+            return articleVO;
+        }).collect(Collectors.toList());
+    }
+
+
 }
