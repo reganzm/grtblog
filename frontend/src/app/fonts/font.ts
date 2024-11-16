@@ -1,4 +1,4 @@
-import { Edu_AU_VIC_WA_NT_Hand, Varela_Round } from 'next/font/google';
+import { Edu_AU_VIC_WA_NT_Hand, Noto_Serif_SC, Varela_Round } from 'next/font/google';
 import { Noto_Sans_SC } from 'next/font/google';
 import { Playwrite_US_Modern } from 'next/font/google';
 import { JetBrains_Mono } from 'next/font/google';
@@ -36,6 +36,12 @@ export const article_font = Nunito_Sans({
 
 export const error_font = Edu_AU_VIC_WA_NT_Hand({
   subsets: ['latin'],
+  display: 'swap',
+  weight: ['700'],
+});
+
+export const noto_serif_sc_bold = Noto_Serif_SC({
+  subsets: ['vietnamese'],
   display: 'swap',
   weight: ['700'],
 });

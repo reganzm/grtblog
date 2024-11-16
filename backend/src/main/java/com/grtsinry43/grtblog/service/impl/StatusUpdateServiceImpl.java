@@ -67,4 +67,30 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<StatusUpdatePreview> getStatusUpdatesByCategory(int page, int pageSize, String shortUrl) {
+        int offset = (page - 1) * pageSize;
+        List<StatusUpdate> statusUpdates = baseMapper.getStatusUpdatesByCategory(offset, pageSize, shortUrl);
+        return statusUpdates.stream()
+                .map(statusUpdate -> {
+                    StatusUpdatePreview preview = new StatusUpdatePreview();
+                    BeanUtils.copyProperties(statusUpdate, preview);
+                    preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
+                    preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
+                    preview.setSummary(statusUpdate.getSummary() != null ? statusUpdate.getSummary() : statusUpdate.getContent().length() > 200 ? statusUpdate.getContent().substring(0, 200) : statusUpdate.getContent());
+                    return preview;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public StatusUpdatePreview getStatusUpdateByShortUrl(String shortUrl) {
+        StatusUpdate statusUpdate = baseMapper.getStatusUpdateByShortUrl(shortUrl);
+        StatusUpdatePreview preview = new StatusUpdatePreview();
+        BeanUtils.copyProperties(statusUpdate, preview);
+        preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
+        preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
+        return preview;
+    }
 }

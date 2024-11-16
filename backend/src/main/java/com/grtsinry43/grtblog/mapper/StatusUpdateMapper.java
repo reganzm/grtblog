@@ -32,4 +32,16 @@ public interface StatusUpdateMapper extends BaseMapper<StatusUpdate> {
      */
     @Select("SELECT * FROM status_update ORDER BY created_at DESC LIMIT #{page}, #{pageSize}")
     public List<StatusUpdate> listStatusUpdatesByPage(int page, int pageSize);
+
+    /**
+     * 根据分类获取说说
+     */
+    @Select("SELECT * FROM status_update WHERE category_id = (SELECT id FROM category WHERE short_url = #{shortUrl}) ORDER BY created_at DESC LIMIT #{page}, #{pageSize}")
+    public List<StatusUpdate> getStatusUpdatesByCategory(int page, int pageSize, String shortUrl);
+
+    /**
+     * 根据短链接获取说说
+     */
+    @Select("SELECT * FROM status_update WHERE short_url = #{shortUrl}")
+    public StatusUpdate getStatusUpdateByShortUrl(String shortUrl);
 }

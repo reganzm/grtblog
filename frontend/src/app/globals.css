@@ -3,8 +3,6 @@
 @tailwind utilities;
 
 :root {
-    --background: 255, 255, 255;
-    --foreground: 0, 0, 0;
     --muted: 240, 240, 240;
     --muted-foreground: 115, 115, 115;
     --popover: 255, 255, 255;

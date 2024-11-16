@@ -51,4 +51,20 @@ public class StatusUpdateController {
         return ApiResponse.success(allStatusUpdates);
     }
 
+    @PermitAll
+    @GetMapping("/category/{shortUrl}")
+    public ApiResponse<List<StatusUpdatePreview>> getStatusUpdatesByCategory(@RequestParam(value = "page", defaultValue = "1") int page,
+                                                                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                                                             @RequestParam String shortUrl) {
+        List<StatusUpdatePreview> statusUpdatesByCategory = statusUpdateService.getStatusUpdatesByCategory(page, pageSize, shortUrl);
+        return ApiResponse.success(statusUpdatesByCategory);
+    }
+
+    @PermitAll
+    @GetMapping("/{shortUrl}")
+    public ApiResponse<StatusUpdatePreview> getStatusUpdateByShortUrl(@RequestParam String shortUrl) {
+        StatusUpdatePreview statusUpdateByShortUrl = statusUpdateService.getStatusUpdateByShortUrl(shortUrl);
+        return ApiResponse.success(statusUpdateByShortUrl);
+    }
+
 }
