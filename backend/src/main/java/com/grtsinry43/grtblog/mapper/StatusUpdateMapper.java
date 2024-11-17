@@ -30,13 +30,13 @@ public interface StatusUpdateMapper extends BaseMapper<StatusUpdate> {
     /**
      * 分页获取所有说说
      */
-    @Select("SELECT * FROM status_update ORDER BY created_at DESC LIMIT #{page}, #{pageSize}")
+    @Select("SELECT * FROM status_update ORDER BY is_top DESC, created_at DESC LIMIT #{page}, #{pageSize}")
     public List<StatusUpdate> listStatusUpdatesByPage(int page, int pageSize);
 
     /**
      * 根据分类获取说说
      */
-    @Select("SELECT * FROM status_update WHERE category_id = (SELECT id FROM category WHERE short_url = #{shortUrl}) ORDER BY created_at DESC LIMIT #{page}, #{pageSize}")
+    @Select("SELECT * FROM status_update WHERE category_id = (SELECT id FROM category WHERE short_url = #{shortUrl}) ORDER BY is_top DESC, created_at DESC LIMIT #{page}, #{pageSize}")
     public List<StatusUpdate> getStatusUpdatesByCategory(int page, int pageSize, String shortUrl);
 
     /**

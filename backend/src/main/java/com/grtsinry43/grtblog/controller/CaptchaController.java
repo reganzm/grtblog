@@ -12,6 +12,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
+ * 验证码控制器
  * @author grtsinry43
  * @date 2024/11/14 08:39
  * @description 热爱可抵岁月漫长

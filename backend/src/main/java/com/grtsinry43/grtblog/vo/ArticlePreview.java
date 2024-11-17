@@ -56,6 +56,11 @@ public class ArticlePreview {
     private String categoryName;
 
     /**
+     * 文章标签
+     */
+    private String tags;
+
+    /**
      * 文章点赞量
      */
     private Integer likes;

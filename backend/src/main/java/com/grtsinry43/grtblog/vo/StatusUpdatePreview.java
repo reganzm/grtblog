@@ -22,6 +22,11 @@ public class StatusUpdatePreview {
     private String authorName;
 
     /**
+     * 作者头像
+     */
+    private String authorAvatar;
+
+    /**
      * 图片
      */
     private String[] images;
@@ -50,6 +55,16 @@ public class StatusUpdatePreview {
      * 点赞次数
      */
     private Integer likes;
+
+    /**
+     * 是否置顶
+     */
+    private Boolean isTop;
+
+    /**
+     * 是否热门
+     */
+    private Boolean isHot;
 
     /**
      * 说说创建时间

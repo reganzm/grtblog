@@ -75,4 +75,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public String[] getTagNamesByArticleId(Long articleId) {
+        return articleTagMapper.getTagNamesByArticleId(articleId);
+    }
+
 }

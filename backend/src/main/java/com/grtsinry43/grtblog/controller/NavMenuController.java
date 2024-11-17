@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
+ * 导航菜单控制器
  * @author grtsinry43
  * @date 2024/11/16 00:09
  * @description 热爱可抵岁月漫长

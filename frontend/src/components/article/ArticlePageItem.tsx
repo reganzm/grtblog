@@ -18,6 +18,7 @@ export type ArticlePreview = {
   updatedAt: string,
   categoryName: string,
   shortUrl: string,
+  tags: string,
   isTop: boolean,
   likes: number,
   summary: string,
@@ -60,10 +61,12 @@ const ArticlePageItem = ({ post }: { post: ArticlePreview }) => {
                 {post.createdAt !== post.updatedAt &&
                   <span className="text-xs text-gray-450 dark:text-gray-550"> （更新于 {formattedUpdatedDate}）</span>}
               </div>
-              <div className="flex items-center mr-4 mb-2">
-                <TagIcon width={12} height={12} className="inline-block mr-1" />
-                <span> {post.authorName}</span>
-              </div>
+              {post.tags && post.tags.split(',').map((tag, index) => (
+                <div className="flex items-center mr-4 mb-2" key={index}>
+                  <TagIcon width={12} height={12} className="inline-block mr-1" />
+                  <span> {tag}</span>
+                </div>
+              ))}
               <div className="flex items-center mr-4 mb-2">
                 <Eye width={12} height={12} className="inline-block mr-1" />
                 <span> {post.likes}</span>

@@ -123,6 +123,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         ArticleView articleView = new ArticleView();
         BeanUtils.copyProperties(article, articleView);
         articleView.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
+        articleView.setCategoryName(categoryService.getById(article.getCategoryId()).getName());
+        articleView.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
         return articleView;
     }
 
@@ -142,6 +144,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                 articlePreview.setId(article.getId().toString());
                 articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
                 articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
+                articlePreview.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
                 return articlePreview;
             }).collect(Collectors.toList());
         } catch (Exception e) {
@@ -163,6 +166,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             BeanUtils.copyProperties(article, articlePreview);
             articlePreview.setId(article.getId().toString());
             articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
+            articlePreview.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
             articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
             return articlePreview;
         }).collect(Collectors.toList());
@@ -179,6 +183,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
                     article.getContent().substring(0, 200) + "..." : article.getContent());
             articlePreview.setCategoryName(article.getCategoryId() != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
             articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
+            articlePreview.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
             articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
             return articlePreview;
         }).collect(Collectors.toList());
@@ -194,6 +199,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articlePreview.setId(article.getId().toString());
             articlePreview.setSummary(!"".equals(article.getSummary()) ? article.getSummary() : article.getContent().length() > 200 ?
                     article.getContent().substring(0, 200) + "..." : article.getContent());
+            articlePreview.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
             articlePreview.setCategoryName(article.getCategoryId() != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
             articlePreview.setAvatar(userService.getById(article.getAuthorId()).getAvatar());
             articlePreview.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
@@ -209,6 +215,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             BeanUtils.copyProperties(article, articleVO);
             articleVO.setId(article.getId().toString());
             articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
+            articleVO.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
             articleVO.setCategory(categoryService.getById(article.getCategoryId()) != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
             return articleVO;
         }).collect(Collectors.toList());

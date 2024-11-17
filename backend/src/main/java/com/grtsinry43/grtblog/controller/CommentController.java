@@ -13,9 +13,7 @@ import org.springframework.stereotype.Controller;
 import java.util.List;
 
 /**
- * <p>
- * 前端控制器
- * </p>
+ * 评论控制器
  *
  * @author grtsinry43
  * @since 2024-10-09

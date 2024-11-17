@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author grtsinry43
@@ -16,4 +16,7 @@ public interface ArticleTagMapper extends BaseMapper<ArticleTag> {
 
     @Select("SELECT COUNT(*) FROM article_tag WHERE tag_id = #{tagId}")
     int countArticlesByTagId(Long tagId);
+
+    @Select("SELECT t.name FROM tag t JOIN article_tag at ON t.id = at.tag_id WHERE at.article_id = #{articleId}")
+    String[] getTagNamesByArticleId(Long articleId);
 }

@@ -50,6 +50,16 @@ public class ArticleView {
     private String cover;
 
     /**
+     * 文章分类名称
+     */
+    private String categoryName;
+
+    /**
+     * 文章标签
+     */
+    private String tags;
+
+    /**
      * 文章浏览量
      */
     private Integer views;

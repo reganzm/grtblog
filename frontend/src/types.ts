@@ -61,3 +61,61 @@ export interface YearlyArchive {
   articles: ArticleArchive[];
   statusUpdates: StatusUpdateArchive[];
 }
+
+/**
+ * Moment
+ */
+export interface Moment {
+  /**
+   * 作者名字
+   */
+  authorName: string;
+  /**
+   * 作者头像
+   */
+  authorAvatar: string;
+  /**
+   * 评论次数
+   */
+  comments: number;
+  /**
+   * 说说创建时间
+   */
+  createdAt: string;
+  /**
+   * 图片
+   */
+  images: string[];
+  /**
+   * 点赞次数
+   */
+  likes: number;
+  /**
+   * 说说短链接
+   */
+  shortUrl: string;
+  /**
+   * 说说摘要
+   */
+  summary: string;
+  /**
+   * 说说标题
+   */
+  title: string;
+  /**
+   * 说说更新时间
+   */
+  updatedAt: string;
+  /**
+   * 查看次数
+   */
+  views: number;
+  /**
+   * 是否置顶
+   */
+  isTop: boolean;
+  /**
+   * 是否热门
+   */
+  isHot: boolean;
+}

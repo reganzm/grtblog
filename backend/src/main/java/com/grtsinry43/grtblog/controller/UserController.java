@@ -25,10 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * <p>
- * 前端控制器
- * </p>
- *
+ * 用户控制器
  * @author grtsinry43
  * @since 2024-10-09
  */

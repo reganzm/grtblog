@@ -28,6 +28,8 @@ public class ArticleVO {
 
     private String category;
 
+    private String tags;
+
     private Integer views;
 
     private Integer likes;
