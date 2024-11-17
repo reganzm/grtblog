@@ -39,3 +39,25 @@ export type Comment = {
   userName: string;
   website: string;
 };
+
+export interface ArticleArchive {
+  title: string;
+  shortUrl: string;
+  category: string;
+  createdAt: string;
+}
+
+export interface StatusUpdateArchive {
+  title: string;
+  shortUrl: string;
+  category: string;
+  createdAt: string;
+}
+
+export interface YearlyArchive {
+  year: number;
+  articleCount: number;
+  statusUpdateCount: number;
+  articles: ArticleArchive[];
+  statusUpdates: StatusUpdateArchive[];
+}

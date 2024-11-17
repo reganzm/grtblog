@@ -337,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `page`
 -- 插入系统内置页面
 INSERT INTO `page` (`id`, `title`, `ref_path`, `enable`, `can_delete`, `toc`, `content`, `views`, `likes`, `comments`,
                     `comment_id`, `created_at`, `updated_at`, `deleted_at`)
-VALUES (1, '归档', '/archive', 1, 0, '[]', '## 归档', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+VALUES (1, '归档', '/archives', 1, 0, '[]', '## 归档', 0, 0, 0, NULL, NOW(), NOW(), NULL),
        (2, '标签', '/tags', 1, 0, '[]', '## 标签', 0, 0, 0, NULL, NOW(), NOW(), NULL),
        (3, '留言板', '/message', 1, 0, '[]', '## 留言板', 0, 0, 0, NULL, NOW(), NOW(), NULL),
        (4, '友链', '/links', 1, 0, '[]', '## 友链', 0, 0, 0, NULL, NOW(), NOW(), NULL),
@@ -368,7 +368,7 @@ VALUES (1, '首页', '/', 0, 0, NOW(), NOW(), NULL),
        (3, '记录', '/moments', 2, 0, NOW(), NOW(), NULL),
        (4, '留言板', '/message', 0, 1, NOW(), NOW(), NULL),
        (5, '友链', '/friends', 1, 1, NOW(), NOW(), NULL),
-       (6, '归档', '/archive', 3, 0, NOW(), NOW(), NULL),
+       (6, '归档', '/archives', 3, 0, NOW(), NOW(), NULL),
        (7, '标签', '/tags', 4, 0, NOW(), NOW(), NULL),
        (8, '思考', '/thinking', 5, 0, NOW(), NOW(), NULL);
 
