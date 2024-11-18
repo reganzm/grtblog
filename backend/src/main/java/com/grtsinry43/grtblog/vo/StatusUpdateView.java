@@ -1,0 +1,83 @@
+package com.grtsinry43.grtblog.vo;
+
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+/**
+ * @author grtsinry43
+ * @date 2024/11/1 13:04
+ * @description 热爱可抵岁月漫长
+ */
+@Data
+public class StatusUpdateView {
+    /**
+     * 说说短链接
+     */
+    private String shortUrl;
+
+    /**
+     * 作者名字
+     */
+    private String authorName;
+
+    /**
+     * 作者头像
+     */
+    private String authorAvatar;
+
+    /**
+     * 图片
+     */
+    private String[] images;
+
+    /**
+     * 说说标题
+     */
+    private String title;
+
+    /**
+     * 内容（Markdown 格式，由前端解析，不解析图片）
+     */
+    private String content;
+
+    /**
+     * 查看次数
+     */
+    private Integer views;
+
+    /**
+     * 评论次数
+     */
+    private Integer comments;
+
+    /**
+     * 点赞次数
+     */
+    private Integer likes;
+
+    /**
+     * 是否置顶
+     */
+    private Boolean isTop;
+
+    /**
+     * 是否热门
+     */
+    private Boolean isHot;
+
+    /**
+     * 是否原创
+     */
+    private Boolean isOriginal;
+
+    /**
+     * 说说创建时间
+     */
+    private LocalDateTime createdAt;
+
+    /**
+     * 说说更新时间
+     */
+    private LocalDateTime updatedAt;
+}

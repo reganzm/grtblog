@@ -6,6 +6,7 @@ import com.grtsinry43.grtblog.mapper.UserMapper;
 import com.grtsinry43.grtblog.service.IStatusUpdateService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
+import com.grtsinry43.grtblog.vo.StatusUpdateView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -89,13 +90,18 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
     }
 
     @Override
-    public StatusUpdatePreview getStatusUpdateByShortUrl(String shortUrl) {
+    public StatusUpdateView getStatusUpdateByShortUrl(String shortUrl) {
         StatusUpdate statusUpdate = baseMapper.getStatusUpdateByShortUrl(shortUrl);
-        StatusUpdatePreview preview = new StatusUpdatePreview();
+        StatusUpdateView preview = new StatusUpdateView();
         BeanUtils.copyProperties(statusUpdate, preview);
         preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
         return preview;
+    }
+
+    @Override
+    public List<String> getAllStatusUpdateShortLinks() {
+        return this.baseMapper.getAllShortLinks();
     }
 }

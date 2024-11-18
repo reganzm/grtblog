@@ -44,4 +44,10 @@ public interface StatusUpdateMapper extends BaseMapper<StatusUpdate> {
      */
     @Select("SELECT * FROM status_update WHERE short_url = #{shortUrl}")
     public StatusUpdate getStatusUpdateByShortUrl(String shortUrl);
+
+    /**
+     * 获取所有短链接
+     */
+    @Select("SELECT short_url FROM status_update")
+    public List<String> getAllShortLinks();
 }

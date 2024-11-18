@@ -3,6 +3,7 @@ package com.grtsinry43.grtblog.service;
 import com.grtsinry43.grtblog.entity.StatusUpdate;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
+import com.grtsinry43.grtblog.vo.StatusUpdateView;
 
 import java.util.List;
 
@@ -38,7 +39,12 @@ public interface IStatusUpdateService extends IService<StatusUpdate> {
     /**
      * 根据短链接获取说说
      */
-    public StatusUpdatePreview getStatusUpdateByShortUrl(String shortUrl);
+    public StatusUpdateView getStatusUpdateByShortUrl(String shortUrl);
+
+    /**
+     * 获取所有说说的短链接
+     */
+    public List<String> getAllStatusUpdateShortLinks();
 
 
 }

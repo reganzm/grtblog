@@ -63,7 +63,7 @@ const MomentCardItem = ({ moment, index }: { moment: Moment, index: number }) =>
                   <span className="flex items-center gap-1 mr-4"><MessageCircle size={16} /> {moment.comments}</span>
                   <span className="flex items-center gap-1"><Share2 size={16} /></span>
                 </div>
-                <Link href={`/moment/${moment.shortUrl}`} passHref>
+                <Link href={`/moments/${moment.shortUrl}`} passHref>
                   <Button variant="ghost" size="3" className="text-primary">
                     查看详情 <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
