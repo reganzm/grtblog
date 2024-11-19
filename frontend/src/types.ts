@@ -104,6 +104,10 @@ export interface Moment {
      */
     title: string;
     /**
+     * 分类
+     */
+    categoryName: string;
+    /**
      * 说说更新时间
      */
     updatedAt: string;

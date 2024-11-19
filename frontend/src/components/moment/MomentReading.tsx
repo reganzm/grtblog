@@ -8,6 +8,7 @@ import ReactMarkdown from 'react-markdown'
 import {clsx} from "clsx";
 import {article_font, ma_shan_zheng, moment_font} from "@/app/fonts/font";
 import styles from '@/styles/moment/MomentPage.module.scss'
+import {useTheme} from "next-themes";
 
 export interface MomentView {
     authorName: string;
@@ -25,7 +26,8 @@ export interface MomentView {
     views: number;
 }
 
-export default function MomentReadingPage({moment}: { moment: MomentView }) {
+function MomentReadingPage({moment}: { moment: MomentView }) {
+    const isDark = useTheme().theme === 'dark';
     return (
         <div className="min-h-screen bg-transparent py-8 px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -35,7 +37,7 @@ export default function MomentReadingPage({moment}: { moment: MomentView }) {
             >
                 <div
                     className={clsx(styles.moment, {
-                        [styles['moment-dark']]: true,
+                        [styles['moment-dark']]: isDark,
                     }, "max-w-3xl mx-auto bg-white dark:bg-black rounded-lg shadow-lg overflow-hidden")}>
                     <article className="px-8 py-12 prose prose-slate dark:prose-invert max-w-none">
                         <h1 className={clsx(ma_shan_zheng.className, "text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100")}>{moment.title}</h1>
@@ -134,3 +136,5 @@ export default function MomentReadingPage({moment}: { moment: MomentView }) {
         </div>
     )
 }
+
+export default MomentReadingPage;

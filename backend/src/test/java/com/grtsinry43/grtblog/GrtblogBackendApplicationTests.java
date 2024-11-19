@@ -16,61 +16,7 @@ class GrtblogBackendApplicationTests {
 
     @Test
     public void testGenerateToc() throws JsonProcessingException {
-        String content = "**恭喜，站点初始化成功！**\n" +
-                "\n" +
-                "---\n" +
-                "\n" +
-                "**欢迎使用 Grtblog！**\n" +
-                "\n" +
-                "## 简要介绍\n" +
-                "\n" +
-                "### 组成\n" +
-                "\n" +
-                "网站主要由[文章](/posts])，[分享](/shares)，还有[简短句子（类似一言）分享](/thinking)组成\n" +
-                "\n" +
-                "提供了归档，标签，留言板，友链，一日一言，文章 / 分享默认页面\n" +
-                "\n" +
-                "### markdown支持\n" +
-                "\n" +
-                "其中所有页面覆盖`markdown`支持，可以使用几乎完整的标准markdown语法（其中评论区拒绝了解析HTML图片）\n" +
-                "\n" +
-                "```js\n" +
-                "console.log(\"对于代码块进行了一定的优化\")\n" +
-                "```\n" +
-                "\n" +
-                "```html\n" +
-                "<!DOCTYPE HTML>\n" +
-                "<html>\n" +
-                "  <head></head>\n" +
-                "  <body>\n" +
-                "    <p>Hello world.</p>\n" +
-                "  </body>\n" +
-                "</html>\n" +
-                "```\n" +
-                "\n" +
-                "自定义了表格样式（以下仅是示例）\n" +
-                "\n" +
-                "*表1：管理员表结构*\n" +
-                "\n" +
-                "| 列名     | 数据类型    | 长度 | 非空 | 主键 |\n" +
-                "| -------- | ----------- | ---- | ---- | ---- |\n" +
-                "| id       | UUID        | 64   | √    | √    |\n" +
-                "| account  | VARCHAR(32) | 32   | √    |      |\n" +
-                "| password | VARCHAR(32) | 32   |      |      |\n" +
-                "\n" +
-                "当你创建或修改文章，将会自动根据md标题解析对应的目录（比如本文）\n" +
-                "\n" +
-                "### 文章推荐\n" +
-                "\n" +
-                "系统实现了文章相关推荐和用户喜好推荐，可以基于用户信息或单次会话进行推荐\n" +
-                "\n" +
-                "## 现在你应该做什么\n" +
-                "\n" +
-                "当你看到这个页面的时候，证明你已经完成了相关设置，现在，你可以前往管理面板探索啦！\n" +
-                "\n" +
-                "> 总之岁月漫长，然而值得等待\n" +
-                "\n" +
-                "**希望这个小小的框架能陪伴你的写作之旅，分享收获与记录生活，用指尖灵动的文字书写着不期而遇的惊喜**";
+        String content = "";
         String actualToc = ArticleParser.generateToc(content);
         System.out.println(actualToc);
     }

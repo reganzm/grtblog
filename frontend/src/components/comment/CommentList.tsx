@@ -8,7 +8,7 @@ import {Comment} from '@/types';
 import {Skeleton, Text} from '@radix-ui/themes';
 import emitter from "@/utils/eventBus";
 
-const CommentList = ({id, subComments}: { id?: string, subComments?: Comment[] }) => {
+const CommentList = ({id, subComments, isModal}: { id?: string, subComments?: Comment[], isModal?: boolean }) => {
     const [comments, setComments] = useState<Comment[]>([]);
     const [page, setPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -51,6 +51,7 @@ const CommentList = ({id, subComments}: { id?: string, subComments?: Comment[] }
 
     useEffect(() => {
         const handleRefreshCommentList = () => {
+            setComments([]);
             setPage(1);
             setAddTrigger(prev => !prev);
         };
@@ -69,12 +70,12 @@ const CommentList = ({id, subComments}: { id?: string, subComments?: Comment[] }
             {comments.map((comment, index) => {
                 if (comments.length === index + 1) {
                     return (
-                        <div ref={lastCommentElementRef} key={comment.id}>
+                        <div ref={lastCommentElementRef} key={isModal ? "Modal" + comment.id : comment.id}>
                             <CommentListItem comment={comment}/>
                         </div>
                     );
                 } else {
-                    return <CommentListItem key={comment.id} comment={comment}/>;
+                    return <CommentListItem key={isModal ? "Modal" + comment.id : comment.id} comment={comment}/>;
                 }
             })}
             {loading && (
@@ -83,7 +84,7 @@ const CommentList = ({id, subComments}: { id?: string, subComments?: Comment[] }
                 </Skeleton>
             )}
             {!hasMore && (
-                <div className="text-center text-gray-500 text-sm mt-2 mb-4"> 没有更多啦，不小心让你翻到底了欸
+                <div className="text-center text-gray-500 text-sm mt-4 mb-4"> 没有更多啦，不小心让你翻到底了欸
                     〃•ω‹〃</div>
             )}
         </div>

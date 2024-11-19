@@ -57,6 +57,11 @@ public class StatusUpdateView {
     private Integer likes;
 
     /**
+     * 评论区id
+     */
+    private String commentId;
+
+    /**
      * 是否置顶
      */
     private Boolean isTop;

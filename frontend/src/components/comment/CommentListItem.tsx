@@ -7,14 +7,12 @@ import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
 import InlineCodeBlock from '@/components/InlineCodeBlock';
 import CodeBlock from '@/components/CodeBlock';
-import ArticleInlineLink from '@/components/article/ArticleInlineLink';
 import {clsx} from 'clsx';
 import TableView from '@/components/article/TableView';
 import ReactMarkdown from 'react-markdown';
-import {Avatar, Button} from '@radix-ui/themes';
+import {Avatar, Button, Link} from '@radix-ui/themes';
 import {formatDistanceToNow, parseISO} from 'date-fns';
 import {zhCN} from 'date-fns/locale';
-import {GlobeIcon} from '@radix-ui/react-icons';
 import {motion} from 'framer-motion';
 import CommentForm from "@/components/comment/CommentForm";
 import CommentList from "@/components/comment/CommentList";
@@ -36,8 +34,7 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                             alt={comment.userName} width={12} height={12}
                             fallback={comment.userName === '' ? '' : comment.userName[0]}
                             className={styles.commentAvatar}/>
-                    <div className={styles.commentUserName}> {comment.userName}</div>
-                    {comment.website && (
+                    {comment.website ? (
                         <>
                             {(() => {
                                 if (!comment.website.startsWith('http')) {
@@ -46,30 +43,32 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                                 return (
                                     <a href={comment.website} target="_blank" rel="noopener noreferrer"
                                        className={styles.commentWebsite}>
-                                        <GlobeIcon/>
+                                        <div className={styles.commentUserName}> {comment.userName}</div>
                                     </a>
                                 );
                             })()}
                         </>
+                    ) : (
+                        <div className={styles.commentUserName}> {comment.userName}</div>
                     )}
+                    {
+                        comment.parentId && (
+                            <div className={styles.commentParent} style={{
+                                paddingLeft: '0.3rem',
+                                fontSize: '0.8rem',
+                                color: 'rgba(var(--foreground), 0.7)',
+                                lineHeight: '2rem',
+                            }}>
+                                <span> 回复 </span>
+                                <span className={styles.commentParentName}>{comment.parentUserName}</span>
+                            </div>
+                        )
+                    }
                 </div>
                 <div className={styles.commentMeta}>
                     <div className={styles.commentTime}>{formattedCreatedAt}</div>
                     <span className={styles.commentLocation}>{comment.location}</span>
                 </div>
-                {
-                    comment.parentId && (
-                        <div className={styles.commentParent} style={{
-                            paddingLeft: '3.4rem',
-                            fontSize: '0.8rem',
-                            color: 'rgba(var(--foreground), 0.7)',
-                            marginTop: '0.5rem',
-                        }}>
-                            <span> 回复 </span>
-                            <span className={styles.commentParentName}>{comment.parentUserName}</span>
-                        </div>
-                    )
-                }
                 <ReactMarkdown
                     className={styles.commentContent}
                     rehypePlugins={[rehypeSanitize]}
@@ -87,8 +86,8 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                             );
                         },
                         a({...props}) {
-                            return <ArticleInlineLink className={clsx(styles.underlineAnimation, styles.glowAnimation)}
-                                                      {...props} linkTitle={props.children} linkUrl={props.href}/>;
+                            return <Link className={clsx(styles.underlineAnimation, styles.glowAnimation)}
+                                         {...props}/>;
                         },
                         p({...props}) {
                             return <p className={'mt-2 mb-2 line'} style={{lineHeight: '1.5'}} {...props} />;

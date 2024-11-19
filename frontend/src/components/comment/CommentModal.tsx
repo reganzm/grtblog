@@ -25,7 +25,7 @@ function CommentModal({isOpen = false, onClose, commentId}: CommentModalProps) {
         <Dialog.Root open={isOpen} onOpenChange={() => setShake(true)}>
             <Dialog.Content className={shake ? 'shake' : ''} style={{
                 maxWidth: '1000px',
-                background: 'rgba(var(--background), 0.4)',
+                background: 'rgba(var(--background), 0.7)',
                 backdropFilter: 'blur(10px)',
                 borderRadius: '7px',
             }}>
@@ -40,7 +40,7 @@ function CommentModal({isOpen = false, onClose, commentId}: CommentModalProps) {
                 <ScrollArea style={{
                     maxHeight: 'calc(100vh - 300px)',
                 }}>
-                    <CommentArea id={commentId}/>
+                    <CommentArea id={commentId} isModal={true}/>
                 </ScrollArea>
             </Dialog.Content>
         </Dialog.Root>

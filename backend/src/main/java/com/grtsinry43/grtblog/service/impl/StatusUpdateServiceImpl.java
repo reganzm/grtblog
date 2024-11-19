@@ -97,6 +97,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
+        preview.setCommentId(statusUpdate.getCommentId() != null ? statusUpdate.getCommentId().toString() : null);
         return preview;
     }
 

@@ -64,9 +64,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className={styles.form} style={{
-            maxWidth: '70%',
-        }}>
+        <form onSubmit={handleSubmit} className={styles.form}>
             <Flex direction="row" gap="4" className={styles.flex}>
                 <TextField.Root
                     value={form.userName}

@@ -1,5 +1,5 @@
 import {notFound} from 'next/navigation';
-import MomentReadingPage from "@/components/moment/MomentPage";
+import MomentReadingPage from "@/components/moment/MomentReading";
 import CommentArea from "@/components/comment/CommentArea";
 
 // 定义 API 请求的 URL
@@ -35,6 +35,7 @@ export default async function Page({params}: MomentPageProps) {
         next: {revalidate: 60},
     });
     const moment = await res.json();
+    console.log(moment);
     if (moment.code !== 0) {
         notFound();
     }

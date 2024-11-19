@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './userSlice';
+import onlineCountReducer from './onlineCountSlice';
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
+      onlineCount: onlineCountReducer,
     },
   });
 };

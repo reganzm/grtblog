@@ -22,7 +22,11 @@ public class ArticleParser {
 
     public static String generateToc(String content) throws JsonProcessingException {
         List<HeadingNode> toc = new ArrayList<>();
-        Pattern pattern = Pattern.compile("^(#{1,6})\\s*(.+)$", Pattern.MULTILINE);
+        Pattern pattern = Pattern.compile(
+                "(?<!```\\R)(?m)^(#{1,6})\\s*(.+)$",
+                Pattern.MULTILINE
+        );
+
         Matcher matcher = pattern.matcher(content);
         Map<Integer, List<HeadingNode>> levelMap = new HashMap<>();
         int anchorIndex = 1;
@@ -74,36 +78,36 @@ public class ArticleParser {
     }
 
     public static String generateShortUrl(String title) {
-    // 去掉标题中非英文字符，空格替换为 -，汉字替换为拼音，所有字母小写
-    StringBuilder pinyinTitle = new StringBuilder();
-    int wordCount = 0;
-    for (char c : title.toCharArray()) {
-        if (Character.toString(c).matches("[\\u4e00-\\u9fa5]")) {
-            String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c);
-            if (pinyinArray != null) {
-                // 去掉声调
-                String pinyin = pinyinArray[0].replaceAll("[1-4]", "");
-                if (wordCount > 0) {
-                    pinyinTitle.append("-");
+        // 去掉标题中非英文字符，空格替换为 -，汉字替换为拼音，所有字母小写
+        StringBuilder pinyinTitle = new StringBuilder();
+        int wordCount = 0;
+        for (char c : title.toCharArray()) {
+            if (Character.toString(c).matches("[\\u4e00-\\u9fa5]")) {
+                String[] pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c);
+                if (pinyinArray != null) {
+                    // 去掉声调
+                    String pinyin = pinyinArray[0].replaceAll("[1-4]", "");
+                    if (wordCount > 0) {
+                        pinyinTitle.append("-");
+                    }
+                    pinyinTitle.append(pinyin);
+                    wordCount++;
                 }
-                pinyinTitle.append(pinyin);
-                wordCount++;
-            }
-        } else {
-            if (Character.isWhitespace(c)) {
-                if (wordCount > 0) {
-                    pinyinTitle.append("-");
-                }
-                wordCount++;
             } else {
-                pinyinTitle.append(c);
+                if (Character.isWhitespace(c)) {
+                    if (wordCount > 0) {
+                        pinyinTitle.append("-");
+                    }
+                    wordCount++;
+                } else {
+                    pinyinTitle.append(c);
+                }
+            }
+            if (wordCount >= 10) {
+                break;
             }
         }
-        if (wordCount >= 10) {
-            break;
-        }
-    }
 
-    return pinyinTitle.toString().replaceAll("[^a-zA-Z0-9-]", "").toLowerCase();
-}
+        return pinyinTitle.toString().replaceAll("[^a-zA-Z0-9-]", "").toLowerCase();
+    }
 }

@@ -19,11 +19,12 @@ import ArticleTopPaddingAnimate from '@/components/article/ArticleTopPaddingAnim
 import ScrollHandler from '@/components/article/ScrollHandler';
 import ReadingProgress from '@/components/article/ReadingProgress';
 
-type Post = {
+export type Post = {
     id: string;
     title: string;
     content: string;
     summary: string;
+    categoryName: string;
     toc: string;
     authorName: string;
     cover: string;
@@ -52,7 +53,7 @@ const ArticleView = ({post}: { post: Post }) => {
                     {post.toc && <Toc toc={JSON.parse(post.toc)} commentId={post.commentId}/>}
                 </aside>
                 <main className={styles.articleContent}>
-                    <ArticleScrollSync>
+                    <ArticleScrollSync post={post}>
                         <ArticleTopPaddingAnimate/>
                         <h1 className={styles.title}>{post.title}</h1>
                         <ArticleMetadata
