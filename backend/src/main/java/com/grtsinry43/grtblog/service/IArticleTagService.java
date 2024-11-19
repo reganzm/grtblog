@@ -14,4 +14,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface IArticleTagService extends IService<ArticleTag> {
     void syncArticleTag(Long articleId, Long[] tagIds);
 
+    void deleteArticleTag(Long articleId);
+
 }

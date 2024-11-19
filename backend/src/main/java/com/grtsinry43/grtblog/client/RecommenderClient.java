@@ -20,4 +20,7 @@ public interface RecommenderClient {
 
     @PostMapping("/{article_id}")
     ApiResponse<Object> updateArticleStatus(@PathVariable("article_id") String articleId, @RequestBody ArticleRecommendUpdate articleRecommendUpdate);
+
+    @DeleteMapping("/{article_id}")
+    ApiResponse<Object> deleteArticle(@PathVariable("article_id") String articleId);
 }

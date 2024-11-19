@@ -43,5 +43,12 @@ public class RecommendationService {
             throw new RuntimeException("更新文章状态失败");
         }
     }
+
+    public void deleteArticleStatus(Long articleId) {
+        ApiResponse<Object> objectApiResponse = recommenderClient.deleteArticle(articleId.toString());
+        if (objectApiResponse.getCode() != 0) {
+            throw new RuntimeException("删除文章失败");
+        }
+    }
 }
 

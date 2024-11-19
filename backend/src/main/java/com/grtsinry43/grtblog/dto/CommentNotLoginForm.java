@@ -10,12 +10,12 @@ import lombok.Data;
 @Data
 public class CommentNotLoginForm {
     /**
-     * 文章ID
+     * 评论区 id
      */
-    private String shortUrl;
+    private String areaId;
 
     /**
-     * 评论内容（markdown格式）
+     * 评论内容（markdown 格式）
      */
     private String content;
 
@@ -35,7 +35,7 @@ public class CommentNotLoginForm {
     private String website;
 
     /**
-     * 父评论ID，如果为空则表示是顶级评论，否则是回复评论
+     * 父评论 ID，如果为空则表示是顶级评论，否则是回复评论
      */
     private String parentId;
 }

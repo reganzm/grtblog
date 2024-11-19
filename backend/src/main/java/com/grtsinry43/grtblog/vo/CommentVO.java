@@ -16,9 +16,9 @@ public class CommentVO {
     private String id;
 
     /**
-     * 文章 ID
+     * 评论区 id
      */
-    private String articleId;
+    private String areaId;
 
     /**
      * 评论内容（markdown 格式）
@@ -56,6 +56,8 @@ public class CommentVO {
     private LocalDateTime updatedAt;
 
     private String parentId;
+
+    private String parentUserName;
 
     /**
      * 查看时候存储子评论，而存储时候存储父评论 id

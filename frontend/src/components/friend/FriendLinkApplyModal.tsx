@@ -6,8 +6,8 @@ import { Button, TextField } from '@radix-ui/themes';
 import styles from '@/styles/LoginModal.module.scss';
 import { CloseIcon } from 'next/dist/client/components/react-dev-overlay/internal/icons/CloseIcon';
 import { clsx } from 'clsx';
-import { varela_round, noto_sans_sc, noto_serif_sc_bold } from '@/app/fonts/font';
-import { useAppDispatch } from '@/redux/hooks';
+import { varela_round, noto_sans_sc} from '@/app/fonts/font';
+// import { useAppDispatch } from '@/redux/hooks';
 // import {applyFriendLink} from '@/api/friendLink';
 
 const FriendLinkApplyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {

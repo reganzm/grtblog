@@ -32,4 +32,9 @@ public class ArticleTagServiceImpl extends ServiceImpl<ArticleTagMapper, Article
             save(articleTag);
         }
     }
+
+    @Override
+    public void deleteArticleTag(Long articleId) {
+        lambdaUpdate().eq(ArticleTag::getArticleId, articleId).remove();
+    }
 }

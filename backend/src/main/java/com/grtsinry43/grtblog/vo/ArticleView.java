@@ -75,6 +75,11 @@ public class ArticleView {
     private Integer comments;
 
     /**
+     * 挂载评论区id
+     */
+    private String commentId;
+
+    /**
      * 文章创建时间
      */
     private transient LocalDateTime createdAt;

@@ -5,6 +5,8 @@ import com.grtsinry43.grtblog.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.grtsinry43.grtblog.vo.CommentVO;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务类
@@ -18,5 +20,7 @@ public interface ICommentService extends IService<Comment> {
     public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua);
 
     public Object listCommentByArticleId(String shortUrl);
+
+    public List<CommentVO> getListById(Long id, int page, int pageSize);
 
 }

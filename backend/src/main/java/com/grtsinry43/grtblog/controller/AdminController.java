@@ -29,6 +29,7 @@ import java.util.Objects;
 
 /**
  * 后台管理控制器
+ *
  * @author grtsinry43
  * @date 2024/11/14 08:31
  * @description 热爱可抵岁月漫长
@@ -99,6 +100,15 @@ public class AdminController {
         Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
         ArticleVO articleVO = articleService.addArticle(articleDTO, userId);
         return ApiResponse.success(articleVO);
+    }
+
+    @PreAuthorize("hasAuthority('article:delete')")
+    @DeleteMapping("/article/{id}")
+    public ApiResponse<String> deleteArticleApi(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUserDetails principal = (LoginUserDetails) authentication.getPrincipal();
+        articleService.deleteArticle(id, principal);
+        return ApiResponse.success("删除成功");
     }
 
     @GetMapping("/category")

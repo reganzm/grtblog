@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
 import com.grtsinry43.grtblog.entity.Article;
+import com.grtsinry43.grtblog.entity.CommentArea;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.ArticleMapper;
+import com.grtsinry43.grtblog.security.LoginUserDetails;
+import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.service.RecommendationService;
@@ -35,13 +38,15 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private final CategoryServiceImpl categoryService;
     private final UserServiceImpl userService;
     private final RecommendationService recommendationService;
+    private final CommentAreaService commentAreaService;
 
-    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, CategoryServiceImpl categoryService, UserServiceImpl userService, RecommendationService recommendationService) {
+    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, CategoryServiceImpl categoryService, UserServiceImpl userService, RecommendationService recommendationService, CommentAreaService commentAreaService) {
         this.articleTagService = articleTagService;
         this.tagService = tagService;
         this.categoryService = categoryService;
         this.userService = userService;
         this.recommendationService = recommendationService;
+        this.commentAreaService = commentAreaService;
     }
 
     @Override
@@ -70,6 +75,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if (article.getSummary() == null) {
             article.setSummary(article.getContent().length() > 200 ? article.getContent().substring(0, 200) : article.getContent());
         }
+        // 创建评论区
+        CommentArea commentArea = commentAreaService.createCommentArea("文章", article.getTitle());
+        article.setCommentId(commentArea.getId());
         this.baseMapper.insert(article);
         articleTagService.syncArticleTag(article.getId(), tagIds);
         recommendationService.updateArticleStatus(article);
@@ -78,6 +86,25 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleVO.setId(article.getId().toString());
         articleVO.setAuthor(userService.getById(userId).getNickname());
         return articleVO;
+    }
+
+    @Override
+    public void deleteArticle(Long articleId, LoginUserDetails principal) {
+        Article article = this.baseMapper.selectById(articleId);
+        if (article == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND);
+        }
+        // 这里角色是管理员或者超级管理员可以删除所有文章，合作作者只能删除自己的文章
+        if (principal.getRoleNames().contains("ROLE_WRITER") && !article.getAuthorId().equals(principal.getUser().getId())) {
+            throw new BusinessException(ErrorCode.UNAUTHORIZED);
+        }
+        this.baseMapper.deleteById(articleId);
+        // 移除文章标签
+        articleTagService.deleteArticleTag(articleId);
+        // 移除文章推荐状态
+        recommendationService.deleteArticleStatus(articleId);
+        // 删除评论区
+        commentAreaService.deleteCommentArea(article.getCommentId());
     }
 
     @Override
@@ -125,6 +152,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleView.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
         articleView.setCategoryName(categoryService.getById(article.getCategoryId()).getName());
         articleView.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
+        articleView.setCommentId(article.getCommentId().toString());
         return articleView;
     }
 

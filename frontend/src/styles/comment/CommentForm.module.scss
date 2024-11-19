@@ -1,5 +1,6 @@
 .form {
   padding: 1rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -8,6 +9,7 @@
 .flex {
   flex-direction: column;
   gap: 1rem;
+  line-height: 1.5;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -18,16 +20,15 @@
   position: relative;
   width: 100%;
   overflow: hidden;
-
-  @media (min-width: 768px) {
-    width: 70%;
-  }
 }
 
 .textarea {
   resize: none;
   min-height: 7rem;
-  outline: none;
+  background: rgba(var(--background), 0.3);
+  outline: rgba(var(--primary), 0.5);
+  border: 1px solid rgba(var(--foreground), 0.2);
+  width: 100%;
   padding: 10px;
   line-height: 1.5;
   transition: all 0.3s;
