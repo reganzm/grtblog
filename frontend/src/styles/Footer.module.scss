@@ -3,8 +3,6 @@
   background-color: rgba(var(--primary), 0.05);
   color: var(--text-color);
   padding: 20px;
-  text-align: center;
-  overflow: hidden;
 }
 
 .footerContainer::before {
@@ -45,7 +43,7 @@
 .footerLink {
   color: var(--primary);
   text-decoration: none;
-  margin-right: 0.25em;
+  margin-right: 0.5em;
 }
 
 .footerLink:hover {
@@ -58,7 +56,7 @@
   color: rgba(var(--foreground), 0.5);
   letter-spacing: 0.05em;
 
-  span {
+  span:last-child {
     margin: 0 1em;
   }
 
@@ -66,4 +64,32 @@
     color: var(--primary-foreground);
     transition: color 0.3s;
   }
+}
+
+.footerContent {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.footerSection {
+  margin-bottom: 0.5rem;
+}
+
+.footerSection:not(:last-child) {
+  margin-right: 2rem;
+}
+
+.footerTitle {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  margin-right: 1rem;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+}
+
+.footerIcon {
+  margin-left: 0.5rem;
+  vertical-align: middle;
 }

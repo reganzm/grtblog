@@ -12,7 +12,7 @@ public class ArticleDTO {
     private String title;
     private String content;
     private String cover;
-    private Long categoryId;
+    private String categoryId;
     private String tags;
     private Boolean isPublished;
 

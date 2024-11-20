@@ -62,7 +62,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
         article.setToc(toc);
-        if (!categoryService.isCategoryExist(articleDTO.getCategoryId())) {
+        if (!categoryService.isCategoryExist(Long.parseLong(articleDTO.getCategoryId()))) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         // 添加短链接
@@ -120,7 +120,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
         article.setToc(toc);
-        if (!categoryService.isCategoryExist(articleDTO.getCategoryId())) {
+        if (!categoryService.isCategoryExist(Long.parseLong(articleDTO.getCategoryId()))) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         // 处理标签
@@ -244,9 +244,21 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articleVO.setId(article.getId().toString());
             articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
             articleVO.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
-            articleVO.setCategory(categoryService.getById(article.getCategoryId()) != null ? categoryService.getById(article.getCategoryId()).getName() : "未分类");
+            articleVO.setCategoryId(article.getCategoryId().toString());
             return articleVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public ArticleVO getArticleByIdAdmin(Long id) {
+        Article article = this.baseMapper.selectById(id);
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtils.copyProperties(article, articleVO);
+        articleVO.setId(article.getId().toString());
+        articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
+        articleVO.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
+        articleVO.setCategoryId(article.getCategoryId().toString());
+        return articleVO;
     }
 
 

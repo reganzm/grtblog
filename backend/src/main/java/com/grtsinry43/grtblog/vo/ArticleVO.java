@@ -26,7 +26,7 @@ public class ArticleVO {
 
     private String cover;
 
-    private String category;
+    private String categoryId;
 
     private String tags;
 

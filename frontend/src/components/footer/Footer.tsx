@@ -1,19 +1,19 @@
 import React from 'react';
 import styles from '@/styles/Footer.module.scss';
 import FooterInfo from '@/components/footer/FooterInfo';
-// import SocketOnlineCount from "@/components/SocketOnlineCount";
-// import {useAppSelector} from "@/redux/hooks";
+import FooterLink from "@/components/footer/FooterLink";
+import OnlineStats from "@/components/OnlineStats";
+import {Container} from "@radix-ui/themes";
 
 const Footer = () => {
-    // const onlineCount = useAppSelector(state => state.onlineCount.count);
     return (
         <div className={`${styles.footerContainer} ${styles.textureOverlay}`}>
             <footer>
-                <FooterInfo/>
-                <div className={styles.onlineCount}>
-                    {/* 在线人数: {onlineCount}*/}
-                </div>
-                {/*<SocketOnlineCount/>*/}
+                <Container size={'4'}>
+                    <OnlineStats/>
+                    <FooterLink/>
+                    <FooterInfo/>
+                </Container>
             </footer>
         </div>
     );

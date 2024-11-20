@@ -10,10 +10,9 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.*;
 
 /**
  * @author grtsinry43
@@ -23,8 +22,10 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class SocketIOService {
     private final SocketIOServer socketIOServer;
+    private final ConcurrentHashMap<String, Set<UUID>> pageUserMap = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, String> clientPageMap = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private ScheduledFuture<?> debounceFuture;
+    private final ConcurrentHashMap<String, ScheduledFuture<?>> debounceTasks = new ConcurrentHashMap<>();
 
     @Autowired
     public SocketIOService(SocketIOServer socketIOServer) {
@@ -43,17 +44,47 @@ public class SocketIOService {
 
     @OnConnect
     public void onConnect(SocketIOClient client) {
-        debounceUpdateOnlineCount();
+        debounceUpdateTotalOnlineCount();
     }
 
     @OnDisconnect
     public void onDisconnect(SocketIOClient client) {
-        debounceUpdateOnlineCount();
+        UUID clientId = client.getSessionId();
+        String page = clientPageMap.remove(clientId);
+
+        if (page != null) {
+            Set<UUID> users = pageUserMap.getOrDefault(page, ConcurrentHashMap.newKeySet());
+            users.remove(clientId);
+            if (users.isEmpty()) {
+                pageUserMap.remove(page);
+            } else {
+                pageUserMap.put(page, users);
+            }
+            debounceUpdatePageViewCount(page);
+        }
+
+        debounceUpdateTotalOnlineCount();
     }
 
-    @OnEvent("chat")
-    public void onChatEvent(SocketIOClient client, String message) {
-        socketIOServer.getBroadcastOperations().sendEvent("chat", message);
+    @OnEvent("enterPage")
+    public void onEnterPage(SocketIOClient client, String page) {
+        UUID clientId = client.getSessionId();
+        String previousPage = clientPageMap.put(clientId, page);
+
+        if (previousPage != null && !previousPage.equals(page)) {
+            Set<UUID> previousUsers = pageUserMap.getOrDefault(previousPage, ConcurrentHashMap.newKeySet());
+            previousUsers.remove(clientId);
+            if (previousUsers.isEmpty()) {
+                pageUserMap.remove(previousPage);
+            } else {
+                pageUserMap.put(previousPage, previousUsers);
+            }
+            debounceUpdatePageViewCount(previousPage);
+        }
+
+        pageUserMap.computeIfAbsent(page, k -> ConcurrentHashMap.newKeySet()).add(clientId);
+        debounceUpdatePageViewCount(page);
+        debounceUpdateTotalOnlineCount();
     }
 
     @PreDestroy
@@ -67,15 +98,32 @@ public class SocketIOService {
         }
     }
 
-    private void debounceUpdateOnlineCount() {
-        if (debounceFuture != null && !debounceFuture.isDone()) {
-            debounceFuture.cancel(false);
+    private void debounceUpdateTotalOnlineCount() {
+        String key = "totalOnlineCount";
+        if (debounceTasks.containsKey(key)) {
+            debounceTasks.get(key).cancel(false);
         }
-        debounceFuture = scheduler.schedule(this::updateOnlineCount, 2000, TimeUnit.MILLISECONDS);
+        ScheduledFuture<?> future = scheduler.schedule(this::updateTotalOnlineCount, 2000, TimeUnit.MILLISECONDS);
+        debounceTasks.put(key, future);
     }
 
-    private void updateOnlineCount() {
-        int clientCount = socketIOServer.getAllClients().size();
-        socketIOServer.getBroadcastOperations().sendEvent("onlineCount", clientCount);
+    private void updateTotalOnlineCount() {
+        int totalOnlineCount = pageUserMap.values().stream()
+                .mapToInt(Set::size)
+                .sum();
+        socketIOServer.getBroadcastOperations().sendEvent("totalOnlineCount", totalOnlineCount);
+    }
+
+    private void debounceUpdatePageViewCount(String page) {
+        if (debounceTasks.containsKey(page)) {
+            debounceTasks.get(page).cancel(false);
+        }
+        ScheduledFuture<?> future = scheduler.schedule(() -> updatePageViewCount(page), 2000, TimeUnit.MILLISECONDS);
+        debounceTasks.put(page, future);
+    }
+
+    private void updatePageViewCount(String page) {
+        int count = pageUserMap.getOrDefault(page, ConcurrentHashMap.newKeySet()).size();
+        socketIOServer.getBroadcastOperations().sendEvent("pageViewCount", page, count);
     }
 }

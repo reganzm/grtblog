@@ -137,4 +137,10 @@ public class AdminController {
         return ApiResponse.success(articleService.getArticleListAdmin(page, pageSize));
     }
 
+    @PreAuthorize("hasAuthority('article:edit')")
+    @GetMapping("/article/{id}")
+    public ApiResponse<ArticleVO> getArticleById(@PathVariable Long id) {
+        return ApiResponse.success(articleService.getArticleByIdAdmin(id));
+    }
+
 }

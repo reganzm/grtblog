@@ -38,4 +38,6 @@ public interface IArticleService extends IService<Article> {
     List<ArticlePreview> getArticleListByCategory(String shortUrl, Integer page, Integer pageSize);
 
     List<ArticleVO> getArticleListAdmin(Integer page, Integer pageSize);
+
+    ArticleVO getArticleByIdAdmin(Long articleId);
 }

@@ -10,7 +10,7 @@ export interface AddArticleApiParams {
   cover?: string;
 
   /* */
-  categoryId?: number;
+  categoryId?: string;
 
   /* */
   tags?: string;
@@ -30,7 +30,7 @@ export interface AddArticleApiRes {
   /* */
   data: {
     /* */
-    id: number;
+    id: string;
 
     /* */
     title: string;
@@ -90,7 +90,7 @@ export interface ArticleVO {
   cover: string;
 
   /* */
-  category: string;
+  categoryId: string;
 
   /* */
   views: number;

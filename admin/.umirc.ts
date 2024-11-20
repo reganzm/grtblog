@@ -34,6 +34,11 @@ export default defineConfig({
           path: '/article/add',
           component: './Article/AddArticle',
         },
+        {
+          name: '编辑文章',
+          path: '/article/edit/:id',
+          component: './Article/EditArticle',
+        },
       ],
     },
     {
@@ -67,4 +72,3 @@ export default defineConfig({
     },
   },
 });
-
