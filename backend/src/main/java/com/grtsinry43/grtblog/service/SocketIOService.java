@@ -5,8 +5,10 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
+import com.grtsinry43.grtblog.util.PageMatcher;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,14 +24,17 @@ import java.util.concurrent.*;
 @Service
 public class SocketIOService {
     private final SocketIOServer socketIOServer;
+    @Getter
     private final ConcurrentHashMap<String, Set<UUID>> pageUserMap = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<UUID, String> clientPageMap = new ConcurrentHashMap<>();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final ConcurrentHashMap<String, ScheduledFuture<?>> debounceTasks = new ConcurrentHashMap<>();
+    private final PageMatcher pageMatcher;
 
     @Autowired
-    public SocketIOService(SocketIOServer socketIOServer) {
+    public SocketIOService(SocketIOServer socketIOServer, PageMatcher pageMatcher) {
         this.socketIOServer = socketIOServer;
+        this.pageMatcher = pageMatcher;
     }
 
     @PostConstruct
@@ -69,9 +74,10 @@ public class SocketIOService {
     @OnEvent("enterPage")
     public void onEnterPage(SocketIOClient client, String page) {
         UUID clientId = client.getSessionId();
-        String previousPage = clientPageMap.put(clientId, page);
+        String pageName = pageMatcher.matchPath(page);
+        String previousPage = clientPageMap.put(clientId, pageName);
 
-        if (previousPage != null && !previousPage.equals(page)) {
+        if (previousPage != null && !previousPage.equals(pageName)) {
             Set<UUID> previousUsers = pageUserMap.getOrDefault(previousPage, ConcurrentHashMap.newKeySet());
             previousUsers.remove(clientId);
             if (previousUsers.isEmpty()) {
@@ -82,8 +88,8 @@ public class SocketIOService {
             debounceUpdatePageViewCount(previousPage);
         }
 
-        pageUserMap.computeIfAbsent(page, k -> ConcurrentHashMap.newKeySet()).add(clientId);
-        debounceUpdatePageViewCount(page);
+        pageUserMap.computeIfAbsent(pageName, k -> ConcurrentHashMap.newKeySet()).add(clientId);
+        debounceUpdatePageViewCount(pageName);
         debounceUpdateTotalOnlineCount();
     }
 

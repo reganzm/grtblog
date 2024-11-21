@@ -63,4 +63,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         List<Category> categories = list();
         return categories.stream().map(Category::getShortUrl).collect(Collectors.toList());
     }
+
+    @Override
+    public Category getCategoryByShortUrl(String shortUrl) {
+        return getOne(new QueryWrapper<Category>().eq("short_url", shortUrl));
+    }
 }

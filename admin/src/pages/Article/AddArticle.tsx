@@ -26,9 +26,8 @@ const AddArticle = () => {
       content,
     }).then((res) => {
       if (res) {
-        message.success('文章添加成功').then(() => {
-          navigate('/article/list');
-        });
+        message.success('文章添加成功');
+        navigate('/article/list');
       }
     });
   };

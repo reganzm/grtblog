@@ -38,9 +38,8 @@ const EditArticle = () => {
         content,
       }).then((res) => {
         if (res) {
-          message.success('文章修改成功').then(() => {
-            navigate('/article/list');
-          });
+          message.success('文章修改成功');
+          navigate('/article/list');
         }
       });
     }

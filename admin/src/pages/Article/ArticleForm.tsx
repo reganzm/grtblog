@@ -29,8 +29,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
     if (formRef.current && articleInfo && firstIn) {
       formRef.current.setFieldsValue(articleInfo);
       // 回填 markdown 编辑器内容
-      editorRef.current?.getInstance().setMarkdown(articleInfo?.content);
-      // 回填类别，因为类别是 id，所以需要单独处理，在数据仓库中进行查找，得到 name
+      editorRef.current?.getInstance().setHTML(articleInfo?.content);
       setFirstIn(false);
     }
   }, [articleInfo, firstIn]);
@@ -41,6 +40,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         type: 'category/initCategoryList',
       });
     }
+    console.log('list:', list);
   }, []);
 
   const [addCategoryForm, setAddCategoryForm] = useState({
@@ -113,14 +113,12 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         )}
         <Form.Item
           label="选择分类"
-          name="category"
+          name="categoryId"
           rules={[{ required: true, message: '请选择分类' }]}
         >
           <Select
             showSearch
             style={{ width: 200 }}
-            placeholder="选择文章的分类"
-            optionFilterProp="children"
             onChange={(value) => onValueChange('categoryId', value)}
           >
             {list.map((item: any) => (
@@ -129,17 +127,17 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
               </Select.Option>
             ))}
           </Select>
-          <Button type="link" onClick={() => setIsModalVisible(true)}>
-            <span
-              style={{
-                fontSize: '0.8rem',
-              }}
-            >
-              {' '}
-              没有合适的分类？新建一个叭{' '}
-            </span>
-          </Button>
         </Form.Item>
+        <Button type="link" onClick={() => setIsModalVisible(true)}>
+          <span
+            style={{
+              fontSize: '0.8rem',
+            }}
+          >
+            {' '}
+            没有合适的分类？新建一个叭{' '}
+          </span>
+        </Button>
         <Form.Item
           label="标题"
           name="title"
@@ -241,7 +239,6 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         <Form.Item label="分类名称" required>
           <Input
             placeholder="请输入分类名称"
-            value={addCategoryForm.name}
             onChange={(e) => setAddCategoryForm({ name: e.target.value })}
           />
         </Form.Item>

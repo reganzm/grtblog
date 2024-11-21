@@ -32,9 +32,12 @@ const onlineCountSlice = createSlice({
                     state.pageView.push({name, count});
                 }
             }
+        },
+        initPageView: (state, {payload}) => {
+            state.pageView = payload;
         }
     },
 });
 
-export const {updateOnlineCount, updatePageView} = onlineCountSlice.actions;
+export const {updateOnlineCount, updatePageView, initPageView} = onlineCountSlice.actions;
 export default onlineCountSlice.reducer;

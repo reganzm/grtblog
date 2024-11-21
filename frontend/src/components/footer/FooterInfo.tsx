@@ -48,9 +48,10 @@ const FooterInfo = () => {
                 &middot; A blog framework
                 for developers
             </div>
-            <p className={clsx(styles.footerText, varela_round.className)}>
-                Copyright &copy; 2022-2024 grtsinry43. All rights reserved. <span className="text-[0.5em] opacity-55">|</span> <FooterOnlineStats/>
-            </p>
+            <div className={clsx(styles.footerText, varela_round.className)}>
+                Copyright &copy; 2022-2024 grtsinry43. All rights reserved.
+                <span><FooterOnlineStats/></span>
+            </div>
             <p className={clsx(styles.footerText, styles.recordNumber)}>
           <span>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">

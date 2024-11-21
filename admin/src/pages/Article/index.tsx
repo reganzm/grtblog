@@ -1,4 +1,5 @@
 import ArticleController from '@/services/article/ArticleController';
+import { useDispatch, useSelector } from '@@/exports';
 import {
   ActionType,
   PageContainer,
@@ -6,12 +7,14 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
-import { Button, message, Switch, Tooltip } from 'antd';
-import { useRef } from 'react';
+import {Button, message, Switch, Tag, Tooltip} from 'antd';
+import { useEffect, useRef } from 'react';
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
   const navigate = useNavigate();
+  const { list } = useSelector((state: any) => state.category);
+  const dispatch = useDispatch();
 
   const deleteArticleHandle = async (id: string) => {
     const response = await ArticleController.deleteArticle(id);
@@ -20,6 +23,14 @@ const Index = () => {
       actionRef.current?.reload(); // 刷新表格
     }
   };
+
+  useEffect(() => {
+    if (list.length === 0) {
+      dispatch({
+        type: 'category/initCategoryList',
+      });
+    }
+  }, []);
 
   const columns: ProColumns<any, string>[] = [
     {
@@ -60,6 +71,12 @@ const Index = () => {
       dataIndex: 'category',
       key: 'category',
       align: 'center',
+      render: (_, record: any) => {
+        const category = list.find(
+          (item: any) => item.id === record.categoryId,
+        );
+        return <Tag>{category?.name}</Tag>;
+      },
     },
     {
       title: '浏览',

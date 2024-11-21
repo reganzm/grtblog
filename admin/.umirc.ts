@@ -38,6 +38,7 @@ export default defineConfig({
           name: '编辑文章',
           path: '/article/edit/:id',
           component: './Article/EditArticle',
+          hideInMenu: true,
         },
       ],
     },

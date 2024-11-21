@@ -23,4 +23,6 @@ public interface ICategoryService extends IService<Category> {
     Long getCategoryIdByShortUrl(String shortUrl);
 
     List<String> getAllCategoryShortLinks();
+
+    Category getCategoryByShortUrl(String shortUrl);
 }

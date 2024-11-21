@@ -25,7 +25,7 @@ const FooterLink = () => {
             cursor: 'pointer',
             fontSize: '0.8rem',
         }}>
-            正在有 {onlineCount} 位小伙伴看着我的网站呐
+            <span> 正在有 {onlineCount} 位小伙伴看着我的网站呐 </span>
             <motion.div
                 initial={{opacity: 0, y: 20}}
                 animate={isDetailVisible ? {opacity: 1, y: 0} : {opacity: 0, y: 20}}

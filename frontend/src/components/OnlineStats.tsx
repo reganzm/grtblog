@@ -4,6 +4,9 @@ import React, {useEffect, useState} from "react";
 import {io, Socket} from "socket.io-client";
 import {useAppDispatch} from "@/redux/hooks";
 import {usePathname} from "next/navigation";
+import {getPageView} from "@/api/pageView";
+
+const url = process.env.SOCKET_IO_URL;
 
 const OnlineStats = () => {
     const [socket, setSocket] = useState<Socket | null>(null); // Socket.IO 实例
@@ -15,12 +18,21 @@ const OnlineStats = () => {
 
     // 初始化 Socket.IO 连接
     useEffect(() => {
-        const newSocket = io("http://localhost:9092"); // 替换为你的后端地址
+        const newSocket = io(url);
         setSocket(newSocket);
+
+        getPageView().then((res) => {
+            console.log("initPageView", res);
+            dispatch({
+                type: "onlineCount/initPageView",
+                payload: res
+            })
+        });
 
         // 监听总在线人数事件
         newSocket.on("totalOnlineCount", (count: number) => {
             setTotalOnlineCount(count);
+            console.log("totalOnlineCount", totalOnlineCount);
             dispatch({type: "onlineCount/updateOnlineCount", payload: count});
         });
 
@@ -28,6 +40,7 @@ const OnlineStats = () => {
         newSocket.on("pageViewCount", (page, count) => {
             if (page === param) {
                 setPageViewCount(count);
+                console.log("pageViewCount", pageViewCount);
             }
             dispatch({
                 type: "onlineCount/updatePageView", payload: {
@@ -41,7 +54,7 @@ const OnlineStats = () => {
         return () => {
             newSocket.disconnect();
         };
-    }, [param, dispatch]);
+    }, [param, dispatch, totalOnlineCount, pageViewCount]);
 
     // 发送当前页面信息
     useEffect(() => {

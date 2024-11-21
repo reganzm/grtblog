@@ -26,8 +26,8 @@ const nextConfig = {
   //   console.log('Rewrites function called');
   //   return [
   //     {
-  //       source: '/api/v1/:path*',
-  //       destination: 'http://127.0.0.1:8080/api/v1/:path*', // Proxy to Backend
+  //       source: '/socket.io/:path*',
+  //       destination: 'http://127.0.0.1:9092/socket.io/:path*',
   //     },
   //   ];
   // },

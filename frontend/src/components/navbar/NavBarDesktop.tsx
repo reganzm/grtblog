@@ -14,6 +14,7 @@ import {UserRoundPlusIcon} from 'lucide-react';
 import emitter from "@/utils/eventBus";
 import {TitleEvent} from "@/components/article/ArticleScrollSync";
 import {article_font} from "@/app/fonts/font";
+import {OnlineCount} from "@/redux/onlineCountSlice";
 
 export default function NavBarDesktop({items}: {
     items: { name: string; href: string; children?: { name: string; href: string }[] }[]
@@ -23,7 +24,7 @@ export default function NavBarDesktop({items}: {
     const [mounted, setMounted] = useState(false);
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
-    const user = useAppSelector((state: { user: User, onlineCount: { count: number } }) => state.user);
+    const user = useAppSelector((state: { user: User, onlineCount: OnlineCount }) => state.user);
     const dispatch = useAppDispatch();
 
     const [isTitleVisible, setIsTitleVisible] = useState(false);

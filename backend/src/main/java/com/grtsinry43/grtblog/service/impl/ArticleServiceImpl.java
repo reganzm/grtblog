@@ -54,6 +54,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article article = new Article();
         BeanUtils.copyProperties(articleDTO, article);
         article.setAuthorId(userId);
+        article.setCategoryId(Long.parseLong(articleDTO.getCategoryId()));
         // 解析文章并生成目录
         String toc = null;
         try {
@@ -111,6 +112,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     public ArticleVO updateArticle(Long articleId, ArticleDTO articleDTO, Long userId) {
         Article article = this.baseMapper.selectById(articleId);
         BeanUtils.copyProperties(articleDTO, article);
+        article.setCategoryId(Long.parseLong(articleDTO.getCategoryId()));
         article.setAuthorId(userId);
         // 解析文章并生成目录
         String toc = null;
