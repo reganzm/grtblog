@@ -43,6 +43,28 @@ export default defineConfig({
       ],
     },
     {
+      name: '随手记录',
+      path: '/moment',
+      routes: [
+        {
+          name: '随手记录列表',
+          path: '/moment/list',
+          component: './Moment',
+        },
+        {
+          name: '添加随手记录',
+          path: '/moment/add',
+          component: './Moment/AddMoment',
+        },
+        {
+          name: '编辑随手记录',
+          path: '/moment/edit/:id',
+          component: './Moment/EditMoment',
+          hideInMenu: true,
+        },
+      ],
+    },
+    {
       name: '权限演示',
       path: '/access',
       component: './Access',

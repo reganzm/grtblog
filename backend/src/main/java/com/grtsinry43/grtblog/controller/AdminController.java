@@ -3,16 +3,19 @@ package com.grtsinry43.grtblog.controller;
 import com.grtsinry43.grtblog.dto.AddCategory;
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
+import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.entity.User;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
 import com.grtsinry43.grtblog.service.impl.ArticleServiceImpl;
 import com.grtsinry43.grtblog.service.impl.CategoryServiceImpl;
+import com.grtsinry43.grtblog.service.impl.StatusUpdateServiceImpl;
 import com.grtsinry43.grtblog.service.impl.UserServiceImpl;
 import com.grtsinry43.grtblog.util.JwtUtil;
 import com.grtsinry43.grtblog.util.SecurityUtils;
 import com.grtsinry43.grtblog.vo.ArticleVO;
 import com.grtsinry43.grtblog.vo.CategoryVO;
+import com.grtsinry43.grtblog.vo.StatusUpdateVO;
 import com.grtsinry43.grtblog.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,12 +44,14 @@ public class AdminController {
     private final AuthenticationManager authenticationManager;
     private final ArticleServiceImpl articleService;
     private final CategoryServiceImpl categoryService;
+    private final StatusUpdateServiceImpl statusUpdateService;
 
-    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService) {
+    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.articleService = articleService;
         this.categoryService = categoryService;
+        this.statusUpdateService = statusUpdateService;
     }
 
     @PostMapping("/login")
@@ -142,5 +147,45 @@ public class AdminController {
     public ApiResponse<ArticleVO> getArticleById(@PathVariable Long id) {
         return ApiResponse.success(articleService.getArticleByIdAdmin(id));
     }
+
+    @PreAuthorize("hasAuthority('share:edit')")
+    @GetMapping("/statusUpdate/all")
+    public ApiResponse<List<StatusUpdateVO>> listAllStatusUpdatesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return ApiResponse.success(statusUpdateService.getStatusUpdateListAdmin(page, pageSize));
+    }
+
+    @PreAuthorize("hasAuthority('share:add')")
+    @PostMapping("/statusUpdate")
+    public ApiResponse<StatusUpdateVO> addStatusUpdateApi(@RequestBody StatusUpdateDTO statusUpdateDTO) {
+        Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
+        StatusUpdateVO statusUpdateVO = statusUpdateService.addStatusUpdate(statusUpdateDTO, userId);
+        return ApiResponse.success(statusUpdateVO);
+    }
+
+    @PreAuthorize("hasAuthority('share:delete')")
+    @DeleteMapping("/statusUpdate/{id}")
+    public ApiResponse<String> deleteStatusUpdateApi(@PathVariable Long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUserDetails principal = (LoginUserDetails) authentication.getPrincipal();
+        statusUpdateService.deleteStatusUpdate(id, principal);
+        return ApiResponse.success("删除成功");
+    }
+
+    @PreAuthorize("hasAuthority('share:edit')")
+    @PatchMapping("/statusUpdate/{id}")
+    public ApiResponse<StatusUpdateVO> updateStatusUpdateApi(@PathVariable Long id, @RequestBody StatusUpdateDTO statusUpdateDTO) {
+        Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
+        StatusUpdateVO statusUpdateVO = statusUpdateService.updateStatusUpdate(id, statusUpdateDTO, userId);
+        return ApiResponse.success(statusUpdateVO);
+    }
+
+    @PreAuthorize("hasAuthority('share:edit')")
+    @GetMapping("/statusUpdate/{id}")
+    public ApiResponse<StatusUpdateVO> getStatusUpdateById(@PathVariable Long id) {
+        StatusUpdateVO statusUpdateVO = statusUpdateService.getStatusUpdateById(id);
+        return ApiResponse.success(statusUpdateVO);
+    }
+
+
 
 }

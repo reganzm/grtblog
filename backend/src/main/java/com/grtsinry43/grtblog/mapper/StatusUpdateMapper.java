@@ -50,4 +50,10 @@ public interface StatusUpdateMapper extends BaseMapper<StatusUpdate> {
      */
     @Select("SELECT short_url FROM status_update")
     public List<String> getAllShortLinks();
+
+    /**
+     * 管理员获取所有说说
+     */
+    @Select("SELECT * FROM status_update ORDER BY is_top DESC, created_at DESC LIMIT #{page}, #{pageSize}")
+    public List<StatusUpdate> getStatusUpdateListAdmin(int page, int pageSize);
 }

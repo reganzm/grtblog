@@ -1,8 +1,11 @@
 package com.grtsinry43.grtblog.service;
 
+import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
 import com.grtsinry43.grtblog.entity.StatusUpdate;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.grtsinry43.grtblog.security.LoginUserDetails;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
+import com.grtsinry43.grtblog.vo.StatusUpdateVO;
 import com.grtsinry43.grtblog.vo.StatusUpdateView;
 
 import java.util.List;
@@ -47,4 +50,13 @@ public interface IStatusUpdateService extends IService<StatusUpdate> {
     public List<String> getAllStatusUpdateShortLinks();
 
 
+    List<StatusUpdateVO> getStatusUpdateListAdmin(int page, int pageSize);
+
+    StatusUpdateVO addStatusUpdate(StatusUpdateDTO statusUpdateDTO, Long userId);
+
+    void deleteStatusUpdate(Long id, LoginUserDetails principal);
+
+    StatusUpdateVO updateStatusUpdate(Long id, StatusUpdateDTO statusUpdateDTO, Long userId);
+
+    StatusUpdateVO getStatusUpdateById(Long id);
 }

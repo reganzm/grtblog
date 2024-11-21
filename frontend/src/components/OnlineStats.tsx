@@ -6,7 +6,7 @@ import {useAppDispatch} from "@/redux/hooks";
 import {usePathname} from "next/navigation";
 import {getPageView} from "@/api/pageView";
 
-const url = process.env.SOCKET_IO_URL;
+const url = process.env.NEXT_PUBLIC_SOCKET_IO_URL;
 
 const OnlineStats = () => {
     const [socket, setSocket] = useState<Socket | null>(null); // Socket.IO 实例
@@ -18,6 +18,7 @@ const OnlineStats = () => {
 
     // 初始化 Socket.IO 连接
     useEffect(() => {
+        console.log("connect to socket", process.env.NEXT_PUBLIC_SOCKET_IO_URL);
         const newSocket = io(url);
         setSocket(newSocket);
 

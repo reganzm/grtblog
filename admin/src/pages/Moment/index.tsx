@@ -1,4 +1,4 @@
-import ArticleController from '@/services/article/ArticleController';
+import MomentController from '@/services/moment/MomentController';
 import { useDispatch, useSelector } from '@@/exports';
 import {
   ActionType,
@@ -16,8 +16,8 @@ const Index = () => {
   const { list } = useSelector((state: any) => state.category);
   const dispatch = useDispatch();
 
-  const deleteArticleHandle = async (id: string) => {
-    const response = await ArticleController.deleteArticle(id);
+  const deleteMomentHandle = async (id: string) => {
+    const response = await MomentController.deleteMoment(id);
     if (response) {
       message.success('删除成功');
       actionRef.current?.reload(); // 刷新表格
@@ -55,8 +55,8 @@ const Index = () => {
     },
     {
       title: '作者',
-      dataIndex: 'author',
-      key: 'author',
+      dataIndex: 'authorName',
+      key: 'authorName',
       align: 'center',
     },
     {
@@ -68,10 +68,13 @@ const Index = () => {
     },
     {
       title: '分类',
-      dataIndex: 'category',
-      key: 'category',
+      dataIndex: 'categoryId',
+      key: 'categoryId',
       align: 'center',
       render: (_, record: any) => {
+        if (!record.categoryId) {
+          return <Tag> 未分类 </Tag>;
+        }
         const category = list.find(
           (item: any) => item.id === record.categoryId,
         );
@@ -149,7 +152,7 @@ const Index = () => {
         <Button
           variant={'text'}
           key="edit"
-          onClick={() => navigate(`/article/edit/${record.id}`)}
+          onClick={() => navigate(`/moment/edit/${record.id}`)}
         >
           编辑
         </Button>,
@@ -157,7 +160,7 @@ const Index = () => {
           title="你真的要确认删除吗?"
           key="delete"
           description="删除文章后，其下的评论和标签也会被删除，且不可恢复"
-          onConfirm={() => deleteArticleHandle(record.id)}
+          onConfirm={() => deleteMomentHandle(record.id)}
           onCancel={() => {
             message.info('取消删除');
           }}
@@ -171,7 +174,7 @@ const Index = () => {
   ];
 
   return (
-    <PageContainer title={'文章列表'}>
+    <PageContainer title={'随手记录列表'}>
       <ProTable
         columns={columns}
         actionRef={actionRef}
@@ -179,7 +182,7 @@ const Index = () => {
           scrollBehavior: 'smooth',
         }}
         request={async (params) => {
-          const response = await ArticleController.getArticleList({
+          const response = await MomentController.getMomentList({
             page: params.current || 1,
             pageSize: params.pageSize || 10,
           });
