@@ -138,6 +138,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         if (!categoryService.isCategoryExist(Long.valueOf(statusUpdateDTO.getCategoryId()))) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        statusUpdate.setSummary(statusUpdateDTO.getSummary() != null ? statusUpdateDTO.getSummary() : statusUpdateDTO.getContent().length() > 200 ? statusUpdateDTO.getContent().substring(0, 200) : statusUpdateDTO.getContent());
         statusUpdate.setCategoryId(Long.valueOf(statusUpdateDTO.getCategoryId()));
         this.save(statusUpdate);
         StatusUpdateVO statusUpdateVO = new StatusUpdateVO();
@@ -165,6 +166,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                 throw new BusinessException(ErrorCode.PARAMS_ERROR);
             }
             statusUpdate.setCategoryId(Long.valueOf(statusUpdateDTO.getCategoryId()));
+            statusUpdate.setSummary(statusUpdateDTO.getSummary() != null ? statusUpdateDTO.getSummary() : statusUpdateDTO.getContent().length() > 200 ? statusUpdateDTO.getContent().substring(0, 200) : statusUpdateDTO.getContent());
             this.updateById(statusUpdate);
             StatusUpdateVO statusUpdateVO = new StatusUpdateVO();
             BeanUtils.copyProperties(statusUpdate, statusUpdateVO);

@@ -17,11 +17,13 @@ export default defineConfig({
     },
     {
       name: '首页',
+      icon: 'Home',
       path: '/home',
       component: './Home',
     },
     {
       name: '文章',
+      icon: '',
       path: '/article',
       routes: [
         {
@@ -60,6 +62,28 @@ export default defineConfig({
           name: '编辑随手记录',
           path: '/moment/edit/:id',
           component: './Moment/EditMoment',
+          hideInMenu: true,
+        },
+      ],
+    },
+    {
+      name: '页面管理',
+      path: '/pages',
+      routes: [
+        {
+          name: '全部页面',
+          path: '/pages/list',
+          component: './Page',
+        },
+        {
+          name: '添加页面',
+          path: '/pages/add',
+          component: './Page/AddPage',
+        },
+        {
+          name: '编辑页面',
+          path: '/pages/edit/:id',
+          component: './Page/EditPage',
           hideInMenu: true,
         },
       ],

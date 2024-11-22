@@ -1,11 +1,10 @@
 package com.grtsinry43.grtblog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.security.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @author grtsinry43
@@ -18,6 +17,8 @@ public class Page {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     private String title;
+    private String description;
+    @TableField("ref_path")
     private String refPath;
     private Boolean enable;
     private Boolean canDelete;
@@ -27,7 +28,9 @@ public class Page {
     private Integer likes;
     private Integer comments;
     private Long commentId;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private Timestamp deletedAt;
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime createdAt;
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime updatedAt;
+    private LocalDateTime deletedAt;
 }

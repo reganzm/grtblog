@@ -63,7 +63,7 @@ const MomentForm: React.FC<MomentFormProps> = ({
 
   // 提交处理函数
   const addHandle = () => {
-    const content = editorRef.current?.getInstance().getHTML(); // 获取编辑器内容
+    const content = editorRef.current?.getInstance().getMarkdown();
     submitHandle(content); // 提交内容
   };
 

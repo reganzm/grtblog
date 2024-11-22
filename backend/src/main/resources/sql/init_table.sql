@@ -87,7 +87,11 @@ VALUES (1, 'article:add'),
        (37, 'category:add'),
        (38, 'category:edit'),
        (39, 'category:delete'),
-       (40, 'category:view');
+       (40, 'category:view'),
+       (41, 'page:add'),
+       (42, 'page:edit'),
+       (43, 'page:delete'),
+       (44, 'page:view');
 
 
 -- 创建用户角色关联表
@@ -126,7 +130,8 @@ SELECT 2, id
 FROM `permission`
 WHERE `permission_name` NOT IN
       ('article:delete', 'category:delete', 'comment:delete', 'user:delete', 'role:delete', 'permission:delete',
-       'config:delete', 'friend_link:delete', 'share:delete', 'permission:add', 'permission:edit', 'permission:delete');
+       'page:delete', 'config:delete', 'friend_link:delete', 'share:delete', 'permission:add', 'permission:edit',
+       'permission:delete');
 
 -- 合作作者拥有文章管理权限
 INSERT INTO `role_permission` (`role_id`, `permission_id`)
@@ -138,7 +143,8 @@ WHERE `permission_name` LIKE 'article:%';
 INSERT INTO `role_permission` (`role_id`, `permission_id`)
 SELECT 4, id
 FROM `permission`
-WHERE `permission_name` IN ('article:view', 'comment:view', 'category:view', 'share:view', 'friend_link:view');
+WHERE `permission_name` IN ('article:view', 'comment:view', 'category:view', 'share:view', 'friend_link:view',
+                            'thinking:view', 'page:view');
 
 -- 封禁用户没有任何权限
 -- No insert needed for role_id 5 as they have no permissions
@@ -319,6 +325,7 @@ CREATE TABLE IF NOT EXISTS `page`
 (
     `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT '页面ID，会由雪花算法生成',
     `title`      VARCHAR(255) NOT NULL COMMENT '页面标题',
+    `description` VARCHAR(255) COMMENT '页面描述',
     `ref_path`   VARCHAR(255) NOT NULL COMMENT '页面路径',
     `enable`     TINYINT   DEFAULT 1 COMMENT '是否启用（0：否，1：是）',
     `can_delete` TINYINT   DEFAULT 1 COMMENT '是否可以删除（0：否，1：是）',
@@ -335,15 +342,15 @@ CREATE TABLE IF NOT EXISTS `page`
 );
 
 -- 插入系统内置页面
-INSERT INTO `page` (`id`, `title`, `ref_path`, `enable`, `can_delete`, `toc`, `content`, `views`, `likes`, `comments`,
+INSERT INTO `page` (`id`, `title`, `description`,`ref_path`, `enable`, `can_delete`, `toc`, `content`, `views`, `likes`, `comments`,
                     `comment_id`, `created_at`, `updated_at`, `deleted_at`)
-VALUES (1, '归档', '/archives', 1, 0, '[]', '## 归档', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (2, '标签', '/tags', 1, 0, '[]', '## 标签', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (3, '留言板', '/message', 1, 0, '[]', '## 留言板', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (4, '友链', '/links', 1, 0, '[]', '## 友链', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (5, '思考', '/thinking', 1, 0, '[]', '## 思考', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (6, '文章', '/posts', 1, 0, '[]', '## 文章', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (7, '记录', '/moments', 1, 0, '[]', '## 记录', 0, 0, 0, NULL, NOW(), NOW(), NULL);
+VALUES (1, '归档','', '/archives', 1, 0, '[]', '## 归档', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (2, '标签','', '/tags', 1, 0, '[]', '## 标签', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (3, '留言板','', '/message', 1, 0, '[]', '## 留言板', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (4, '友链', '','/links', 1, 0, '[]', '## 友链', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (5, '思考','', '/thinking', 1, 0, '[]', '## 思考', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (6, '文章','', '/posts', 1, 0, '[]', '## 文章', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (7, '记录', '','/moments', 1, 0, '[]', '## 记录', 0, 0, 0, NULL, NOW(), NOW(), NULL);
 
 # （其中归档，标签，留言板，友链，一日一言，文章 / 分享是系统内置的），其他页面可以由用户自定义
 

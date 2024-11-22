@@ -1,22 +1,17 @@
 package com.grtsinry43.grtblog.controller;
 
-import com.grtsinry43.grtblog.dto.AddCategory;
-import com.grtsinry43.grtblog.dto.ApiResponse;
-import com.grtsinry43.grtblog.dto.ArticleDTO;
-import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
+import com.grtsinry43.grtblog.dto.*;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.entity.User;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
+import com.grtsinry43.grtblog.service.PageService;
 import com.grtsinry43.grtblog.service.impl.ArticleServiceImpl;
 import com.grtsinry43.grtblog.service.impl.CategoryServiceImpl;
 import com.grtsinry43.grtblog.service.impl.StatusUpdateServiceImpl;
 import com.grtsinry43.grtblog.service.impl.UserServiceImpl;
 import com.grtsinry43.grtblog.util.JwtUtil;
 import com.grtsinry43.grtblog.util.SecurityUtils;
-import com.grtsinry43.grtblog.vo.ArticleVO;
-import com.grtsinry43.grtblog.vo.CategoryVO;
-import com.grtsinry43.grtblog.vo.StatusUpdateVO;
-import com.grtsinry43.grtblog.vo.UserVO;
+import com.grtsinry43.grtblog.vo.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeanUtils;
@@ -45,13 +40,15 @@ public class AdminController {
     private final ArticleServiceImpl articleService;
     private final CategoryServiceImpl categoryService;
     private final StatusUpdateServiceImpl statusUpdateService;
+    private final PageService pageService;
 
-    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService) {
+    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService, PageService pageService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.articleService = articleService;
         this.categoryService = categoryService;
         this.statusUpdateService = statusUpdateService;
+        this.pageService = pageService;
     }
 
     @PostMapping("/login")
@@ -186,6 +183,38 @@ public class AdminController {
         return ApiResponse.success(statusUpdateVO);
     }
 
+    @PreAuthorize("hasAuthority('page:add')")
+    @PostMapping("/page")
+    public ApiResponse<PageVO> addPageApi(@RequestBody PageDTO pageDTO) {
+        PageVO pageVO = pageService.addPage(pageDTO);
+        return ApiResponse.success(pageVO);
+    }
+
+    @PreAuthorize("hasAuthority('page:edit')")
+    @PatchMapping("/page/{id}")
+    public ApiResponse<PageVO> updatePageApi(@PathVariable String id, @RequestBody PageDTO pageDTO) {
+        PageVO pageVO = pageService.updatePage(id, pageDTO);
+        return ApiResponse.success(pageVO);
+    }
+
+    @PreAuthorize("hasAuthority('page:delete')")
+    @DeleteMapping("/page/{id}")
+    public ApiResponse<String> deletePageApi(@PathVariable String id) {
+        pageService.deletePage(id);
+        return ApiResponse.success("删除成功");
+    }
+
+    @PreAuthorize("hasAuthority('page:edit')")
+    @GetMapping("/page/all")
+    public ApiResponse<List<PageVO>> listAllPagesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        return ApiResponse.success(pageService.getPageListAdmin(page, pageSize));
+    }
+
+    @PreAuthorize("hasAuthority('page:edit')")
+    @GetMapping("/page/{id}")
+    public ApiResponse<PageVO> getPageById(@PathVariable String id) {
+        return ApiResponse.success(pageService.getPageByIdAdmin(id));
+    }
 
 
 }

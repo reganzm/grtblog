@@ -56,7 +56,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
   };
 
   function addHandle() {
-    const content = editorRef.current?.getInstance().getHTML();
+    const content = editorRef.current?.getInstance().getMarkdown();
     submitHandle(content);
   }
 
