@@ -53,7 +53,7 @@ const ArticleView = ({post}: { post: Post }) => {
                     {post.toc && <Toc toc={JSON.parse(post.toc)} commentId={post.commentId}/>}
                 </aside>
                 <main className={styles.articleContent}>
-                    <ArticleScrollSync post={post}>
+                    <ArticleScrollSync post={post} type={"文章"}>
                         <ArticleTopPaddingAnimate/>
                         <h1 className={styles.title}>{post.title}</h1>
                         <ArticleMetadata

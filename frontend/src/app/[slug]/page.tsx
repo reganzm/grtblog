@@ -1,5 +1,9 @@
 import React from 'react';
 import {notFound} from "next/navigation";
+import PageView from "@/app/[slug]/PageView";
+import CommentArea from "@/components/comment/CommentArea";
+import {clsx} from "clsx";
+import {noto_sans_sc_bold, noto_serif_sc_bold} from "@/app/fonts/font";
 
 // 定义 API 请求的 URL
 const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -34,9 +38,10 @@ export default async function Page({params}: PageProps) {
     }
     return (
         <div className="page-container">
-            795349853485
-            {/*<MomentReadingPage moment={moment.data}/>*/}
-            {/*<CommentArea id={moment.data.commentId}/>*/}
+            <h1 className={clsx(noto_sans_sc_bold.className, "text-2xl mt-8")}>{page.data.title}</h1>
+            <h2 className={clsx(noto_serif_sc_bold.className, "mt-4")}>{page.data.description}</h2>
+            <PageView page={page.data}/>
+            <CommentArea id={page.data.commentId}/>
         </div>
     );
 }

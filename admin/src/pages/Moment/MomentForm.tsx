@@ -39,7 +39,7 @@ const MomentForm: React.FC<MomentFormProps> = ({
   useEffect(() => {
     if (formRef.current && momentInfo && firstIn) {
       formRef.current.setFieldsValue(momentInfo); // 填充表单字段
-      editorRef.current?.getInstance().setHTML(momentInfo?.content); // 设置编辑器内容
+      editorRef.current?.getInstance().setMarkdown(momentInfo?.content); // 设置编辑器内容
       setFirstIn(false);
     }
   }, [momentInfo, firstIn]);

@@ -29,7 +29,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
     if (formRef.current && articleInfo && firstIn) {
       formRef.current.setFieldsValue(articleInfo);
       // 回填 markdown 编辑器内容
-      editorRef.current?.getInstance().setHTML(articleInfo?.content);
+      editorRef.current?.getInstance().setMarkdown(articleInfo?.content);
       setFirstIn(false);
     }
   }, [articleInfo, firstIn]);

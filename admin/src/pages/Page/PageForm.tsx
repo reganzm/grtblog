@@ -24,7 +24,7 @@ const PageForm: React.FC<PageFormProps> = ({
     if (formRef.current && pageInfo && firstIn) {
       formRef.current.setFieldsValue(pageInfo);
       // 回填 markdown 编辑器内容
-      editorRef.current?.getInstance().setHTML(pageInfo?.content);
+      editorRef.current?.getInstance().setMarkdown(pageInfo?.content);
       setFirstIn(false);
     }
   }, [pageInfo, firstIn]);

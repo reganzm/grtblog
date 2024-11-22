@@ -14,8 +14,8 @@ const spring = {
 const ArticleTopPaddingAnimate = () => {
   return (
     <motion.div
-      initial={{ paddingTop: 0 }}
-      animate={{ paddingTop: 50 }}
+      initial={{ paddingTop: 50 }}
+      animate={{ paddingTop: 0 }}
       transition={spring}
       style={{ width: '100%' }}
     >

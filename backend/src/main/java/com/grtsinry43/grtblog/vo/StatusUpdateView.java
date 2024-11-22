@@ -26,6 +26,8 @@ public class StatusUpdateView {
      */
     private String authorAvatar;
 
+    private String categoryName;
+
     /**
      * 图片
      */
@@ -57,7 +59,7 @@ public class StatusUpdateView {
     private Integer likes;
 
     /**
-     * 评论区id
+     * 评论区 id
      */
     private String commentId;
 
