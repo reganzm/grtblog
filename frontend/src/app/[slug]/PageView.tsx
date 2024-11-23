@@ -1,7 +1,6 @@
 import React from 'react';
 import ArticleTopPaddingAnimate from "@/components/article/ArticleTopPaddingAnimate";
 import styles from "@/styles/PostPage.module.scss";
-import ArticleMetadata from "@/components/article/ArticleMetaData";
 import ReactMarkdown from "react-markdown";
 import rehypeSanitize from "rehype-sanitize";
 import remarkGfm from "remark-gfm";
@@ -18,7 +17,7 @@ import FloatingTocMobile from "@/components/article/FloatingTocMobile";
 import ReadingProgress from "@/components/article/ReadingProgress";
 import Toc from "@/components/article/Toc";
 import ArticleScrollSync from "@/components/article/ArticleScrollSync";
-import {Calendar, Clock, Eye, User} from "lucide-react";
+import {Calendar, Clock, Eye} from "lucide-react";
 
 export type PageVO = {
     commentId: string,

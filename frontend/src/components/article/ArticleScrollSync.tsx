@@ -9,7 +9,7 @@ import {MomentView} from "@/components/moment/MomentReading";
 export type TitleEvent = {
     type: string;
     title: string;
-    categoryName?: string;
+    categoryName: string;
 };
 
 const ArticleScrollSync = ({children, type, post}: {
