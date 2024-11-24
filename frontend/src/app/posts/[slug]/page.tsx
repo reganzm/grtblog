@@ -29,6 +29,21 @@ interface BlogPostProps {
     params: Promise<Params>;
 }
 
+export async function generateMetadata({params}: BlogPostProps) {
+    const {slug} = await params;
+    const res = await fetch(`${API_URL}/article/${slug}`, {
+        next: {revalidate: 60},
+    });
+    const post = await res.json();
+    if (post.code !== 0) {
+        notFound();
+    }
+    return {
+        title: post.data.title,
+        description: post.data.summary,
+    };
+}
+
 export default async function BlogPost({params}: BlogPostProps) {
     // 直接使用 await 来确保 params 被正确解析
     const {slug} = await params; // 确保 params 被解析

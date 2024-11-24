@@ -27,6 +27,16 @@ interface CategoryPageProps {
     params: Promise<{ slug: string }>;
 }
 
+export async function generateMetadata({params}: CategoryPageProps) {
+    const {slug} = await params;
+    const category: CategoryVO = (await getAllCategories({next: {revalidate: 60}})).find((c: CategoryVO) => c.shortUrl === slug);
+
+    return {
+        title: ` 分类 - ${category.name}`,
+        description: ` 分类 - ${category.name}`,
+    };
+}
+
 const CategoryPage = async ({params}: CategoryPageProps) => {
     const {slug} = await params;
 

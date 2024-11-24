@@ -15,6 +15,7 @@ import emitter from "@/utils/eventBus";
 import {TitleEvent} from "@/components/article/ArticleScrollSync";
 import {article_font} from "@/app/fonts/font";
 import {OnlineCount} from "@/redux/onlineCountSlice";
+import {useWebsiteInfo} from "@/app/website-info-provider";
 
 export default function NavBarDesktop({items}: {
     items: { name: string; href: string; children?: { name: string; href: string }[] }[]
@@ -32,6 +33,7 @@ export default function NavBarDesktop({items}: {
 
     const navbarRef = useRef<HTMLDivElement>(null);
     const [isInView, setIsInView] = useState(false);
+    const websiteInfo = useWebsiteInfo();
 
     useEffect(() => {
         setMounted(true);
@@ -131,7 +133,7 @@ export default function NavBarDesktop({items}: {
                         <div className={styles.avatarWrapper}>
                             <motion.div initial={{scale: 0}} animate={isInView ? {scale: 1} : {scale: 0}}
                                         transition={{type: 'spring', stiffness: 260, damping: 20}}>
-                                <Avatar size="3" radius="large" src="https://dogeoss.grtsinry43.com/img/author.jpeg"
+                                <Avatar size="3" radius="large" src={websiteInfo.WEBSITE_LOGO}
                                         fallback="A"
                                         className={styles.avatar}/>
                             </motion.div>
@@ -217,7 +219,7 @@ export default function NavBarDesktop({items}: {
                             </div>
                             <div className={styles.githubWrapper}>
                                 <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
-                                    <a href="https://github.com/grtsinry43" target="_blank"
+                                    <a href={websiteInfo.AUTHOR_GITHUB} target="_blank"
                                        rel="noopener noreferrer"
                                        className={styles.githubLink}>
                                         <GitHubLogoIcon/>

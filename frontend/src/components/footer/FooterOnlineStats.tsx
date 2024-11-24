@@ -37,10 +37,11 @@ const FooterLink = () => {
                     left: '50%',
                     transform: 'translateX(-50%) translateY(-2rem)',
                     backgroundColor: 'rgba(var(--background), 0.9)',
-                    padding: '1rem',
+                    padding: '0.7rem',
                     borderRadius: '0.5rem',
                     backdropFilter: 'blur(10px)',
                     zIndex: 100,
+                    border: '1px solid rgba(var(--foreground), 0.1)',
                 }}>
                     {
                         pageViewCount.map((item, index) => {

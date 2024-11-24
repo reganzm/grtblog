@@ -3,6 +3,8 @@ package com.grtsinry43.grtblog.service;
 import com.grtsinry43.grtblog.entity.WebsiteInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.Map;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IWebsiteInfoService extends IService<WebsiteInfo> {
 
+    Map<String, String> getAllWebsiteInfo();
 }

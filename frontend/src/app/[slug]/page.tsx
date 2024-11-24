@@ -4,6 +4,7 @@ import PageView from "@/app/[slug]/PageView";
 import CommentArea from "@/components/comment/CommentArea";
 import {clsx} from "clsx";
 import {noto_sans_sc_bold, noto_serif_sc_bold} from "@/app/fonts/font";
+import {Metadata} from "next";
 
 // 定义 API 请求的 URL
 const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
@@ -26,6 +27,21 @@ interface PageProps {
     params: Promise<Params>;
 }
 
+export async function generateMetadata({params}: PageProps): Promise<Metadata> {
+    const {slug} = await params;
+    const res = await fetch(`${API_URL}/page/${slug}`, {
+        next: {revalidate: 60},
+    });
+    const page = await res.json();
+    if (page.code !== 0) {
+        notFound();
+    }
+    return {
+        title: page.data.title,
+        description: page.data.description,
+    };
+}
+
 export default async function Page({params}: PageProps) {
     const {slug} = await params;
     const res = await fetch(`${API_URL}/page/${slug}`, {
@@ -36,6 +52,7 @@ export default async function Page({params}: PageProps) {
     if (page.code !== 0) {
         notFound();
     }
+
     return (
         <div className="page-container">
             <h1 className={clsx(noto_sans_sc_bold.className, "text-2xl mt-8")}>{page.data.title}</h1>

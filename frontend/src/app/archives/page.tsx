@@ -4,10 +4,16 @@ import {clsx} from 'clsx';
 import {getArchives} from '@/api/archive';
 import {ArticleArchive, StatusUpdateArchive, YearlyArchive} from '@/types';
 import ArchiveItem from '@/components/archive/ArchiveItem';
+import {Metadata} from "next";
 
 type Archives = YearlyArchive[];
 
 export type CombinedItem = (ArticleArchive | StatusUpdateArchive) & { type: 'article' | 'status'; year: number };
+
+export const metadata: Metadata = {
+    title: '回忆与归档 - Archives',
+    description: '岁月绵长，山高路远，蓦然回首，我们也曾在这里留下过足迹。',
+}
 
 const ArchivePage = async () => {
     const archives: Archives = await getArchives({next: {revalidate: 60}});

@@ -4,12 +4,12 @@ import BannerTitle from '@/app/home/BannerTitle';
 import styles from '@/styles/home/AuthorBanner.module.scss';
 
 const AuthorBanner = () => {
-  return (
-    <div className={styles.banner}>
-      <BannerTitle />
-      <AuthorCard />
-    </div>
-  );
+    return (
+        <div className={styles.banner}>
+            <BannerTitle/>
+            <AuthorCard/>
+        </div>
+    );
 };
 
 export default AuthorBanner;

@@ -1,3 +1,28 @@
+export interface WebsiteInfo {
+    AUTHOR_HOME: string;
+    AUTHOR_GITHUB: string;
+    WEBSITE_CREATE_TIME: string;
+    HOME_GITHUB: string;
+    WEBSITE_AUTHOR: string;
+    WEBSITE_URL: string;
+    AUTHOR_NAME: string;
+    AUTHOR_AVATAR: string;
+    WEBSITE_MPS: string;
+    WEBSITE_COPYRIGHT: string;
+    WEBSITE_NAME: string;
+    WEBSITE_LOGO: string;
+    HOME_SLOGAN_EN: string;
+    AUTHOR_WELCOME: string;
+    AUTHOR_INFO: string;
+    WEBSITE_ICP: string;
+    WEBSITE_DESCRIPTION: string;
+    HOME_TITLE: string;
+    HOME_SLOGAN: string;
+    WEBSITE_FAVICON: string;
+    WEBSITE_KEYWORDS: string;
+}
+
+
 export interface Article {
     id: number;
     title: string;

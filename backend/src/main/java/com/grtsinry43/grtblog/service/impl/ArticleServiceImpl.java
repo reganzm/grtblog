@@ -152,7 +152,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         ArticleView articleView = new ArticleView();
         BeanUtils.copyProperties(article, articleView);
         articleView.setAuthorName(userService.getById(article.getAuthorId()).getNickname());
-        articleView.setCategoryName(categoryService.getById(article.getCategoryId()).getName());
+        articleView.setCategoryName(categoryService.getById(article.getCategoryId()) == null ? "未分类" : categoryService.getById(article.getCategoryId()).getName());
         articleView.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
         articleView.setCommentId(article.getCommentId().toString());
         return articleView;

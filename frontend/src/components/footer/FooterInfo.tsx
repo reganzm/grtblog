@@ -5,8 +5,9 @@ import {varela_round} from '@/app/fonts/font';
 import {Avatar, Box, Flex, Heading, HoverCard, Link, Text} from '@radix-ui/themes';
 import {GitHubLogoIcon} from '@radix-ui/react-icons';
 import FooterOnlineStats from "@/components/footer/FooterOnlineStats";
+import {WebsiteInfo} from "@/types";
 
-const FooterInfo = () => {
+const FooterInfo = ({websiteInfo}: { websiteInfo: WebsiteInfo }) => {
     return (
         <>
             <div className={clsx(styles.footerText, varela_round.className)}>
@@ -49,17 +50,17 @@ const FooterInfo = () => {
                 for developers
             </div>
             <div className={clsx(styles.footerText, varela_round.className)}>
-                Copyright &copy; 2022-2024 grtsinry43. All rights reserved.
+                {websiteInfo.WEBSITE_COPYRIGHT}
                 <span><FooterOnlineStats/></span>
             </div>
             <p className={clsx(styles.footerText, styles.recordNumber)}>
           <span>
             <a href="https://beian.miit.gov.cn/" target="_blank" rel="noreferrer">
-            湘 ICP 备 0000000000 号 -1
+            {websiteInfo.WEBSITE_ICP}
             </a>
           </span>
                 <span>
-             湘公网安备 0000000000000 号
+             {websiteInfo.WEBSITE_MPS}
           </span>
             </p>
         </>

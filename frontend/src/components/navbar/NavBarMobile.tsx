@@ -10,6 +10,7 @@ import {clsx} from 'clsx';
 import emitter from "@/utils/eventBus";
 import {TitleEvent} from "@/components/article/ArticleScrollSync";
 import {article_font} from "@/app/fonts/font";
+import {useWebsiteInfo} from "@/app/website-info-provider";
 
 const NavBarMobile = ({items}: {
     items: { name: string; href: string; children?: { name: string; href: string }[] }[]
@@ -19,6 +20,8 @@ const NavBarMobile = ({items}: {
     const [showPanel, setShowPanel] = useState(false);
     const [isTitleVisible, setIsTitleVisible] = useState(false);
     const [titleInfo, setTitleInfo] = useState({title: '', categoryName: '', type: ''});
+
+    const websiteInfo = useWebsiteInfo();
 
     useEffect(() => {
         setMounted(true);
@@ -103,7 +106,7 @@ const NavBarMobile = ({items}: {
                                     <Avatar
                                         size="3"
                                         radius="large"
-                                        src="https://dogeoss.grtsinry43.com/img/author.jpeg"
+                                        src={websiteInfo.AUTHOR_AVATAR}
                                         fallback="A"
                                         className={styles.avatar}
                                     />
@@ -119,7 +122,7 @@ const NavBarMobile = ({items}: {
                                     <div className={styles.githubWrapper}>
                                         <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
                                             <a
-                                                href="https://github.com/grtsinry43"
+                                                href={websiteInfo.AUTHOR_GITHUB}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className={styles.githubLink}

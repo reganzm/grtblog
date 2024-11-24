@@ -12,6 +12,7 @@ import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.net.SocketAddress;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.*;
@@ -74,7 +75,8 @@ public class SocketIOService {
     @OnEvent("enterPage")
     public void onEnterPage(SocketIOClient client, String page) {
         UUID clientId = client.getSessionId();
-        String pageName = pageMatcher.matchPath(page);
+        SocketAddress remoteAddress = client.getRemoteAddress();
+        String pageName = pageMatcher.matchPath(page, remoteAddress);
         String previousPage = clientPageMap.put(clientId, pageName);
 
         if (previousPage != null && !previousPage.equals(pageName)) {

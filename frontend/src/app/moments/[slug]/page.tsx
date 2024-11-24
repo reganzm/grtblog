@@ -25,6 +25,22 @@ interface MomentPageProps {
     params: Promise<Params>;
 }
 
+// 生成元数据
+export async function generateMetadata({params}: MomentPageProps) {
+    const {slug} = await params;
+    const res = await fetch(`${API_URL}/statusUpdate/${slug}`, {
+        next: {revalidate: 60},
+    });
+    const moment = await res.json();
+    if (moment.code !== 0) {
+        notFound();
+    }
+    return {
+        title: moment.data.title,
+        description: moment.data.summary,
+    };
+}
+
 // 定义 Page 组件
 export default async function Page({params}: MomentPageProps) {
     // 确保 params 被正确解析

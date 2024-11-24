@@ -323,34 +323,35 @@ VALUES (1, '文章:Hello World', NOW(), NOW()),
 -- 页面表
 CREATE TABLE IF NOT EXISTS `page`
 (
-    `id`         BIGINT       NOT NULL AUTO_INCREMENT COMMENT '页面ID，会由雪花算法生成',
-    `title`      VARCHAR(255) NOT NULL COMMENT '页面标题',
+    `id`          BIGINT       NOT NULL AUTO_INCREMENT COMMENT '页面ID，会由雪花算法生成',
+    `title`       VARCHAR(255) NOT NULL COMMENT '页面标题',
     `description` VARCHAR(255) COMMENT '页面描述',
-    `ref_path`   VARCHAR(255) NOT NULL COMMENT '页面路径',
-    `enable`     TINYINT   DEFAULT 1 COMMENT '是否启用（0：否，1：是）',
-    `can_delete` TINYINT   DEFAULT 1 COMMENT '是否可以删除（0：否，1：是）',
-    `toc`        JSON         NOT NULL COMMENT '页面内容目录，由后端根据页面内容生成',
-    `content`    TEXT         NOT NULL COMMENT '页面内容，markdown格式，交由前端解析',
-    `views`      INT       DEFAULT 0 COMMENT '浏览量',
-    `likes`      INT       DEFAULT 0 COMMENT '点赞量',
-    `comments`   INT       DEFAULT 0 COMMENT '评论量',
-    `comment_id` BIGINT COMMENT '挂载的评论ID（如果为空则表示不开启评论）',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '页面创建时间',
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '页面更新时间',
-    `deleted_at` TIMESTAMP COMMENT '页面删除时间（软删除），如果不为空则表示已删除',
+    `ref_path`    VARCHAR(255) NOT NULL COMMENT '页面路径',
+    `enable`      TINYINT   DEFAULT 1 COMMENT '是否启用（0：否，1：是）',
+    `can_delete`  TINYINT   DEFAULT 1 COMMENT '是否可以删除（0：否，1：是）',
+    `toc`         JSON         NOT NULL COMMENT '页面内容目录，由后端根据页面内容生成',
+    `content`     TEXT         NOT NULL COMMENT '页面内容，markdown格式，交由前端解析',
+    `views`       INT       DEFAULT 0 COMMENT '浏览量',
+    `likes`       INT       DEFAULT 0 COMMENT '点赞量',
+    `comments`    INT       DEFAULT 0 COMMENT '评论量',
+    `comment_id`  BIGINT COMMENT '挂载的评论ID（如果为空则表示不开启评论）',
+    `created_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '页面创建时间',
+    `updated_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '页面更新时间',
+    `deleted_at`  TIMESTAMP COMMENT '页面删除时间（软删除），如果不为空则表示已删除',
     PRIMARY KEY (`id`)
 );
 
 -- 插入系统内置页面
-INSERT INTO `page` (`id`, `title`, `description`,`ref_path`, `enable`, `can_delete`, `toc`, `content`, `views`, `likes`, `comments`,
+INSERT INTO `page` (`id`, `title`, `description`, `ref_path`, `enable`, `can_delete`, `toc`, `content`, `views`,
+                    `likes`, `comments`,
                     `comment_id`, `created_at`, `updated_at`, `deleted_at`)
-VALUES (1, '归档','', '/archives', 1, 0, '[]', '## 归档', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (2, '标签','', '/tags', 1, 0, '[]', '## 标签', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (3, '留言板','', '/message', 1, 0, '[]', '## 留言板', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (4, '友链', '','/links', 1, 0, '[]', '## 友链', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (5, '思考','', '/thinking', 1, 0, '[]', '## 思考', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (6, '文章','', '/posts', 1, 0, '[]', '## 文章', 0, 0, 0, NULL, NOW(), NOW(), NULL),
-       (7, '记录', '','/moments', 1, 0, '[]', '## 记录', 0, 0, 0, NULL, NOW(), NOW(), NULL);
+VALUES (1, '归档', '', '/archives', 1, 0, '[]', '## 归档', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (2, '标签', '', '/tags', 1, 0, '[]', '## 标签', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (3, '留言板', '', '/message', 1, 0, '[]', '## 留言板', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (4, '友链', '', '/links', 1, 0, '[]', '## 友链', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (5, '思考', '', '/thinking', 1, 0, '[]', '## 思考', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (6, '文章', '', '/posts', 1, 0, '[]', '## 文章', 0, 0, 0, NULL, NOW(), NOW(), NULL),
+       (7, '记录', '', '/moments', 1, 0, '[]', '## 记录', 0, 0, 0, NULL, NOW(), NOW(), NULL);
 
 # （其中归档，标签，留言板，友链，一日一言，文章 / 分享是系统内置的），其他页面可以由用户自定义
 
@@ -492,6 +493,36 @@ CREATE TABLE IF NOT EXISTS `website_info`
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '信息更新时间',
     PRIMARY KEY (`id`)
 );
+
+-- 基础信息
+INSERT INTO `website_info` (`key`, `value`, `created_at`, `updated_at`)
+VALUES ('WEBSITE_NAME', 'Your Website Name', NOW(), NOW()),
+       ('WEBSITE_URL', 'https://yourwebsite.com', NOW(), NOW()),
+       ('WEBSITE_DESCRIPTION', 'Your website description', NOW(), NOW()),
+       ('WEBSITE_KEYWORDS', 'keyword1, keyword2, keyword3', NOW(), NOW()),
+       ('WEBSITE_AUTHOR', 'Author Name', NOW(), NOW()),
+       ('WEBSITE_ICP', 'ICP Number', NOW(), NOW()),
+       ('WEBSITE_MPS', 'MPS Number', NOW(), NOW()),
+       ('WEBSITE_FAVICON', 'https://yourwebsite.com/favicon.ico', NOW(), NOW()),
+       ('WEBSITE_LOGO', 'https://yourwebsite.com/logo.png', NOW(), NOW()),
+       ('WEBSITE_COPYRIGHT', '© 2024 Your Website. All rights reserved.', NOW(), NOW()),
+       ('WEBSITE_CREATE_TIME', '2024-01-01', NOW(), NOW());
+
+-- 主页信息
+INSERT INTO `website_info` (`key`, `value`, `created_at`, `updated_at`)
+VALUES ('HOME_TITLE', 'Home Page Title', NOW(), NOW()),
+       ('HOME_SLOGAN', 'Your Home Page Slogan', NOW(), NOW()),
+       ('HOME_SLOGAN_EN', 'Your Home Page Slogan in English', NOW(), NOW()),
+       ('HOME_GITHUB', 'https://github.com/yourgithub', NOW(), NOW());
+
+-- 作者卡片
+INSERT INTO `website_info` (`key`, `value`, `created_at`, `updated_at`)
+VALUES ('AUTHOR_NAME', 'Author Name', NOW(), NOW()),
+       ('AUTHOR_INFO', 'Short introduction about the author', NOW(), NOW()),
+       ('AUTHOR_AVATAR', 'https://yourwebsite.com/avatar.png', NOW(), NOW()),
+       ('AUTHOR_WELCOME', 'Welcome message from the author', NOW(), NOW()),
+       ('AUTHOR_GITHUB', 'https://github.com/authorgithub', NOW(), NOW()),
+       ('AUTHOR_HOME', 'https://authorwebsite.com', NOW(), NOW());
 
 CREATE TABLE IF NOT EXISTS `friend_link`
 (
