@@ -10,6 +10,7 @@ import { varela_round } from '@/app/fonts/font';
 type StatusUpdate = {
   id: string;
   title: string;
+  shortUrl: string;
   createdAt: string;
 }
 
@@ -30,7 +31,7 @@ const RecentMomentItem: React.FC<{ statusUpdate: StatusUpdate }> = ({ statusUpda
   };
 
   return (
-    <Link href={`/moments/${statusUpdate.id}`}>
+    <Link href={`/moments/${statusUpdate.shortUrl}`}>
       <div
         ref={cardRef}
         className={styles.itemCard}

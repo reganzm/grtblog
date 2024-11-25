@@ -1,8 +1,6 @@
 package com.grtsinry43.grtblog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -93,14 +91,9 @@ public class StatusUpdate implements Serializable {
      */
     private Boolean isPublished;
 
-    /**
-     * 分享创建时间
-     */
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
-
-    /**
-     * 分享更新时间
-     */
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
 
     /**

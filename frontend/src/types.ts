@@ -34,6 +34,7 @@ export interface Article {
 export type StatusUpdate = {
     id: string;
     title: string;
+    shortUrl: string;
     createdAt: string;
 }
 

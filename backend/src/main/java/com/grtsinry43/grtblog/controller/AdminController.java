@@ -5,10 +5,7 @@ import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.entity.User;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
 import com.grtsinry43.grtblog.service.PageService;
-import com.grtsinry43.grtblog.service.impl.ArticleServiceImpl;
-import com.grtsinry43.grtblog.service.impl.CategoryServiceImpl;
-import com.grtsinry43.grtblog.service.impl.StatusUpdateServiceImpl;
-import com.grtsinry43.grtblog.service.impl.UserServiceImpl;
+import com.grtsinry43.grtblog.service.impl.*;
 import com.grtsinry43.grtblog.util.JwtUtil;
 import com.grtsinry43.grtblog.util.SecurityUtils;
 import com.grtsinry43.grtblog.vo.*;
@@ -41,14 +38,16 @@ public class AdminController {
     private final CategoryServiceImpl categoryService;
     private final StatusUpdateServiceImpl statusUpdateService;
     private final PageService pageService;
+    private final WebsiteInfoServiceImpl websiteInfoService;
 
-    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService, PageService pageService) {
+    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.articleService = articleService;
         this.categoryService = categoryService;
         this.statusUpdateService = statusUpdateService;
         this.pageService = pageService;
+        this.websiteInfoService = websiteInfoService;
     }
 
     @PostMapping("/login")
@@ -214,6 +213,17 @@ public class AdminController {
     @GetMapping("/page/{id}")
     public ApiResponse<PageVO> getPageById(@PathVariable String id) {
         return ApiResponse.success(pageService.getPageByIdAdmin(id));
+    }
+
+    @PreAuthorize("hasAuthority('config:edit')")
+    @PutMapping("/config")
+    public ApiResponse<String> updateWebsiteInfo(@RequestParam String key, @RequestParam String value) {
+        boolean success = websiteInfoService.updateWebsiteInfo(key, value);
+        if (success) {
+            return ApiResponse.success("Website information updated successfully");
+        } else {
+            return ApiResponse.error(400, "Failed to update website information");
+        }
     }
 
 

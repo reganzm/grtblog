@@ -1,8 +1,7 @@
 package com.grtsinry43.grtblog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -52,5 +51,6 @@ public class UploadFile implements Serializable {
     /**
      * 文件上传时间
      */
-    private LocalDateTime created;
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime createdAt;
 }

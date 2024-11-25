@@ -1,9 +1,6 @@
 package com.grtsinry43.grtblog.config;
 
-import com.grtsinry43.grtblog.security.JwtAuthenticationFilter;
-import com.grtsinry43.grtblog.security.LoginUnAccessDeniedHandler;
-import com.grtsinry43.grtblog.security.LoginUnAuthenticationEntryPointHandler;
-import com.grtsinry43.grtblog.security.LogoutStatusSuccessHandler;
+import com.grtsinry43.grtblog.security.*;
 import com.grtsinry43.grtblog.service.CustomOAuth2UserService;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
@@ -54,6 +51,9 @@ public class SecurityConfig {
     @Resource
     private LogoutStatusSuccessHandler logoutStatusSuccessHandler;
 
+    @Resource
+    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+
     // 自定义密码加密器
     @Bean
     public PasswordEncoder generalPasswordEncoder() {
@@ -66,7 +66,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable) // 防止跨站请求伪造
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 取消 session
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/user/login", "/user/logout", "/oauth2/authorization/**", "/login**", "/captcha", "/admin/login", "/page-view", "/page/**", "/search/**", "/websiteInfo/**").permitAll() // 登录和未登录的人都可以访问
+                        .requestMatchers("/user/login", "/user/logout", "/oauth2/authorization/**", "/login**", "/captcha", "/admin/login", "/page-view", "/page/**", "/search/**", "/websiteInfo/**","/uploads/**").permitAll() // 登录和未登录的人都可以访问
                         // 这里感觉还是把对外的接口放在统一的路径，而需要权限认证和登录的或者管理员接口每个都需要校验
                         .requestMatchers("/article/**", "/statusUpdate/**", "/comment/**", "/tag/**", "/nav/**", "/category/**", "/archive").permitAll()
                         // TODO : 仅开发使用
@@ -77,6 +77,7 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(customOAuth2UserService)
                         )
+                        .successHandler(oAuth2LoginSuccessHandler)
                 );
         // 自定义每次请求的过滤器
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

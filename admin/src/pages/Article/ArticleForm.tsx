@@ -1,9 +1,19 @@
 import CategoryController from '@/services/category/CategoryController';
+import { getToken } from '@/utils/token';
 import { useDispatch, useSelector } from '@@/exports';
 import { PlusOutlined } from '@ant-design/icons';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
-import { Button, Form, Input, message, Modal, Select, Upload } from 'antd';
+import {
+  Button,
+  Form,
+  Image,
+  Input,
+  message,
+  Modal,
+  Select,
+  Upload,
+} from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
 
 interface ArticleFormProps {
@@ -58,6 +68,15 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
   function addHandle() {
     const content = editorRef.current?.getInstance().getMarkdown();
     submitHandle(content);
+  }
+
+  let coverPreview = null;
+  if (type === 'edit') {
+    coverPreview = (
+      <Form.Item label="当前封面" name="coverPreview">
+        <Image src={articleInfo?.cover} width={100} />
+      </Form.Item>
+    );
   }
 
   const handleAddCategory = () => {
@@ -170,6 +189,9 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           </div>
           <Upload
             action="/api/upload"
+            headers={{
+              Authorization: 'Bearer ' + getToken(),
+            }}
             onChange={(e) => {
               if (e.file.status === 'done') {
                 const url = e.file.response.data;
@@ -180,6 +202,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
             <a> 点击上传 </a>
           </Upload>
         </Form.Item>
+        {coverPreview}
         <Form.Item label="上传封面">
           <Upload
             listType="picture-card"

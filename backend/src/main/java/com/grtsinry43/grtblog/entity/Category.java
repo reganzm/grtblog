@@ -1,13 +1,12 @@
 package com.grtsinry43.grtblog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * @author grtsinry43
@@ -24,7 +23,9 @@ public class Category implements Serializable {
     private Long id;
     private String name;
     private String shortUrl;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime createdAt;
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime updatedAt;
     private Timestamp deletedAt;
 }

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import {removeToken} from "@/utils/token";
 
 // export const updateUserInfoAsync = createAsyncThunk(
 //   "user/updateUserInfoAsync",
@@ -39,6 +40,7 @@ const userSlice = createSlice({
     // 清除用户信息
     clearUserInfo: (state, { payload }) => {
       console.log('clearUserInfo' + payload);
+      removeToken();
       state.userInfo = {};
     },
   },

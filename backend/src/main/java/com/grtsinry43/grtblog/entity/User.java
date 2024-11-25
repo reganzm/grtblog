@@ -79,10 +79,12 @@ public class User implements Serializable {
     /**
      * OAuth2.0 提供者（如 google, github）
      */
+    @TableField("oauth_provider")
     private String oauthProvider;
 
     /**
      * OAuth2.0 用户 ID
      */
+    @TableField("oauth_id")
     private String oauthId;
 }

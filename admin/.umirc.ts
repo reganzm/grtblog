@@ -105,6 +105,11 @@ export default defineConfig({
       hideInMenu: true,
       menuRender: false,
     },
+    {
+      name: '配置信息',
+      path: '/config',
+      component: './Config',
+    },
   ],
   npmClient: 'pnpm',
   proxy: {
@@ -114,6 +119,10 @@ export default defineConfig({
       pathRewrite: { '^/api': '' },
     },
     '/captcha': {
+      target: 'http://127.0.0.1:8080',
+      changeOrigin: true,
+    },
+    '/uploads': {
       target: 'http://127.0.0.1:8080',
       changeOrigin: true,
     },

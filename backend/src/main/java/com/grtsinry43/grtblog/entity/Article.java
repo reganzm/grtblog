@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -66,10 +67,9 @@ public class Article implements Serializable {
     @TableField("is_published")
     private Boolean isPublished;
 
-    @TableField("created_at")
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
-
-    @TableField("updated_at")
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
 
     @TableField("deleted_at")

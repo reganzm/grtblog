@@ -6,6 +6,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   config:
     import: classpath:application-secret.yml
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: /home/grtsinry43/grtblog/backend/
+  mvc:
+    static-path-pattern: /uploads/**
+  web:
+    resources:
+      static-locations: file:/home/grtsinry43/grtblog/backend/uploads/
 #  mvc:
 #    servlet:
 #      path: /api/v1
@@ -22,11 +33,11 @@ mybatis-plus:
 
 # enable log for web request (develop only)
 logging:
-#  level:
-#    com.grtsinry43.grtblog.mapper: DEBUG
-#    org:
-#      springframework:
-#        web: DEBUG
+  #  level:
+  #    com.grtsinry43.grtblog.mapper: DEBUG
+  #    org:
+  #      springframework:
+  #        web: DEBUG
   config: classpath:logback-spring.xml
 
 # use at "In extreme cases, the primary key is duplicated."

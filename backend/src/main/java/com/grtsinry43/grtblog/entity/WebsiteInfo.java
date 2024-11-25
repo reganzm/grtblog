@@ -1,8 +1,6 @@
 package com.grtsinry43.grtblog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 
+ *
  * </p>
  *
  * @author grtsinry43
@@ -28,7 +26,7 @@ public class WebsiteInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 网站信息ID，会由雪花算法生成
+     * 网站信息 ID，会由雪花算法生成
      */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
@@ -43,13 +41,8 @@ public class WebsiteInfo implements Serializable {
      */
     private String value;
 
-    /**
-     * 信息创建时间
-     */
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
-
-    /**
-     * 信息更新时间
-     */
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
 }

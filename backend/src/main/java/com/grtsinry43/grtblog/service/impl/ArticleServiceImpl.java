@@ -246,7 +246,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             articleVO.setId(article.getId().toString());
             articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
             articleVO.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
-            articleVO.setCategoryId(article.getCategoryId().toString());
+            articleVO.setCategoryId(article.getCategoryId() != null ? article.getCategoryId().toString() : null);
             return articleVO;
         }).collect(Collectors.toList());
     }
@@ -259,7 +259,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleVO.setId(article.getId().toString());
         articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
         articleVO.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
-        articleVO.setCategoryId(article.getCategoryId().toString());
+        articleVO.setCategoryId(article.getCategoryId() != null ? article.getCategoryId().toString() : null);
         return articleVO;
     }
 

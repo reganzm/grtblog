@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Link from 'next/link';
 import {motion, AnimatePresence} from 'framer-motion';
-import {Avatar, IconButton} from '@radix-ui/themes';
+import {Avatar, IconButton, DropdownMenu, Badge} from '@radix-ui/themes';
 import {MoonIcon, SunIcon, GitHubLogoIcon, MagnifyingGlassIcon} from '@radix-ui/react-icons';
 import styles from '@/styles/NavBar.module.scss';
 import {useTheme} from 'next-themes';
@@ -239,13 +239,42 @@ export default function NavBarDesktop({items}: {
                             <div className={styles.loginButtonWrapper}>
                                 {user.isLogin ? (
                                     <div className={styles.avatarWrapper}>
-                                        <Avatar
-                                            size="3"
-                                            radius="large"
-                                            src={user.userInfo.avatar ? user.userInfo.avatar : undefined}
-                                            fallback={user.userInfo.nickname[0]}
-                                            className={styles.avatar}
-                                        />
+                                        <DropdownMenu.Root>
+                                            <DropdownMenu.Trigger>
+                                                <Avatar
+                                                    size="3"
+                                                    radius="large"
+                                                    src={user.userInfo.avatar ? user.userInfo.avatar : undefined}
+                                                    fallback={user.userInfo.nickname[0]}
+                                                    className={styles.avatar}
+                                                />
+                                            </DropdownMenu.Trigger>
+                                            <DropdownMenu.Content>
+                                                <DropdownMenu.Item>{user.userInfo.nickname}
+                                                    <Badge className={styles.tag}
+                                                           color="gray">{user.userInfo.oauthProvider ? user.userInfo.oauthProvider : '本站'}</Badge>
+                                                </DropdownMenu.Item>
+                                                <DropdownMenu.Item>{user.userInfo.email}</DropdownMenu.Item>
+                                                <DropdownMenu.Separator/>
+                                                <DropdownMenu.Item> 用户中心与设置 </DropdownMenu.Item>
+
+                                                {/*<DropdownMenu.Sub>*/}
+                                                {/*    <DropdownMenu.SubTrigger> 更多操作 </DropdownMenu.SubTrigger>*/}
+                                                {/*    <DropdownMenu.SubContent>*/}
+                                                {/*        <DropdownMenu.Item> 设置 </DropdownMenu.Item>*/}
+                                                {/*        /!*<DropdownMenu.Item> 我的收藏 </DropdownMenu.Item>*!/*/}
+                                                {/*    </DropdownMenu.SubContent>*/}
+                                                {/*</DropdownMenu.Sub>*/}
+
+                                                <DropdownMenu.Separator/>
+                                                <DropdownMenu.Item color="red" onClick={() => {
+                                                    dispatch({type: 'user/clearUserInfo', payload: null});
+                                                    dispatch({type: 'user/changeLoginStatus', payload: false});
+                                                }}>
+                                                    退出登录
+                                                </DropdownMenu.Item>
+                                            </DropdownMenu.Content>
+                                        </DropdownMenu.Root>
                                     </div>
                                 ) : (
                                     <motion.div whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>

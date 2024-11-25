@@ -1,6 +1,8 @@
 package com.grtsinry43.grtblog.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.io.Serial;
@@ -81,14 +83,9 @@ public class Comment implements Serializable {
      */
     private String website;
 
-    /**
-     * 评论创建时间
-     */
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
-
-    /**
-     * 评论更新时间
-     */
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
 
     /**

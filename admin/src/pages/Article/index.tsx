@@ -7,7 +7,7 @@ import {
   ProTable,
 } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
-import { Button, message, Popconfirm, Switch, Tag, Tooltip } from 'antd';
+import { Button, Image, message, Popconfirm, Switch, Tag, Tooltip } from 'antd';
 import { useEffect, useRef } from 'react';
 
 const Index = () => {
@@ -63,8 +63,21 @@ const Index = () => {
       title: '封面',
       dataIndex: 'cover',
       key: 'cover',
-      valueType: 'image',
       align: 'center',
+      render: (_, record: any) =>
+        record.cover ? (
+          <Image
+            src={record.cover}
+            key={record.cover}
+            width={40}
+            height={40}
+            style={{
+              borderRadius: '20%',
+            }}
+          />
+        ) : (
+          <span>-</span>
+        ),
     },
     {
       title: '分类',

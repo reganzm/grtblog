@@ -17,12 +17,7 @@ const ins = ofetch.create({
     console.log('===正在响应');
     console.log(response);
 
-    response.headers.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-
     const token = response.headers.get('Authorization');
-    console.log('===token' + token);
     if (token) {
       setToken(token);
     }

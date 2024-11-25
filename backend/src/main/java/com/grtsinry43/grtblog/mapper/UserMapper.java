@@ -25,9 +25,9 @@ public interface UserMapper extends BaseMapper<User> {
     /**
      * 通过 OAuth 提供商和 ID 获取用户信息
      *
-     * @param provider
-     * @param id
+     * @param oauthProvider
+     * @param oauthUserId
      * @return
      */
-    User getUserByOAuthProviderAndId(String provider, String id);
+    User getUserByOAuthProviderAndId(String oauthProvider, String oauthUserId);
 }

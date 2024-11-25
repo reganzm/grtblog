@@ -1,8 +1,6 @@
 package com.grtsinry43.grtblog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -42,13 +40,8 @@ public class SysConfig implements Serializable {
      */
     private String value;
 
-    /**
-     * 配置创建时间
-     */
-    private LocalDateTime created;
-
-    /**
-     * 配置更新时间
-     */
-    private LocalDateTime updated;
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime createdAt;
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime updatedAt;
 }

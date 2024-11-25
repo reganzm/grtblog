@@ -1,8 +1,7 @@
 package com.grtsinry43.grtblog.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import lombok.Getter;
@@ -49,15 +48,10 @@ public class FriendLink implements Serializable {
      */
     private String description;
 
-    /**
-     * 友链创建时间
-     */
-    private LocalDateTime created;
-
-    /**
-     * 友链更新时间
-     */
-    private LocalDateTime updated;
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime createdAt;
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private LocalDateTime updatedAt;
 
     /**
      * 友链删除时间（软删除），如果不为空则表示已删除
