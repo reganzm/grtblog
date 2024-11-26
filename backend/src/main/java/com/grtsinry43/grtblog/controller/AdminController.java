@@ -128,7 +128,7 @@ public class AdminController {
     @PreAuthorize("hasAuthority('category:add')")
     @PostMapping("/category")
     public ApiResponse<CategoryVO> addCategoryApi(@RequestBody AddCategory addCategory) {
-        CategoryVO categoryVO = categoryService.addNewCategory(addCategory.getName());
+        CategoryVO categoryVO = categoryService.addNewCategory(addCategory);
         return ApiResponse.success(categoryVO);
     }
 

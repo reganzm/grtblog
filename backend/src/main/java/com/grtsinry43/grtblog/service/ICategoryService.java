@@ -1,6 +1,7 @@
 package com.grtsinry43.grtblog.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.grtsinry43.grtblog.dto.AddCategory;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.vo.CategoryVO;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public interface ICategoryService extends IService<Category> {
     Boolean isCategoryExist(Long categoryId);
 
-    CategoryVO addNewCategory(String categoryName);
+    CategoryVO addNewCategory(AddCategory addCategory);
 
     String removeCategory(Long categoryId);
 

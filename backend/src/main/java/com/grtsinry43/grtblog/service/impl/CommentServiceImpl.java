@@ -2,9 +2,11 @@ package com.grtsinry43.grtblog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.grtsinry43.grtblog.common.ErrorCode;
+import com.grtsinry43.grtblog.dto.CommentLoginForm;
 import com.grtsinry43.grtblog.dto.CommentNotLoginForm;
 import com.grtsinry43.grtblog.entity.Article;
 import com.grtsinry43.grtblog.entity.Comment;
+import com.grtsinry43.grtblog.entity.User;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.CommentMapper;
 import com.grtsinry43.grtblog.service.CommentAreaService;
@@ -31,10 +33,12 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> implements ICommentService {
     private final ArticleServiceImpl articleService;
     private final CommentAreaService commentAreaService;
+    private final UserServiceImpl userService;
 
-    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService) {
+    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService, UserServiceImpl userService) {
         this.articleService = articleService;
         this.commentAreaService = commentAreaService;
+        this.userService = userService;
     }
 
     /**
@@ -51,6 +55,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             commentVO.setId(comment.getId().toString());
             commentVO.setAreaId(comment.getAreaId().toString());
             commentVO.setUserName(comment.getNickName());
+            commentVO.setAvatarUrl(comment.getAuthorId() == null ? null : userService.getById(comment.getAuthorId()).getAvatar());
             commentVO.setParentId(comment.getParentId() == null ? null : comment.getParentId().toString());
             commentVO.setParentUserName(comment.getParentId() == null ? null : getById(comment.getParentId()).getNickName());
             return commentVO;
@@ -104,6 +109,45 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         BeanUtils.copyProperties(form, comment);
         comment.setNickName(form.getUserName());
         comment.setAreaId(areaLong);
+        comment.setParentId(Objects.equals(form.getParentId(), "") ? null : Long.parseLong(form.getParentId()));
+        comment.setIp(ip);
+        comment.setLocation(location);
+        comment.setPlatform(os);
+        comment.setBrowser(browser);
+        System.out.println(comment.toString());
+        save(comment);
+        CommentVO vo = new CommentVO();
+        BeanUtils.copyProperties(comment, vo);
+        return vo;
+    }
+
+    @Override
+    public CommentVO addNewCommentLogin(User user, CommentLoginForm form, String ip, String location, String ua) {
+        System.out.println(form.toString());
+        // 正则匹配一下，提取操作系统和浏览器信息
+        String osPattern = "\\(([^;]+);";
+        String browserPattern = "([a-zA-Z]+/[0-9\\.]+)";
+
+        // 操作系统
+        Pattern pattern = Pattern.compile(osPattern);
+        Matcher matcher = pattern.matcher(ua);
+        String os = matcher.find() ? matcher.group(1) : "Unknown OS";
+
+        // 浏览器
+        pattern = Pattern.compile(browserPattern);
+        matcher = pattern.matcher(ua);
+        String browser = matcher.find() ? matcher.group(1) : "Unknown Browser";
+
+        // 查询评论区是否存在
+        if (!commentAreaService.isExist(form.getAreaId())) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        long areaLong = Long.parseLong(form.getAreaId());
+        Comment comment = new Comment();
+        BeanUtils.copyProperties(form, comment);
+        comment.setNickName(user.getNickname());
+        comment.setAreaId(areaLong);
+        comment.setAuthorId(user.getId());
         comment.setParentId(Objects.equals(form.getParentId(), "") ? null : Long.parseLong(form.getParentId()));
         comment.setIp(ip);
         comment.setLocation(location);

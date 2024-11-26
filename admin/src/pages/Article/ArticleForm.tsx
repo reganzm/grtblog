@@ -55,6 +55,8 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
 
   const [addCategoryForm, setAddCategoryForm] = useState({
     name: '',
+    shortUrl: '',
+    type: 1,
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -88,7 +90,11 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
       if (res) {
         message.success('分类添加成功');
         setIsModalVisible(false);
-        setAddCategoryForm({ name: '' });
+        setAddCategoryForm({
+          name: '',
+          shortUrl: '',
+          type: 1,
+        });
         dispatch({
           type: 'category/initCategoryList',
         });
@@ -262,7 +268,23 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         <Form.Item label="分类名称" required>
           <Input
             placeholder="请输入分类名称"
-            onChange={(e) => setAddCategoryForm({ name: e.target.value })}
+            onChange={(e) =>
+              setAddCategoryForm({
+                ...addCategoryForm,
+                name: e.target.value,
+              })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="分类短链接" required>
+          <Input
+            placeholder="请输入分类名称"
+            onChange={(e) =>
+              setAddCategoryForm({
+                ...addCategoryForm,
+                shortUrl: e.target.value,
+              })
+            }
           />
         </Form.Item>
       </Modal>

@@ -386,6 +386,7 @@ CREATE TABLE IF NOT EXISTS `category`
     `id`         BIGINT      NOT NULL AUTO_INCREMENT COMMENT '分类ID，会由雪花算法生成',
     `name`       VARCHAR(45) NOT NULL COMMENT '分类名称',
     `short_url`  VARCHAR(255) COMMENT '分类短链接',
+    `is_article` TINYINT   DEFAULT 1 COMMENT '是否是文章分类（0：否，1：是），0的话就是分享分类咯',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '分类创建时间',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '分类更新时间',
     `deleted_at` TIMESTAMP COMMENT '分类删除时间（软删除），如果不为空则表示已删除',

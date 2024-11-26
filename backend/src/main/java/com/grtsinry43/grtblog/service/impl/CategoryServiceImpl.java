@@ -2,6 +2,7 @@ package com.grtsinry43.grtblog.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.dto.AddCategory;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.mapper.CategoryMapper;
 import com.grtsinry43.grtblog.service.ICategoryService;
@@ -24,9 +25,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     }
 
     @Override
-    public CategoryVO addNewCategory(String categoryName) {
+    public CategoryVO addNewCategory(AddCategory addCategory) {
         Category category = new Category();
-        category.setName(categoryName);
+        category.setName(addCategory.getName());
+        category.setShortUrl(addCategory.getShortUrl());
         save(category);
         CategoryVO categoryVO = new CategoryVO();
         categoryVO.setId(category.getId().toString());
@@ -48,6 +50,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
             categoryVO.setId(category.getId().toString());
             categoryVO.setName(category.getName());
             categoryVO.setShortUrl(category.getShortUrl());
+            categoryVO.setIsArticle(category.isArticle());
             return categoryVO;
         }).collect(Collectors.toList());
     }

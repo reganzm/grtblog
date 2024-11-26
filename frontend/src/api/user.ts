@@ -27,6 +27,16 @@ export function userRegister(data: LoginForm) {
   });
 }
 
+export function updateNickname(nickname: string) {
+    const formData = new FormData();
+    formData.append('nickname', nickname);
+
+    return request('/user/update/nickname', {
+        method: 'PATCH',
+        body: formData,
+    });
+}
+
 export function userInfo() {
   return request('/user/info');
 }

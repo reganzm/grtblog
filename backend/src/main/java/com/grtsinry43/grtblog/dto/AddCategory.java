@@ -10,4 +10,6 @@ import lombok.Data;
 @Data
 public class AddCategory {
     private String name;
+    private String shortUrl;
+    private Boolean type;
 }

@@ -147,6 +147,12 @@
             <version>3.4.0</version>
         </dependency>
 
+        <!--MongoDB 用于记录用户推荐信息 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
 
 
     </dependencies>

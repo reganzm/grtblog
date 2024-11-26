@@ -5,12 +5,23 @@ export const addNewComment = async (notLoginComment: {
     content: string,
     userName: string,
     email: string,
-    website: string,
+    website?: string,
     parentId: string
 }) => {
     return request('/comment', {
         method: 'POST',
         body: JSON.stringify(notLoginComment),
+    });
+};
+
+export const addNewCommentLogin = async (LoginComment: {
+    areaId: string,
+    content: string,
+    parentId: string
+}) => {
+    return request('/comment/add', {
+        method: 'POST',
+        body: JSON.stringify(LoginComment),
     });
 };
 

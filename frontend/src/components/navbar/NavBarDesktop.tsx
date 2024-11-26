@@ -16,6 +16,7 @@ import {TitleEvent} from "@/components/article/ArticleScrollSync";
 import {article_font} from "@/app/fonts/font";
 import {OnlineCount} from "@/redux/onlineCountSlice";
 import {useWebsiteInfo} from "@/app/website-info-provider";
+import {useRouter} from "next/navigation";
 
 export default function NavBarDesktop({items}: {
     items: { name: string; href: string; children?: { name: string; href: string }[] }[]
@@ -34,6 +35,7 @@ export default function NavBarDesktop({items}: {
     const navbarRef = useRef<HTMLDivElement>(null);
     const [isInView, setIsInView] = useState(false);
     const websiteInfo = useWebsiteInfo();
+    const router = useRouter();
 
     useEffect(() => {
         setMounted(true);
@@ -245,7 +247,7 @@ export default function NavBarDesktop({items}: {
                                                     size="3"
                                                     radius="large"
                                                     src={user.userInfo.avatar ? user.userInfo.avatar : undefined}
-                                                    fallback={user.userInfo.nickname[0]}
+                                                    fallback={user.userInfo.nickname ? user.userInfo.nickname[0].toUpperCase() : 'U'}
                                                     className={styles.avatar}
                                                 />
                                             </DropdownMenu.Trigger>
@@ -256,7 +258,9 @@ export default function NavBarDesktop({items}: {
                                                 </DropdownMenu.Item>
                                                 <DropdownMenu.Item>{user.userInfo.email}</DropdownMenu.Item>
                                                 <DropdownMenu.Separator/>
-                                                <DropdownMenu.Item> 用户中心与设置 </DropdownMenu.Item>
+                                                <DropdownMenu.Item onClick={()=>{
+                                                    router.push('/my')
+                                                }}> 用户中心与设置 </DropdownMenu.Item>
 
                                                 {/*<DropdownMenu.Sub>*/}
                                                 {/*    <DropdownMenu.SubTrigger> 更多操作 </DropdownMenu.SubTrigger>*/}

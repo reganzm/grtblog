@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class NavMenuVO {
     private String name;
+    private Boolean isArticle;
     private String href;
     private List<NavMenuVO> children;
 }

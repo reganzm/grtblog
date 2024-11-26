@@ -12,4 +12,5 @@ public class CategoryVO {
     String id;
     String name;
     String shortUrl;
+    Boolean isArticle;
 }

@@ -23,6 +23,8 @@ public class Category implements Serializable {
     private Long id;
     private String name;
     private String shortUrl;
+    @TableField(value = "is_article")
+    private boolean isArticle;
     @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
     @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)

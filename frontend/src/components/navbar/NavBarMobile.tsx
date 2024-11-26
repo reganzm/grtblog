@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useTheme} from 'next-themes';
 import {motion, AnimatePresence} from 'framer-motion';
 import Link from 'next/link';
-import {Avatar, IconButton} from '@radix-ui/themes';
+import {Avatar, Badge, DropdownMenu, IconButton} from '@radix-ui/themes';
 import {GitHubLogoIcon, HamburgerMenuIcon, MagnifyingGlassIcon, MoonIcon, SunIcon} from '@radix-ui/react-icons';
 import styles from '@/styles/NavBarMobile.module.scss';
 import {UserRoundPlusIcon} from 'lucide-react';
@@ -11,6 +11,9 @@ import emitter from "@/utils/eventBus";
 import {TitleEvent} from "@/components/article/ArticleScrollSync";
 import {article_font} from "@/app/fonts/font";
 import {useWebsiteInfo} from "@/app/website-info-provider";
+import LoginModalMobile from "@/components/user/LoginModalMobile";
+import {useAppDispatch, useAppSelector} from "@/redux/hooks";
+import {useRouter} from "next/navigation";
 
 const NavBarMobile = ({items}: {
     items: { name: string; href: string; children?: { name: string; href: string }[] }[]
@@ -22,6 +25,20 @@ const NavBarMobile = ({items}: {
     const [titleInfo, setTitleInfo] = useState({title: '', categoryName: '', type: ''});
 
     const websiteInfo = useWebsiteInfo();
+    const router = useRouter();
+    const dispatch = useAppDispatch();
+
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const user = useAppSelector(state => state.user);
+
+    const openLoginModal = () => {
+        setIsLoginModalOpen(true);
+    };
+
+    const closeLoginModal = () => {
+        console.log('close');
+        setIsLoginModalOpen(false);
+    };
 
     useEffect(() => {
         setMounted(true);
@@ -144,12 +161,56 @@ const NavBarMobile = ({items}: {
                                         </motion.div>
                                     </div>
                                     <div className={styles.loginButtonWrapper}>
-                                        <motion.div whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
-                                            <IconButton variant="ghost" radius={'full'} color={'gray'}
-                                                        className={styles.loginButton}>
-                                                <UserRoundPlusIcon width={16} height={16}/>
-                                            </IconButton>
-                                        </motion.div>
+                                        {user.isLogin ? (
+                                            <div className={styles.avatarWrapper}>
+                                                <DropdownMenu.Root>
+                                                    <DropdownMenu.Trigger>
+                                                        <Avatar
+                                                            size="3"
+                                                            radius="large"
+                                                            src={user.userInfo.avatar ? user.userInfo.avatar : undefined}
+                                                            fallback={user.userInfo.nickname ? user.userInfo.nickname[0].toUpperCase() : 'U'}
+                                                            className={styles.avatar}
+                                                        />
+                                                    </DropdownMenu.Trigger>
+                                                    <DropdownMenu.Content>
+                                                        <DropdownMenu.Item>{user.userInfo.nickname}
+                                                            <Badge className={styles.tag}
+                                                                   color="gray">{user.userInfo.oauthProvider ? user.userInfo.oauthProvider : '本站'}</Badge>
+                                                        </DropdownMenu.Item>
+                                                        <DropdownMenu.Item>{user.userInfo.email}</DropdownMenu.Item>
+                                                        <DropdownMenu.Separator/>
+                                                        <DropdownMenu.Item onClick={() => {
+                                                            router.push('/my')
+                                                        }}> 用户中心与设置 </DropdownMenu.Item>
+
+                                                        {/*<DropdownMenu.Sub>*/}
+                                                        {/*    <DropdownMenu.SubTrigger> 更多操作 </DropdownMenu.SubTrigger>*/}
+                                                        {/*    <DropdownMenu.SubContent>*/}
+                                                        {/*        <DropdownMenu.Item> 设置 </DropdownMenu.Item>*/}
+                                                        {/*        /!*<DropdownMenu.Item> 我的收藏 </DropdownMenu.Item>*!/*/}
+                                                        {/*    </DropdownMenu.SubContent>*/}
+                                                        {/*</DropdownMenu.Sub>*/}
+
+                                                        <DropdownMenu.Separator/>
+                                                        <DropdownMenu.Item color="red" onClick={() => {
+                                                            dispatch({type: 'user/clearUserInfo', payload: null});
+                                                            dispatch({type: 'user/changeLoginStatus', payload: false});
+                                                        }}>
+                                                            退出登录
+                                                        </DropdownMenu.Item>
+                                                    </DropdownMenu.Content>
+                                                </DropdownMenu.Root>
+                                            </div>
+                                        ) : (
+                                            <motion.div whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
+                                                <IconButton variant="ghost" radius={'full'} color={'gray'}
+                                                            className={styles.loginButton}
+                                                            onClick={openLoginModal}>
+                                                    <UserRoundPlusIcon width={16} height={16}/>
+                                                </IconButton>
+                                            </motion.div>
+                                        )}
                                     </div>
                                 </div>
                             </>
@@ -200,6 +261,9 @@ const NavBarMobile = ({items}: {
                 <div
                     className="fixed inset-0 bg-gradient-radial from-primary/10 to-background/10 -z-10 pointer-events-none"></div>
             </motion.div>
+            <LoginModalMobile isOpen={isLoginModalOpen} onClose={() => {
+                closeLoginModal()
+            }}/>
         </div>
     );
 };

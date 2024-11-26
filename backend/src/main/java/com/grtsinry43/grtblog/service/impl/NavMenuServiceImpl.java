@@ -48,6 +48,7 @@ public class NavMenuServiceImpl implements INavMenuService {
                     // 如果是文章分类，添加分类列表
                     if ("/posts".equals(navMenu.getUrl())) {
                         List<NavMenuVO> categoryVOs = categories.stream()
+                                .filter(CategoryVO::getIsArticle)
                                 .map(category -> {
                                     NavMenuVO categoryNavMenuVO = new NavMenuVO();
                                     categoryNavMenuVO.setName(category.getName());

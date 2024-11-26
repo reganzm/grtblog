@@ -94,4 +94,21 @@ public class UserController {
         userVO.setId(user.getId().toString());
         return ApiResponse.success(userVO);
     }
+
+    @PatchMapping("/update/nickname")
+    public ApiResponse<UserVO> updateNickname(@RequestBody String nickname) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        LoginUserDetails principal = (LoginUserDetails) authentication.getPrincipal();
+        if (Objects.isNull(principal)) {
+            return ApiResponse.error(400, "登录失败，请检查用户名和密码");
+        }
+        // 这里说明登录成功，终于能获取到 User 对象了
+        User user1 = principal.getUser();
+        user1.setNickname(nickname);
+        userService.updateById(user1);
+        UserVO userVO = new UserVO();
+        BeanUtils.copyProperties(user1, userVO);
+        userVO.setId(user1.getId().toString());
+        return ApiResponse.success(userVO);
+    }
 }
