@@ -14,6 +14,7 @@ import {useWebsiteInfo} from "@/app/website-info-provider";
 import LoginModalMobile from "@/components/user/LoginModalMobile";
 import {useAppDispatch, useAppSelector} from "@/redux/hooks";
 import {useRouter} from "next/navigation";
+import SearchModal from "@/components/SearchModal";
 
 const NavBarMobile = ({items}: {
     items: { name: string; href: string; children?: { name: string; href: string }[] }[]
@@ -30,6 +31,8 @@ const NavBarMobile = ({items}: {
 
     const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
     const user = useAppSelector(state => state.user);
+
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
 
     const openLoginModal = () => {
         setIsLoginModalOpen(true);
@@ -132,7 +135,9 @@ const NavBarMobile = ({items}: {
                                     <div className={styles.searchWrapper}>
                                         <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
                                             <div className={styles.search}>
-                                                <MagnifyingGlassIcon className={styles.searchIcon}/>
+                                                <MagnifyingGlassIcon onClick={() => {
+                                                    setIsSearchVisible(true);
+                                                }} className={styles.searchIcon}/>
                                             </div>
                                         </motion.div>
                                     </div>
@@ -264,6 +269,7 @@ const NavBarMobile = ({items}: {
             <LoginModalMobile isOpen={isLoginModalOpen} onClose={() => {
                 closeLoginModal()
             }}/>
+            <SearchModal open={isSearchVisible} setOpen={setIsSearchVisible}/>
         </div>
     );
 };

@@ -86,6 +86,7 @@ public class UploadFileController {
             File destFile = new File(filePath);
             file.transferTo(destFile);
             fileHashMap.put(fileHash, filePath);
+            System.out.println("文件上传成功：" + filePath);
             return ApiResponse.success("/" + filePath);
         } catch (IOException | NoSuchAlgorithmException e) {
             System.out.println(e.getMessage());

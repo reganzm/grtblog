@@ -17,6 +17,7 @@ import {article_font} from "@/app/fonts/font";
 import {OnlineCount} from "@/redux/onlineCountSlice";
 import {useWebsiteInfo} from "@/app/website-info-provider";
 import {useRouter} from "next/navigation";
+import SearchModal from "@/components/SearchModal";
 
 export default function NavBarDesktop({items}: {
     items: { name: string; href: string; children?: { name: string; href: string }[] }[]
@@ -36,6 +37,8 @@ export default function NavBarDesktop({items}: {
     const [isInView, setIsInView] = useState(false);
     const websiteInfo = useWebsiteInfo();
     const router = useRouter();
+
+    const [isSearchVisible, setIsSearchVisible] = useState(false);
 
     useEffect(() => {
         setMounted(true);
@@ -215,7 +218,9 @@ export default function NavBarDesktop({items}: {
                             <div className={styles.searchWrapper}>
                                 <motion.div whileHover={{scale: 1.1}} whileTap={{scale: 0.95}}>
                                     <div className={styles.search}>
-                                        <MagnifyingGlassIcon className={styles.searchIcon}/>
+                                        <MagnifyingGlassIcon onClick={() => {
+                                            setIsSearchVisible(true);
+                                        }} className={styles.searchIcon}/>
                                     </div>
                                 </motion.div>
                             </div>
@@ -258,7 +263,7 @@ export default function NavBarDesktop({items}: {
                                                 </DropdownMenu.Item>
                                                 <DropdownMenu.Item>{user.userInfo.email}</DropdownMenu.Item>
                                                 <DropdownMenu.Separator/>
-                                                <DropdownMenu.Item onClick={()=>{
+                                                <DropdownMenu.Item onClick={() => {
                                                     router.push('/my')
                                                 }}> 用户中心与设置 </DropdownMenu.Item>
 
@@ -295,6 +300,7 @@ export default function NavBarDesktop({items}: {
                 </nav>
             </motion.div>
             <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal}/>
+            <SearchModal open={isSearchVisible} setOpen={setIsSearchVisible}/>
         </div>
     )
         ;

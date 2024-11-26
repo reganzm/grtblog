@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from '@@/exports';
 import {
   ActionType,
   PageContainer,
-  ProColumns,
   ProTable,
 } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
@@ -32,7 +31,7 @@ const Index = () => {
     }
   }, []);
 
-  const columns: ProColumns<any, string>[] = [
+  const columns: any = [
     {
       title: '序号',
       dataIndex: 'index',
@@ -71,7 +70,7 @@ const Index = () => {
       dataIndex: 'categoryId',
       key: 'categoryId',
       align: 'center',
-      render: (_, record: any) => {
+      render: (_: any, record: any) => {
         if (!record.categoryId) {
           return <Tag> 未分类 </Tag>;
         }
@@ -103,9 +102,8 @@ const Index = () => {
       title: '发布',
       dataIndex: 'isPublished',
       key: 'isPublished',
-      valueType: 'boolean',
       align: 'center',
-      render: (_, text: boolean) => {
+      render: (text: boolean) => {
         return <Switch size={'small'} checked={text} />;
       },
     },
@@ -128,21 +126,21 @@ const Index = () => {
       dataIndex: 'isTop',
       key: 'isTop',
       align: 'center',
-      render: (_, text: boolean) => <Switch size={'small'} checked={text} />,
+      render: (text: boolean) => <Switch size={'small'} checked={text} />,
     },
     {
       title: '热门',
       dataIndex: 'isHot',
       key: 'isHot',
       align: 'center',
-      render: (_, text: boolean) => <Switch size={'small'} checked={text} />,
+      render: (text: boolean) => <Switch size={'small'} checked={text} />,
     },
     {
       title: '原创',
       dataIndex: 'isOriginal',
       key: 'isOriginal',
       align: 'center',
-      render: (_, text: boolean) => <Switch size={'small'} checked={text} />,
+      render: (text: boolean) => <Switch size={'small'} checked={text} />,
     },
     {
       title: '操作',

@@ -5,6 +5,7 @@ import { Editor } from '@toast-ui/react-editor'; // 引入 Toast UI 编辑器
 import {
   Button,
   Form,
+  Image,
   Input,
   Modal,
   Select,
@@ -32,7 +33,11 @@ const MomentForm: React.FC<MomentFormProps> = ({
   const { list } = useSelector((state: any) => state.category); // 获取分类列表
   const dispatch = useDispatch(); // Redux 分发函数
   const [firstIn, setFirstIn] = useState(true); // 标记是否第一次渲染
-  const [addCategoryForm, setAddCategoryForm] = useState({ name: '' }); // 新建分类的表单状态
+  const [addCategoryForm, setAddCategoryForm] = useState({
+    name: '',
+    shortUrl: '',
+    type: 0,
+  }); // 新建分类的表单状态
   const [isModalVisible, setIsModalVisible] = useState(false); // 控制分类新建的 Modal 是否显示
 
   // 编辑器首次渲染时，填充已有的动态信息
@@ -77,7 +82,7 @@ const MomentForm: React.FC<MomentFormProps> = ({
       if (res) {
         message.success('分类添加成功');
         setIsModalVisible(false); // 关闭新建分类弹窗
-        setAddCategoryForm({ name: '' }); // 重置分类名称输入框
+        setAddCategoryForm({ name: '', shortUrl: '', type: 0 }); // 重置分类名称输入框
         dispatch({
           type: 'category/initCategoryList', // 刷新分类列表
         });
@@ -86,6 +91,18 @@ const MomentForm: React.FC<MomentFormProps> = ({
       }
     });
   };
+
+  let coverPreview = null;
+  if (type === 'edit') {
+    coverPreview = (
+      <Form.Item label="当前配图" name="coverPreview">
+        {momentInfo?.img &&
+          momentInfo?.img
+            .split(',')
+            .map((item: any) => <Image src={item} width={100} key={item} />)}
+      </Form.Item>
+    );
+  }
 
   return (
     <div>
@@ -173,22 +190,27 @@ const MomentForm: React.FC<MomentFormProps> = ({
           />
         </Form.Item>
 
-        {/* 封面上传 */}
-        <Form.Item label="上传封面">
+        {coverPreview}
+
+        {/* 图片上传 */}
+        <Form.Item label="上传配图">
           <Upload
             listType="picture-card"
             maxCount={1}
             action="/api/upload"
             onChange={(e) => {
               if (e.file.status === 'done') {
-                const url = e.file.response.data; // 获取上传后的图片 URL
-                onValueChange('cover', url); // 设置封面 URL
+                const url = e.file.response.data;
+                onValueChange(
+                  'img',
+                  momentInfo.img ? `${momentInfo.img},${url}` : url,
+                );
               }
             }}
           >
             <div>
               <PlusOutlined />
-              <div style={{ marginTop: '8px' }}> 封面可选</div>
+              <div style={{ marginTop: '8px' }}> 图片可选</div>
             </div>
           </Upload>
         </Form.Item>
@@ -199,6 +221,35 @@ const MomentForm: React.FC<MomentFormProps> = ({
             checked={momentInfo?.isPublished}
             onChange={(checked) => onValueChange('isPublished', checked)}
           />
+        </Form.Item>
+
+        <Form.Item label="其他选项">
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <Form.Item name="isTop" valuePropName="checked" noStyle>
+              <Switch
+                checkedChildren="置顶"
+                unCheckedChildren="置顶"
+                checked={momentInfo?.isTop}
+                onChange={(checked) => onValueChange('isTop', checked)}
+              />
+            </Form.Item>
+            <Form.Item name="isHot" valuePropName="checked" noStyle>
+              <Switch
+                checkedChildren="热门"
+                unCheckedChildren="热门"
+                checked={momentInfo?.isHot}
+                onChange={(checked) => onValueChange('isHot', checked)}
+              />
+            </Form.Item>
+            <Form.Item name="isOriginal" valuePropName="checked" noStyle>
+              <Switch
+                checkedChildren="原创"
+                unCheckedChildren="原创"
+                checked={momentInfo?.isOriginal}
+                onChange={(checked) => onValueChange('isOriginal', checked)}
+              />
+            </Form.Item>
+          </div>
         </Form.Item>
 
         {/* 提交按钮 */}
@@ -219,7 +270,23 @@ const MomentForm: React.FC<MomentFormProps> = ({
         <Form.Item label="分类名称" required>
           <Input
             placeholder="请输入分类名称"
-            onChange={(e) => setAddCategoryForm({ name: e.target.value })}
+            onChange={(e) =>
+              setAddCategoryForm({
+                ...addCategoryForm,
+                name: e.target.value,
+              })
+            }
+          />
+        </Form.Item>
+        <Form.Item label="分类短链接" required>
+          <Input
+            placeholder="请输入分类短链接"
+            onChange={(e) =>
+              setAddCategoryForm({
+                ...addCategoryForm,
+                shortUrl: e.target.value,
+              })
+            }
           />
         </Form.Item>
       </Modal>

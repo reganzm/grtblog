@@ -12,6 +12,7 @@ import {
   message,
   Modal,
   Select,
+  Switch,
   Upload,
 } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
@@ -251,6 +252,34 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
             <Select.Option value={false}> 草稿 </Select.Option>
             <Select.Option value={true}> 发布 </Select.Option>
           </Select>
+        </Form.Item>
+        <Form.Item label="其他选项">
+          <div style={{ display: 'flex', gap: '20px' }}>
+            <Form.Item name="isTop" valuePropName="checked" noStyle>
+              <Switch
+                checkedChildren="置顶"
+                unCheckedChildren="置顶"
+                checked={articleInfo?.isTop}
+                onChange={(checked) => onValueChange('isTop', checked)}
+              />
+            </Form.Item>
+            <Form.Item name="isHot" valuePropName="checked" noStyle>
+              <Switch
+                checkedChildren="热门"
+                unCheckedChildren="热门"
+                checked={articleInfo?.isHot}
+                onChange={(checked) => onValueChange('isHot', checked)}
+              />
+            </Form.Item>
+            <Form.Item name="isOriginal" valuePropName="checked" noStyle>
+              <Switch
+                checkedChildren="原创"
+                unCheckedChildren="原创"
+                checked={articleInfo?.isOriginal}
+                onChange={(checked) => onValueChange('isOriginal', checked)}
+              />
+            </Form.Item>
+          </div>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
