@@ -17,9 +17,9 @@
 - [x] Article/Tag/Category management / 文章 / 标签 / 分类管理
 - [x] Partial reload / 部分重载
 - [x] Built-in page styles / 内置页面样式
-- [ ] Comment system / 评论系统
+- [x] Comment system / 评论系统
 - [ ] Multi-theme support / 多主题支持
-- [ ] Search functionality / 搜索功能
+- [x] Search functionality / 搜索功能
 - [ ] Admin dashboard / 管理员仪表盘
 - [ ] Customization options / 自定义选项
 - [ ] Theme switching / 主题切换
@@ -44,8 +44,11 @@ grtblog 是一个基于 React.js 和 Spring Boot 的综合博客系统（内容�
 ## Screenshots / 截图
 
 ![image](https://github.com/user-attachments/assets/40cac1c2-767a-4e0e-b72c-664384e93dfd)
+![image](https://github.com/user-attachments/assets/0f8819c4-5be2-47bf-b526-2db097141bd9)
 ![image](https://github.com/user-attachments/assets/acbb9f7b-4ffc-45ff-835e-e09ee0a16979)
 ![image](https://github.com/user-attachments/assets/72116ff9-eb07-4e0c-921a-c3db32cbd59c)
+![image](https://github.com/user-attachments/assets/6e790aab-94f4-4ada-8fc7-fc1bef0af5c8)
+
 
 ## Getting Started / 快速开始
 
