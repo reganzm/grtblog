@@ -17,10 +17,10 @@
         </encoder>
     </appender>
 
-    <logger name="com.baomidou.mybatisplus" level="info"/>
+    <!--<logger name="com.baomidou.mybatisplus" level="info"/>-->
 
     <root level="info">
-        <appender-ref ref="FILE"/>
+        <appender-ref ref="STDOUT"/>
     </root>
 
     <root level="error">

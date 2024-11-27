@@ -9,7 +9,7 @@ import { request } from '@umijs/max';
 const addMoment = async (
     data: AddMomentApiParams,
 ): Promise<AddMomentApiRes> => {
-    return request('/api/admin/statusUpdate', {
+    return request('/api/v1/admin/statusUpdate', {
         method: 'POST',
         data,
     });
@@ -22,13 +22,13 @@ const getMomentList = async ({
     page: number;
     pageSize: number;
 }): Promise<ApiResponse<MomentVO[]>> => {
-    return request(`/api/admin/statusUpdate/all?page=${page}&pageSize=${pageSize}`, {
+    return request(`/api/v1/admin/statusUpdate/all?page=${page}&pageSize=${pageSize}`, {
         method: 'GET',
     });
 };
 
 const deleteMoment = async (id: string): Promise<ApiResponse<null>> => {
-    return request(`/api/admin/statusUpdate/${id}`, {
+    return request(`/api/v1/admin/statusUpdate/${id}`, {
         method: 'DELETE',
     });
 };
@@ -36,7 +36,7 @@ const deleteMoment = async (id: string): Promise<ApiResponse<null>> => {
 const getMomentDetail = async (
     id: string,
 ): Promise<ApiResponse<MomentVO>> => {
-    return request(`/api/admin/statusUpdate/${id}`, {
+    return request(`/api/v1/admin/statusUpdate/${id}`, {
         method: 'GET',
     });
 };
@@ -45,7 +45,7 @@ const editMoment = async (
     id: string,
     data: AddMomentApiParams,
 ): Promise<AddMomentApiRes> => {
-    return request(`/api/admin/statusUpdate/${id}`, {
+    return request(`/api/v1/admin/statusUpdate/${id}`, {
         method: 'PATCH',
         data,
     });

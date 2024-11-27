@@ -195,7 +195,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
             当然，你也可以选择从本地 markdown 文件导入
           </div>
           <Upload
-            action="/api/upload"
+            action="/api/v1/upload"
             headers={{
               Authorization: 'Bearer ' + getToken(),
             }}

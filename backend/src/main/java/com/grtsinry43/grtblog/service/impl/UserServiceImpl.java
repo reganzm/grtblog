@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +38,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         this.userMapper = userMapper;
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
+    }
+
+    public User getUserByEmail(String email) {
+        return this.baseMapper.selectOne(new QueryWrapper<User>().eq("email", email));
     }
 
     /**

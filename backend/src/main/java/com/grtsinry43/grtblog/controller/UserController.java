@@ -26,6 +26,7 @@ import java.util.Objects;
 
 /**
  * 用户控制器
+ *
  * @author grtsinry43
  * @since 2024-10-09
  */
@@ -41,9 +42,13 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ApiResponse<UserVO> login(String userEmail, String password, HttpServletResponse response) {
+    public ApiResponse<UserVO> login(HttpServletRequest request, String userEmail, String password, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, password);
         try {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            if (sessionCaptcha == null || !sessionCaptcha.equals(request.getParameter("captcha"))) {
+                return ApiResponse.error(401, "验证码错误");
+            }
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
             if (authenticate.isAuthenticated()) {
                 LoginUserDetails principal = (LoginUserDetails) authenticate.getPrincipal();
@@ -69,9 +74,17 @@ public class UserController {
 
     // TODO test
     @PostMapping("/register")
-    public ApiResponse<UserVO> registerApi(@RequestBody UserRegisterDTO user) {
+    public ApiResponse<UserVO> registerApi(HttpServletRequest request, @RequestBody UserRegisterDTO user) {
+        String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+        if (sessionCaptcha == null || !sessionCaptcha.equals(request.getParameter("captcha"))) {
+            return ApiResponse.error(401, "验证码错误");
+        }
+        if (userService.getUserByEmail(user.getEmail()) != null) {
+            return ApiResponse.error(400, "邮箱已被注册");
+        }
         User user1 = new User();
         BeanUtils.copyProperties(user, user1);
+        user1.setNickname(user.getNickname());
         userService.save(user1);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user1, userVO);

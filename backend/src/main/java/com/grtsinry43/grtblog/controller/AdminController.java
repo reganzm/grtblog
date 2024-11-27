@@ -51,9 +51,13 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ApiResponse<UserVO> login(String userEmail, String password, HttpServletResponse response) {
+    public ApiResponse<UserVO> login(HttpServletRequest request, String userEmail, String password, HttpServletResponse response) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userEmail, password);
         try {
+            String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+            if (sessionCaptcha == null || !sessionCaptcha.equals(request.getParameter("captcha"))) {
+                return ApiResponse.error(401, "验证码错误");
+            }
             Authentication authenticate = authenticationManager.authenticate(authenticationToken);
             if (authenticate.isAuthenticated()) {
                 LoginUserDetails principal = (LoginUserDetails) authenticate.getPrincipal();
@@ -79,6 +83,7 @@ public class AdminController {
         return ApiResponse.error(402, "登录失败，请检查用户名和密码");
     }
 
+    @PreAuthorize("hasAuthority('article:view')")
     @GetMapping("/userInfo")
     public ApiResponse<UserVO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

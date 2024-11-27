@@ -7,6 +7,7 @@ import useIsMobile from '@/hooks/useIsMobile';
 import emitter from '@/utils/eventBus';
 import CommentModal from "@/components/comment/CommentModal";
 import {Button} from "@radix-ui/themes";
+import ReadingProgress from "@/components/article/ReadingProgress";
 
 export type TocItem = {
     level: number
@@ -198,6 +199,7 @@ export default function Toc({toc, commentId}: { toc: TocItem[], commentId: strin
             className="sticky top-24 h-[25em] overflow-y-auto w-56 pr-4 scroll-smooth text-sm"
             ref={tocRef}
         >
+            <ReadingProgress/>
             <motion.div
                 initial="hidden"
                 animate="visible"

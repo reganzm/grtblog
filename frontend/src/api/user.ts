@@ -1,30 +1,31 @@
-import { request } from './request';
+import {request} from './request';
 
 export interface LoginForm {
-  userEmail: string;
-  password: string;
+    userEmail: string;
+    password: string;
 }
 
-export function userLogin(data: LoginForm) {
-  const formData = new FormData();
-  formData.append('userEmail', data.userEmail);
-  formData.append('password', data.password);
+export function userLogin(data: LoginForm, captcha: string) {
+    const formData = new FormData();
+    formData.append('userEmail', data.userEmail);
+    formData.append('password', data.password);
 
-  return request('/user/login', {
-    method: 'POST',
-    body: formData,
-  });
+    return request('/user/login?captcha=' + captcha, {
+        method: 'POST',
+        body: formData,
+
+    });
 }
 
-export function userRegister(data: LoginForm) {
-  const formData = new FormData();
-  formData.append('userEmail', data.userEmail);
-  formData.append('password', data.password);
+export function userRegister(data: LoginForm, captcha: string) {
+    const formData = new FormData();
+    formData.append('userEmail', data.userEmail);
+    formData.append('password', data.password);
 
-  return request('/user/register', {
-    method: 'POST',
-    body: formData,
-  });
+    return request('/user/register?captcha=' + captcha, {
+        method: 'POST',
+        body: formData,
+    });
 }
 
 export function updateNickname(nickname: string) {
@@ -38,5 +39,5 @@ export function updateNickname(nickname: string) {
 }
 
 export function userInfo() {
-  return request('/user/info');
+    return request('/user/info');
 }

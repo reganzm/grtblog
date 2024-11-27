@@ -17,7 +17,6 @@ import FloatingTocMobile from '@/components/article/FloatingTocMobile';
 import ArticleScrollSync from '@/components/article/ArticleScrollSync';
 import ArticleTopPaddingAnimate from '@/components/article/ArticleTopPaddingAnimate';
 import ScrollHandler from '@/components/article/ScrollHandler';
-import ReadingProgress from '@/components/article/ReadingProgress';
 
 export type Post = {
     id: string;
@@ -49,7 +48,6 @@ const ArticleView = ({post}: { post: Post }) => {
             {post.toc && <FloatingTocMobile toc={JSON.parse(post.toc)}/>}
             <div className={styles.articleContainer}>
                 <aside className={styles.tocContainer}>
-                    <ReadingProgress/>
                     {post.toc && <Toc toc={JSON.parse(post.toc)} commentId={post.commentId}/>}
                 </aside>
                 <main className={styles.articleContent}>

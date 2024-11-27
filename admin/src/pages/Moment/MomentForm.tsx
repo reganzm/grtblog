@@ -197,7 +197,7 @@ const MomentForm: React.FC<MomentFormProps> = ({
           <Upload
             listType="picture-card"
             maxCount={1}
-            action="/api/upload"
+            action="/api/v1/upload"
             onChange={(e) => {
               if (e.file.status === 'done') {
                 const url = e.file.response.data;

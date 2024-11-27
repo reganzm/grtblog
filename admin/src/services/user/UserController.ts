@@ -12,7 +12,7 @@ const userLoginApi = async (data: UserLoginApiParams): Promise<ApiResponse<UserL
   const formData = new FormData();
   (Object.keys(data) as (keyof UserLoginApiParams)[]).forEach(key => formData.append(key as string, data[key]));
 
-  return request('/api/admin/login', {
+  return request('/api/v1/admin/login', {
     method: 'POST',
     data: formData,
     requestType: 'form',
@@ -20,14 +20,14 @@ const userLoginApi = async (data: UserLoginApiParams): Promise<ApiResponse<UserL
 };
 
 const updateUserInfoApi = async (data: UpdateUserInfoApiParams): Promise<ApiResponse<UpdateUserInfoApiRes>> => {
-  return request('/api/admin/updateUserInfo', {
+  return request('/api/v1/admin/updateUserInfo', {
     method: 'PATCH',
     data,
   });
 };
 
 const getUserInfoApi = async (): Promise<ApiResponse<GetUserInfoApiRes>> => {
-  return request('/api/admin/userInfo', {
+  return request('/api/v1/admin/userInfo', {
     method: 'GET',
   });
 };

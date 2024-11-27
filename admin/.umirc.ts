@@ -1,6 +1,8 @@
 import { defineConfig } from '@umijs/max';
 
 export default defineConfig({
+  base: process.env.NODE_ENV === 'production' ? '/admin/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/admin/' : '/',
   antd: {},
   access: {},
   dva: {},
@@ -103,10 +105,10 @@ export default defineConfig({
   ],
   npmClient: 'pnpm',
   proxy: {
-    '/api': {
+    '/api/v1': {
       target: 'http://127.0.0.1:8080',
       changeOrigin: true,
-      pathRewrite: { '^/api': '' },
+      pathRewrite: { '^/api/v1': '' },
     },
     '/captcha': {
       target: 'http://127.0.0.1:8080',

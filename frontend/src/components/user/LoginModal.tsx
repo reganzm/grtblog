@@ -22,15 +22,19 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
         password: '',
     });
     const [registerForm, setRegisterForm] = useState({
+        nickname: '',
         userEmail: '',
         password: '',
         confirmPassword: '',
     });
+
+    const [captcha, setCaptcha] = useState('');
     const [error, setError] = useState('');
     const [isFormShow, setIsFormShow] = useState(false);
     const [isLoginForm, setIsLoginForm] = useState(true);
 
     const dispatch = useAppDispatch();
+    const [captchaRandom, setCaptchaRandom] = useState(Math.random());
 
     const submitLoginForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -38,9 +42,10 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
             setError('请填写所有必填字段');
             return;
         }
-        userLogin(loginForm).then((res) => {
+        userLogin(loginForm, captcha).then((res) => {
             if (!res) {
-                setError('登录失败，请检查用户名和密码');
+                setError('登录失败，请检查用户名密码或验证码');
+                setCaptchaRandom(Math.random());
             } else {
                 console.log(res);
                 dispatch({type: 'user/initUserInfo', payload: res as UserInfo});
@@ -60,9 +65,10 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
             setError('两次输入的密码不一致');
             return;
         }
-        userRegister(registerForm).then((res) => {
+        userRegister(registerForm, captcha).then((res) => {
             if (!res) {
-                setError('注册失败，请稍后重试');
+                setError('注册失败，可能是邮箱已被注册或验证码错误');
+                setCaptchaRandom(Math.random());
             } else {
                 console.log(res);
                 setIsLoginForm(true);
@@ -168,6 +174,29 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                             })}
                                                         />
                                                     </div>
+                                                    <div className={styles.formGroup}>
+                                                        <div className={styles.label}> 验证码</div>
+                                                        <TextField.Root
+                                                            key="login-captcha"
+                                                            className={styles.textField}
+                                                            value={captcha}
+                                                            onChange={(e) => setCaptcha(e.target.value)}
+                                                        />
+                                                        <img
+                                                            src={process.env.NEXT_PUBLIC_BASE_URL + '/captcha' + '?' + captchaRandom}
+                                                            alt="captcha"
+                                                            className={styles.captcha}
+                                                            style={{
+                                                                cursor: 'pointer',
+                                                                width: '100px',
+                                                                marginLeft: '1rem',
+                                                                borderRadius: '0.25rem',
+                                                            }}
+                                                            onClick={() => {
+                                                                setCaptchaRandom(Math.random());
+                                                            }}
+                                                        />
+                                                    </div>
                                                     <div className={styles.formActions}>
                                                         <Button style={{marginRight: '1rem'}} type="submit">
                                                             登录
@@ -187,6 +216,18 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                     {error && (
                                                         <div className={styles.error}>{error}</div>
                                                     )}
+                                                    <div className={styles.formGroup}>
+                                                        <div className={styles.label}> 昵称</div>
+                                                        <TextField.Root
+                                                            key="register-nickname"
+                                                            className={styles.textField}
+                                                            value={registerForm.nickname}
+                                                            onChange={(e) => setRegisterForm({
+                                                                ...registerForm,
+                                                                nickname: e.target.value
+                                                            })}
+                                                        />
+                                                    </div>
                                                     <div className={styles.formGroup}>
                                                         <div className={styles.label}> 邮箱</div>
                                                         <TextField.Root
@@ -223,6 +264,29 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                                 ...registerForm,
                                                                 confirmPassword: e.target.value
                                                             })}
+                                                        />
+                                                    </div>
+                                                    <div className={styles.formGroup}>
+                                                        <div className={styles.label}> 验证码</div>
+                                                        <TextField.Root
+                                                            key="login-captcha"
+                                                            className={styles.textField}
+                                                            value={captcha}
+                                                            onChange={(e) => setCaptcha(e.target.value)}
+                                                        />
+                                                        <img
+                                                            src={process.env.NEXT_PUBLIC_BASE_URL + '/captcha' + '?' + captchaRandom}
+                                                            alt="captcha"
+                                                            className={styles.captcha}
+                                                            style={{
+                                                                cursor: 'pointer',
+                                                                width: '100px',
+                                                                marginLeft: '1rem',
+                                                                borderRadius: '0.25rem',
+                                                            }}
+                                                            onClick={() => {
+                                                                setCaptchaRandom(Math.random());
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className={styles.formActions}>

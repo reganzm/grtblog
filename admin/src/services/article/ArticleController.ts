@@ -9,7 +9,7 @@ import { request } from '@umijs/max';
 const addArticle = async (
   data: AddArticleApiParams,
 ): Promise<AddArticleApiRes> => {
-  return request('/api/admin/article', {
+  return request('/api/v1/v1/admin/article', {
     method: 'POST',
     data,
   });
@@ -22,13 +22,13 @@ const getArticleList = async ({
   page: number;
   pageSize: number;
 }): Promise<ApiResponse<ArticleVO[]>> => {
-  return request(`/api/admin/article/all?page=${page}&pageSize=${pageSize}`, {
+  return request(`/api/v1/admin/article/all?page=${page}&pageSize=${pageSize}`, {
     method: 'GET',
   });
 };
 
 const deleteArticle = async (id: string): Promise<ApiResponse<null>> => {
-  return request(`/api/admin/article/${id}`, {
+  return request(`/api/v1/admin/article/${id}`, {
     method: 'DELETE',
   });
 };
@@ -36,7 +36,7 @@ const deleteArticle = async (id: string): Promise<ApiResponse<null>> => {
 const getArticleDetail = async (
   id: string,
 ): Promise<ApiResponse<ArticleVO>> => {
-  return request(`/api/admin/article/${id}`, {
+  return request(`/api/v1/admin/article/${id}`, {
     method: 'GET',
   });
 };
@@ -45,7 +45,7 @@ const editArticle = async (
   id: string,
   data: AddArticleApiParams,
 ): Promise<AddArticleApiRes> => {
-  return request(`/api/admin/article/${id}`, {
+  return request(`/api/v1/admin/article/${id}`, {
     method: 'PATCH',
     data,
   });
