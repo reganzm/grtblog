@@ -62,10 +62,9 @@ public class CommentController {
     @PermitAll
     @PostMapping
     public ApiResponse<CommentVO> addNewComment(@RequestBody CommentNotLoginForm form, HttpServletRequest request) {
-        String ip = request.getRemoteAddr();
         String location = IPLocationUtil.getIp2region(IPLocationUtil.getIp(request));
         String ua = request.getHeader("User-Agent");
-        CommentVO comment =  commentService.addNewComment(form, ip, location, ua);
+        CommentVO comment =  commentService.addNewComment(form, IPLocationUtil.getIp(request), location, ua);
         // 这里看一下评论区对应的是不是文章，如果是文章的话，就记录一下用户行为
         if (articleService.lambdaQuery().eq(Article::getCommentId, form.getAreaId()).count() > 0) {
             UserBehavior userBehavior = new UserBehavior();
@@ -81,10 +80,9 @@ public class CommentController {
     @PostMapping("/add")
     public ApiResponse<CommentVO> addNewCommentLogin(@RequestBody CommentLoginForm form, HttpServletRequest request) {
         User user = SecurityUtils.getCurrentUser();
-        String ip = request.getRemoteAddr();
         String location = IPLocationUtil.getIp2region(IPLocationUtil.getIp(request));
         String ua = request.getHeader("User-Agent");
-        CommentVO comment =  commentService.addNewCommentLogin(user,form, ip, location, ua);
+        CommentVO comment =  commentService.addNewCommentLogin(user,form, IPLocationUtil.getIp(request), location, ua);
         // 这里看一下评论区对应的是不是文章，如果是文章的话，就记录一下用户行为
         if (articleService.lambdaQuery().eq(Article::getCommentId, form.getAreaId()).count() > 0) {
             UserBehavior userBehavior = new UserBehavior();

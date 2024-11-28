@@ -27,10 +27,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        System.out.println("==============================");
-        System.out.println(userRequest);
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        System.out.println(oAuth2User.getAttributes());
         String provider = userRequest.getClientRegistration().getRegistrationId();
         String oauthId = oAuth2User.getAttribute("sub") == null ? oAuth2User.getAttribute("id") + "" : oAuth2User.getAttribute("sub") + "";
         String email = oAuth2User.getAttribute("email");

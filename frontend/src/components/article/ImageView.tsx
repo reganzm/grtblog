@@ -21,10 +21,10 @@ export default function ImageView({ src, alt }: { src: string; alt: string }) {
     if (!img || !isMounted) return; // 只有在挂载时才执行
 
     const handleLoad = () => {
-      console.log('图片加载完成');
+      
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      console.log('ctx' + ctx);
+      
       if (!ctx) return;
 
       canvas.width = img.naturalWidth;

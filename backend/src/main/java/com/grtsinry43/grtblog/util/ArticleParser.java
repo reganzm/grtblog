@@ -46,7 +46,6 @@ public class ArticleParser {
             String anchor = "article-md-title-" + anchorIndex++;
             HeadingNode node = new HeadingNode(text, anchor);
 
-//            System.out.println("Matched heading: " + text + " with level: " + level);
 
             if (level == minLevel) {
                 toc.add(node);

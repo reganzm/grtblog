@@ -16,7 +16,7 @@ const EditMoment = () => {
       if (id) {
         // 根据文章 id 获取该文章具体的信息
         const { data } = await MomentController.getMomentDetail(id);
-        console.log('=======', data);
+        
         setMomentInfo(data);
       }
     }

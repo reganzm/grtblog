@@ -51,7 +51,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         type: 'category/initCategoryList',
       });
     }
-    console.log('list:', list);
+    
   }, []);
 
   const [addCategoryForm, setAddCategoryForm] = useState({

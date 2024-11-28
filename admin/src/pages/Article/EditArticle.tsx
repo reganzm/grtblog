@@ -20,7 +20,7 @@ const EditArticle = () => {
       if (id) {
         // 根据文章 id 获取该文章具体的信息
         const { data } = await ArticleController.getArticleDetail(id);
-        console.log('data:', data);
+        
         setArticleInfo(data);
       }
     }

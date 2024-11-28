@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 const ArchivePage = async () => {
     const archives: Archives = await getArchives({next: {revalidate: 60}});
-    console.log(archives);
+    
 
     const groupedItems: { [key: number]: CombinedItem[] } = {};
 

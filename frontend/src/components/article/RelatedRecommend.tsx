@@ -6,7 +6,7 @@ import {ScrollArea} from "@radix-ui/themes";
 
 const RelatedRecommend = async ({id}: { id: string }) => {
     const relatedRecommend = await getRelatedArticles(id);
-    console.log(relatedRecommend);
+    
     return (
         <div>
             <h1 style={{

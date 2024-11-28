@@ -46,6 +46,16 @@ public class CommentVO {
     private String website;
 
     /**
+     * 评论者操作系统
+     */
+    private String platform;
+
+    /**
+     * 评论者浏览器
+     */
+    private String browser;
+
+    /**
      * 评论创建时间
      */
     private LocalDateTime createdAt;

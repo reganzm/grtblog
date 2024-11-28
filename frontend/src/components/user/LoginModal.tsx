@@ -47,7 +47,7 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                 setError('登录失败，请检查用户名密码或验证码');
                 setCaptchaRandom(Math.random());
             } else {
-                console.log(res);
+                
                 dispatch({type: 'user/initUserInfo', payload: res as UserInfo});
                 dispatch({type: 'user/changeLoginStatus', payload: true});
                 onClose();
@@ -70,7 +70,7 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                 setError('注册失败，可能是邮箱已被注册或验证码错误');
                 setCaptchaRandom(Math.random());
             } else {
-                console.log(res);
+                
                 setIsLoginForm(true);
                 setError('注册成功，请登录');
             }

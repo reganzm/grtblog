@@ -28,7 +28,7 @@ const ArticleInlineLink = ({linkTitle, linkUrl}: { linkTitle: string; linkUrl: s
         linkUrl = `https://${linkUrl}`;
     }
 
-    console.log('ArticleInlineLink', linkUrl);
+    
 
     useEffect(() => {
         fetchSiteInfo(linkUrl).then(data => setSiteInfo(data));

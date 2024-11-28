@@ -35,10 +35,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String email;
 
         if (principal instanceof OAuth2User) {
-            System.out.println("OAuth2User");
             email = ((OAuth2User) principal).getAttribute("email");
         } else if (principal instanceof LoginUserDetails) {
-            System.out.println("LoginUserDetails");
             email = ((LoginUserDetails) principal).getUser().getEmail();
         } else {
             throw new ServletException("Unexpected principal type");

@@ -48,7 +48,6 @@ export default async function Page({params}: PageProps) {
         next: {revalidate: 60},
     });
     const page = await res.json();
-    console.log(page)
     if (page.code !== 0) {
         notFound();
     }

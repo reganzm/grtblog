@@ -29,7 +29,7 @@ const FriendLinkApplyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: (
     //   if (!res) {
     //     setError('申请失败，请稍后重试');
     //   } else {
-    //     console.log(res);
+    //     
     //     onClose();
     //   }
     // });

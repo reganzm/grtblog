@@ -61,7 +61,7 @@
 //       }
 //     },
 //     * initUserInfo(action: any, { call, put }: any) {
-//       console.log('action', action.payload);
+//       
 //       yield put({
 //         type: '_setUserInfo',
 //         payload: action.payload,

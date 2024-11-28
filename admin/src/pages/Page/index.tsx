@@ -1,4 +1,5 @@
 import PageController from '@/services/page/PageController';
+import { refreshFrontendCache } from '@/services/refersh';
 import {
   ActionType,
   PageContainer,
@@ -16,6 +17,27 @@ const Index = () => {
     const response = await PageController.deletePage(id);
     if (response) {
       message.success('删除成功');
+      actionRef.current?.reload(); // 刷新表格
+    }
+  };
+
+  const toggleStatusHandle = async (
+    id: string,
+    key: string,
+    value: boolean,
+  ) => {
+    const response = await PageController.togglePage(id, {
+      [key]: value,
+    });
+    if (response) {
+      message.success('更新成功');
+      refreshFrontendCache().then((res) => {
+        if (res) {
+          message.success('刷新缓存成功');
+        } else {
+          message.error('刷新缓存失败');
+        }
+      });
       actionRef.current?.reload(); // 刷新表格
     }
   };
@@ -64,7 +86,15 @@ const Index = () => {
       dataIndex: 'enable',
       key: 'enable',
       align: 'center',
-      render: (value: boolean) => <Switch size={'small'} checked={value} />,
+      render: (value: boolean, record: any) => (
+        <Switch
+          onClick={() => {
+            toggleStatusHandle(record.id, 'isPublished', !value);
+          }}
+          size={'small'}
+          checked={value}
+        />
+      ),
     },
     {
       title: '系统页面',

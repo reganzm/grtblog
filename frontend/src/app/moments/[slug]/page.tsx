@@ -51,7 +51,7 @@ export default async function Page({params}: MomentPageProps) {
         next: {revalidate: 60},
     });
     const moment = await res.json();
-    console.log(moment);
+    
     if (moment.code !== 0) {
         notFound();
     }

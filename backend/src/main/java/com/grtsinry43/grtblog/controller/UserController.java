@@ -96,7 +96,6 @@ public class UserController {
     public ApiResponse<UserVO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginUserDetails principal = (LoginUserDetails) authentication.getPrincipal();
-        System.out.println(principal);
         if (Objects.isNull(principal)) {
             return ApiResponse.error(400, "登录失败，请检查用户名和密码");
         }

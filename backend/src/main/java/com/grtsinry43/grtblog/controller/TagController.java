@@ -34,9 +34,7 @@ public class TagController {
     //    @AuthCheck(requiredRole = UserRole.ADMIN)
     @PostMapping("/add")
     public ApiResponse<Tag> addNewTagApi(@NotNull @NotBlank @RequestParam String tagName) {
-        System.out.println("addNewTagApi");
         Tag tag = tagService.addNewTag(tagName);
-        System.out.println(GlobalExceptionHandler.getBusinessExceptionCount());
         return ApiResponse.success(tag);
     }
 

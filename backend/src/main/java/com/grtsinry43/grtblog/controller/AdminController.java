@@ -67,7 +67,6 @@ public class AdminController {
                 // 这里说明登录成功，终于能获取到 User 对象了
                 User user = principal.getUser();
                 // TODO 这里需要检查权限
-                System.out.println(principal.getPermissionNames().toString());
                 // 转成 VO 对象
                 UserVO userVO = new UserVO();
                 BeanUtils.copyProperties(user, userVO);
@@ -88,7 +87,6 @@ public class AdminController {
     public ApiResponse<UserVO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginUserDetails principal = (LoginUserDetails) authentication.getPrincipal();
-        System.out.println(principal);
         if (Objects.isNull(principal)) {
             return ApiResponse.error(400, "登录失败，请检查用户名和密码");
         }
@@ -133,7 +131,6 @@ public class AdminController {
     @PreAuthorize("hasAuthority('article:edit')")
     @PatchMapping("/article/toggle/{id}")
     public ApiResponse<ArticleVO> updateArticleApi(@PathVariable Long id, @RequestBody PostStatusToggle postStatusToggle) {
-        System.out.println(postStatusToggle);
         ArticleVO articleVO = articleService.updateArticleStatus(id, postStatusToggle);
         return ApiResponse.success(articleVO);
     }
@@ -233,6 +230,13 @@ public class AdminController {
     @GetMapping("/page/{id}")
     public ApiResponse<PageVO> getPageById(@PathVariable String id) {
         return ApiResponse.success(pageService.getPageByIdAdmin(id));
+    }
+
+    @PreAuthorize("hasAuthority('page:edit')")
+    @PatchMapping("/page/toggle/{id}")
+    public ApiResponse<PageVO> togglePageApi(@PathVariable Long id, @RequestBody PostStatusToggle postStatusToggle) {
+        PageVO pageVO = pageService.togglePage(id, postStatusToggle);
+        return ApiResponse.success(pageVO);
     }
 
     @PreAuthorize("hasAuthority('config:edit')")

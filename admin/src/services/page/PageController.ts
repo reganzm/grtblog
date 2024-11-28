@@ -47,10 +47,18 @@ const editPage = async (
   });
 };
 
+const togglePage = async (id: string, data: any): Promise<AddPageApiRes> => {
+  return request(`/api/v1/admin/page/toggle/${id}`, {
+    method: 'PATCH',
+    data,
+  });
+};
+
 export default {
   addPage,
   getPageList,
   deletePage,
   getPageDetail,
   editPage,
+  togglePage,
 };

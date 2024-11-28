@@ -15,7 +15,6 @@ public class CustomDateDeserializer extends JsonDeserializer<Date> {
 
     @Override
     public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-        System.out.println("日期转换");
         String date = p.getText();
         try {
             return new Date(dateFormat.parse(date).getTime());

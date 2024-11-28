@@ -50,7 +50,6 @@ export function SearchResults({results}: SearchResultsProps) {
             router.push(`/moments/${shortUrl}`)
         }
     }
-    console.log(results)
 
     return (
         <ScrollArea style={{height: "100%", padding: "8px"}}>

@@ -114,7 +114,7 @@ export default function NavBarDesktop({items}: {
     };
 
     const closeLoginModal = () => {
-        console.log('close');
+        
         setIsLoginModalOpen(false);
     };
 

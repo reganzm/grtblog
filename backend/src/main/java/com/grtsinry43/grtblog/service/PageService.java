@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.PageDTO;
+import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.entity.CommentArea;
 import com.grtsinry43.grtblog.entity.Page;
 import com.grtsinry43.grtblog.exception.BusinessException;
@@ -36,7 +37,12 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
     }
 
     public PageVO getPageByShortUrl(String shortUrl) {
-        Page pageFind = this.lambdaQuery().eq(Page::getRefPath, "/" + shortUrl).eq(Page::getEnable, true).eq(Page::getCanDelete, true).eq(Page::getDeletedAt, null).one();
+        Page pageFind = this.lambdaQuery()
+                .eq(Page::getRefPath, "/" + shortUrl)
+                .eq(Page::getEnable, true)
+                .eq(Page::getCanDelete, true)
+                .isNull(Page::getDeletedAt)
+                .one();
         if (pageFind == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND);
         } else {
@@ -129,6 +135,22 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
         if (page == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND);
         }
+        PageVO pageVO = new PageVO();
+        BeanUtils.copyProperties(page, pageVO);
+        pageVO.setId(page.getId().toString());
+        pageVO.setCommentId(page.getCommentId() != null ? page.getCommentId().toString() : null);
+        return pageVO;
+    }
+
+    public PageVO togglePage(Long id, PostStatusToggle postStatusToggle) {
+        Page page = getById(id);
+        if (page == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND);
+        }
+        if (postStatusToggle.getIsPublished() != null) {
+            page.setEnable(postStatusToggle.getIsPublished());
+        }
+        updateById(page);
         PageVO pageVO = new PageVO();
         BeanUtils.copyProperties(page, pageVO);
         pageVO.setId(page.getId().toString());

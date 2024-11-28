@@ -13,9 +13,9 @@ app.use(express.json());
 app.use('/api', userBehaviorRoutes);
 
 connectDB().then(r => {
-  console.log('MongoDB connected');
+  
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  
 });

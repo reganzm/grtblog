@@ -65,6 +65,8 @@ export type Comment = {
     updatedAt: string;
     userName: string;
     website: string;
+    platform: string;
+    browser: string;
 };
 
 export interface ArticleArchive {

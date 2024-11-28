@@ -52,7 +52,6 @@ public class ArticleController {
     @PermitAll
     @GetMapping("/lastFive")
     public ApiResponse<List<ArticlePreview>> getLastFiveArticles() {
-        System.out.println("getLastFiveArticles");
         List<ArticlePreview> lastFiveArticles = articleService.getLastFiveArticleList();
         return ApiResponse.success(lastFiveArticles);
     }

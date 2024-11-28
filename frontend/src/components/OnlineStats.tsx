@@ -18,12 +18,12 @@ const OnlineStats = () => {
 
     // 初始化 Socket.IO 连接
     useEffect(() => {
-        console.log("connect to socket", process.env.NEXT_PUBLIC_SOCKET_IO_URL);
+        
         const newSocket = io(url);
         setSocket(newSocket);
 
         getPageView().then((res) => {
-            console.log("initPageView", res);
+            
             dispatch({
                 type: "onlineCount/initPageView",
                 payload: res
@@ -33,7 +33,7 @@ const OnlineStats = () => {
         // 监听总在线人数事件
         newSocket.on("totalOnlineCount", (count: number) => {
             setTotalOnlineCount(count);
-            console.log("totalOnlineCount", totalOnlineCount);
+            
             dispatch({type: "onlineCount/updateOnlineCount", payload: count});
         });
 
@@ -41,7 +41,7 @@ const OnlineStats = () => {
         newSocket.on("pageViewCount", (page, count) => {
             if (page === param) {
                 setPageViewCount(count);
-                console.log("pageViewCount", pageViewCount);
+                
             }
             dispatch({
                 type: "onlineCount/updatePageView", payload: {

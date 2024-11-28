@@ -28,7 +28,7 @@ const ReadingProgress = () => {
   }, [isDark]);
 
   const handleScrollToTop = () => {
-    console.log('scroll to top');
+    
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

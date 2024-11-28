@@ -11,7 +11,7 @@ type NavItem = {
 }
 
 const NavBar = ({ items }: { items: NavItem[] }) => {
-  console.log(items);
+  
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {

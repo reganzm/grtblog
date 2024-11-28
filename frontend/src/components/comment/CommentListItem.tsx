@@ -17,6 +17,24 @@ import {motion} from 'framer-motion';
 import CommentForm from "@/components/comment/CommentForm";
 import CommentList from "@/components/comment/CommentList";
 import {article_font} from "@/app/fonts/font";
+import {FaWindows, FaApple, FaLinux, FaAndroid} from 'react-icons/fa';
+import {SiSafari, SiFirefox, SiGooglechrome, SiMicrosoftedge} from 'react-icons/si';
+
+const getPlatformIcon = (platform: string) => {
+    if (platform.includes('Windows')) return <FaWindows size={'10'} style={{color: '#0078D7'}}/>;
+    if (platform.includes('Mac')) return <FaApple size={'10'} style={{color: '#000'}}/>;
+    if (platform.includes('Linux')) return <FaLinux size={'10'} style={{color: '#000'}}/>;
+    if (platform.includes('Android')) return <FaAndroid size={'10'} style={{color: '#3DDC84'}}/>;
+    return null;
+};
+
+const getBrowserIcon = (browser: string) => {
+    if (browser.includes('Chrome')) return <SiGooglechrome size={'10'} style={{color: '#4285F4'}}/>;
+    if (browser.includes('Firefox')) return <SiFirefox size={'10'} style={{color: '#FF7139'}}/>;
+    if (browser.includes('Safari')) return <SiSafari size={'10'} style={{color: '#0078D7'}}/>;
+    if (browser.includes('Edge')) return <SiMicrosoftedge size={'10'} style={{color: '#0078D7'}}/>;
+    return null;
+};
 
 const CommentListItem = ({comment}: { comment: Comment }) => {
     const formattedCreatedAt = formatDistanceToNow(parseISO(comment.createdAt), {addSuffix: true, locale: zhCN});
@@ -51,6 +69,10 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                     ) : (
                         <div className={styles.commentUserName}> {comment.userName}</div>
                     )}
+                    <div className="gap-1 flex">
+                        {comment.platform && getPlatformIcon(comment.platform)}
+                        {comment.browser && getBrowserIcon(comment.browser)}
+                    </div>
                     {
                         comment.parentId && (
                             <div className={styles.commentParent} style={{

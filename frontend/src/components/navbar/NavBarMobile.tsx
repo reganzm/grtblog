@@ -39,7 +39,7 @@ const NavBarMobile = ({items}: {
     };
 
     const closeLoginModal = () => {
-        console.log('close');
+        
         setIsLoginModalOpen(false);
     };
 

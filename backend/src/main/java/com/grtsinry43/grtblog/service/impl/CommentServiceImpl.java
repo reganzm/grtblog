@@ -12,6 +12,7 @@ import com.grtsinry43.grtblog.mapper.CommentMapper;
 import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.util.UserAgentUtil;
 import com.grtsinry43.grtblog.vo.CommentVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -86,19 +87,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Override
     public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua) {
         System.out.println(form.toString());
-        // 正则匹配一下，提取操作系统和浏览器信息
-        String osPattern = "\\(([^;]+);";
-        String browserPattern = "([a-zA-Z]+/[0-9\\.]+)";
 
-        // 操作系统
-        Pattern pattern = Pattern.compile(osPattern);
-        Matcher matcher = pattern.matcher(ua);
-        String os = matcher.find() ? matcher.group(1) : "Unknown OS";
+        String os = UserAgentUtil.extractOS(ua);
 
-        // 浏览器
-        pattern = Pattern.compile(browserPattern);
-        matcher = pattern.matcher(ua);
-        String browser = matcher.find() ? matcher.group(1) : "Unknown Browser";
+        String browser = UserAgentUtil.extractBrowser(ua);
 
         // 查询评论区是否存在
         if (!commentAreaService.isExist(form.getAreaId())) {
@@ -114,7 +106,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setLocation(location);
         comment.setPlatform(os);
         comment.setBrowser(browser);
-        System.out.println(comment.toString());
         save(comment);
         CommentVO vo = new CommentVO();
         BeanUtils.copyProperties(comment, vo);
@@ -123,20 +114,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
 
     @Override
     public CommentVO addNewCommentLogin(User user, CommentLoginForm form, String ip, String location, String ua) {
-        System.out.println(form.toString());
-        // 正则匹配一下，提取操作系统和浏览器信息
-        String osPattern = "\\(([^;]+);";
-        String browserPattern = "([a-zA-Z]+/[0-9\\.]+)";
+        String os = UserAgentUtil.extractOS(ua);
 
-        // 操作系统
-        Pattern pattern = Pattern.compile(osPattern);
-        Matcher matcher = pattern.matcher(ua);
-        String os = matcher.find() ? matcher.group(1) : "Unknown OS";
-
-        // 浏览器
-        pattern = Pattern.compile(browserPattern);
-        matcher = pattern.matcher(ua);
-        String browser = matcher.find() ? matcher.group(1) : "Unknown Browser";
+        String browser = UserAgentUtil.extractBrowser(ua);
 
         // 查询评论区是否存在
         if (!commentAreaService.isExist(form.getAreaId())) {
@@ -153,7 +133,6 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setLocation(location);
         comment.setPlatform(os);
         comment.setBrowser(browser);
-        System.out.println(comment.toString());
         save(comment);
         CommentVO vo = new CommentVO();
         BeanUtils.copyProperties(comment, vo);

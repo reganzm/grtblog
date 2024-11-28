@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // async headers() {
-  //   console.log('Headers function called');
+  //   
   //   return [
   //     {
   //       source: '/api/v1/:path*',
@@ -23,7 +23,7 @@ const nextConfig = {
   //   ];
   // },
   // async rewrites() {
-  //   console.log('Rewrites function called');
+  //   
   //   return [
   //     {
   //       source: '/socket.io/:path*',

@@ -26,15 +26,15 @@ export async function getInitialState() {
       }
     }
   } else {
-    console.log('location.pathname', location.pathname);
+    
     // 强行要跳内部页面，得看看 token 有没有效
     const res = await UserController.getUserInfoApi();
-    console.log('res', res);
+    
     const data = res.data;
-    console.log('result', data);
+    
     if (data) {
       // 说明有 token，并且 token 有效
-      console.log('设置用户信息成功');
+      
       return {
         name: data.nickname,
         avatar: data.avatar,
@@ -43,7 +43,7 @@ export async function getInitialState() {
     } else {
       // token 验证失败，跳转至登录
       localStorage.removeItem('adminToken');
-      console.log('token 验证失败，跳转至登录' + location.href);
+      
       location.href =
         process.env.NODE_ENV === 'production' ? '/admin/login' : '/login';
       message.warning('请重新登录');
@@ -84,7 +84,7 @@ export const request = {
   // 响应拦截器
   responseInterceptors: [
     async function (response: AxiosResponse) {
-      console.log('response', response);
+      
       if (response.headers.authorization) {
         setToken(response.headers.authorization);
       }
