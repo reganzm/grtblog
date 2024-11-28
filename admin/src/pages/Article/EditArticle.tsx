@@ -5,6 +5,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
 import { message } from 'antd';
 import { useEffect, useState } from 'react';
+import {refreshFrontendCache} from "@/services/refersh";
 
 const EditArticle = () => {
   // 获取传递过来的 id
@@ -39,6 +40,13 @@ const EditArticle = () => {
       }).then((res) => {
         if (res) {
           message.success('文章修改成功');
+          refreshFrontendCache().then((res) => {
+            if (res) {
+              message.success('刷新缓存成功');
+            } else {
+              message.error('刷新缓存失败');
+            }
+          });
           navigate('/article/list');
         }
       });

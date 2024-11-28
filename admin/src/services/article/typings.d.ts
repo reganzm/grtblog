@@ -12,6 +12,8 @@ export interface AddArticleApiParams {
   /* */
   categoryId?: string;
 
+  shortUrl?: string;
+
   /* */
   tags?: string;
 
@@ -124,4 +126,11 @@ export interface ArticleVO {
 
   /* */
   isOriginal: boolean;
+}
+
+export interface PostStatusToggle {
+  is_published: boolean;
+  is_top: boolean;
+  is_hot: boolean;
+  is_original: boolean;
 }

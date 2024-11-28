@@ -130,6 +130,14 @@ public class AdminController {
         return ApiResponse.success(articleVO);
     }
 
+    @PreAuthorize("hasAuthority('article:edit')")
+    @PatchMapping("/article/toggle/{id}")
+    public ApiResponse<ArticleVO> updateArticleApi(@PathVariable Long id, @RequestBody PostStatusToggle postStatusToggle) {
+        System.out.println(postStatusToggle);
+        ArticleVO articleVO = articleService.updateArticleStatus(id, postStatusToggle);
+        return ApiResponse.success(articleVO);
+    }
+
     @PreAuthorize("hasAuthority('category:add')")
     @PostMapping("/category")
     public ApiResponse<CategoryVO> addCategoryApi(@RequestBody AddCategory addCategory) {
@@ -147,6 +155,13 @@ public class AdminController {
     @GetMapping("/article/{id}")
     public ApiResponse<ArticleVO> getArticleById(@PathVariable Long id) {
         return ApiResponse.success(articleService.getArticleByIdAdmin(id));
+    }
+
+    @PreAuthorize("hasAuthority('share:edit')")
+    @PatchMapping("/statusUpdate/toggle/{id}")
+    public ApiResponse<StatusUpdateVO> toggleStatusUpdateApi(@PathVariable Long id, @RequestBody PostStatusToggle postStatusToggle) {
+        StatusUpdateVO statusUpdateVO = statusUpdateService.toggleStatusUpdate(id, postStatusToggle);
+        return ApiResponse.success(statusUpdateVO);
     }
 
     @PreAuthorize("hasAuthority('share:edit')")

@@ -1,6 +1,7 @@
 package com.grtsinry43.grtblog.service;
 
 import com.grtsinry43.grtblog.dto.ArticleDTO;
+import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.entity.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
@@ -24,6 +25,8 @@ public interface IArticleService extends IService<Article> {
     void deleteArticle(Long articleId, LoginUserDetails principal);
 
     ArticleVO updateArticle(Long articleId, ArticleDTO articleDTO, Long userId);
+
+    ArticleVO updateArticleStatus(Long articleId, PostStatusToggle postStatusToggle);
 
     ArticleView viewOneArticle(String shortUrl);
 

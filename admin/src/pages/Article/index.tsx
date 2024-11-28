@@ -1,4 +1,5 @@
 import ArticleController from '@/services/article/ArticleController';
+import { refreshFrontendCache } from '@/services/refersh';
 import { useDispatch, useSelector } from '@@/exports';
 import {
   ActionType,
@@ -14,6 +15,27 @@ const Index = () => {
   const navigate = useNavigate();
   const { list } = useSelector((state: any) => state.category);
   const dispatch = useDispatch();
+
+  const toggleStatusHandle = async (
+    id: string,
+    key: string,
+    value: boolean,
+  ) => {
+    const response = await ArticleController.toggleArticle(id, {
+      [key]: value,
+    });
+    if (response) {
+      message.success('更新成功');
+      refreshFrontendCache().then((res) => {
+        if (res) {
+          message.success('刷新缓存成功');
+        } else {
+          message.error('刷新缓存失败');
+        }
+      });
+      actionRef.current?.reload(); // 刷新表格
+    }
+  };
 
   const deleteArticleHandle = async (id: string) => {
     const response = await ArticleController.deleteArticle(id);
@@ -113,8 +135,16 @@ const Index = () => {
       dataIndex: 'isPublished',
       key: 'isPublished',
       align: 'center',
-      render: (value: boolean) => {
-        return <Switch size={'small'} checked={value} />;
+      render: (value: boolean, record: any) => {
+        return (
+          <Switch
+            onClick={() => {
+              toggleStatusHandle(record.id, 'isPublished', !value);
+            }}
+            size={'small'}
+            checked={value}
+          />
+        );
       },
     },
     {
@@ -136,21 +166,45 @@ const Index = () => {
       dataIndex: 'isTop',
       key: 'isTop',
       align: 'center',
-      render: (text: boolean) => <Switch size={'small'} checked={text} />,
+      render: (text: boolean, record: any) => (
+        <Switch
+          onClick={() => {
+            toggleStatusHandle(record.id, 'isTop', !text);
+          }}
+          size={'small'}
+          checked={text}
+        />
+      ),
     },
     {
       title: '热门',
       dataIndex: 'isHot',
       key: 'isHot',
       align: 'center',
-      render: (text: boolean) => <Switch size={'small'} checked={text} />,
+      render: (text: boolean, record: any) => (
+        <Switch
+          onClick={() => {
+            toggleStatusHandle(record.id, 'isHot', !text);
+          }}
+          size={'small'}
+          checked={text}
+        />
+      ),
     },
     {
       title: '原创',
       dataIndex: 'isOriginal',
       key: 'isOriginal',
       align: 'center',
-      render: (text: boolean) => <Switch size={'small'} checked={text} />,
+      render: (text: boolean, record: any) => (
+        <Switch
+          onClick={() => {
+            toggleStatusHandle(record.id, 'isOriginal', !text);
+          }}
+          size={'small'}
+          checked={text}
+        />
+      ),
     },
     {
       title: '操作',

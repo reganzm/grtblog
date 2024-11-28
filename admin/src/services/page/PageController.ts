@@ -41,7 +41,7 @@ const editPage = async (
   id: string,
   data: AddPageApiRes,
 ): Promise<AddPageApiRes> => {
-  return request(`/api/admin/page/${id}`, {
+  return request(`/api/v1/admin/page/${id}`, {
     method: 'PATCH',
     data,
   });

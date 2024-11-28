@@ -176,6 +176,16 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           />
         </Form.Item>
         <Form.Item
+            label="短链接"
+            name="shortUrl"
+        >
+          <Input
+              value={articleInfo?.shortUrl}
+              placeholder="短链接，例如'hello-world'，留空则根据标题生成"
+              onChange={(e) => onValueChange('shortUrl', e.target.value)}
+          />
+        </Form.Item>
+        <Form.Item
           label={'内容'}
           name="content"
           rules={[{ required: true, message: '文章内容不能为空' }]}

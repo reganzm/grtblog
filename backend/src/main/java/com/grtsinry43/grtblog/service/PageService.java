@@ -36,7 +36,7 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
     }
 
     public PageVO getPageByShortUrl(String shortUrl) {
-        Page pageFind = this.lambdaQuery().eq(Page::getRefPath, "/" + shortUrl).one();
+        Page pageFind = this.lambdaQuery().eq(Page::getRefPath, "/" + shortUrl).eq(Page::getEnable, true).eq(Page::getCanDelete, true).eq(Page::getDeletedAt, null).one();
         if (pageFind == null) {
             throw new BusinessException(ErrorCode.NOT_FOUND);
         } else {

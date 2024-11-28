@@ -15,6 +15,7 @@ public class ArticleDTO {
     private String categoryId;
     private String tags;
     private Boolean isPublished;
+    private String shortUrl;
     private Boolean isTop;
     private Boolean isHot;
     private Boolean isOriginal;

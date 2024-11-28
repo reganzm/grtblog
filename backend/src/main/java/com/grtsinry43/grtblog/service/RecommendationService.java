@@ -46,7 +46,7 @@ public class RecommendationService {
 
     public void deleteArticleStatus(Long articleId) {
         ApiResponse<Object> objectApiResponse = recommenderClient.deleteArticle(articleId.toString());
-        if (objectApiResponse.getCode() != 0) {
+        if (objectApiResponse.getCode() != 0 && objectApiResponse.getCode() != 404) {
             throw new RuntimeException("删除文章失败");
         }
     }

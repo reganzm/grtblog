@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service;
 
+import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
 import com.grtsinry43.grtblog.entity.StatusUpdate;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -57,6 +58,8 @@ public interface IStatusUpdateService extends IService<StatusUpdate> {
     void deleteStatusUpdate(Long id, LoginUserDetails principal);
 
     StatusUpdateVO updateStatusUpdate(Long id, StatusUpdateDTO statusUpdateDTO, Long userId);
+
+    StatusUpdateVO toggleStatusUpdate(Long id, PostStatusToggle postStatusToggle);
 
     StatusUpdateVO getStatusUpdateById(Long id);
 }

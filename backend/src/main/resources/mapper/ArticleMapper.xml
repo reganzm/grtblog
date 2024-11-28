@@ -10,6 +10,14 @@
     <select id="getArticleListByPage" resultType="com.grtsinry43.grtblog.entity.Article">
         select *
         from article
+        where is_published = 1 and deleted_at is null
+        order by is_top desc, created_at desc
+        limit #{start}, #{pageSize}
+    </select>
+
+    <select id="getArticleListByPageAdmin" resultType="com.grtsinry43.grtblog.entity.Article">
+        select *
+        from article
         order by is_top desc, created_at desc
         limit #{start}, #{pageSize}
     </select>

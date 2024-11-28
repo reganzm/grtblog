@@ -2,6 +2,7 @@ import { getAllConfig, updateConfig } from '@/services/config/ConfigController';
 import { PageContainer } from '@ant-design/pro-components';
 import { Button, Form, Input, message } from 'antd';
 import React, { useEffect, useState } from 'react';
+import {refreshFrontendCache} from "@/services/refersh";
 
 const ConfigPage = () => {
   const [config, setConfig] = useState({});
@@ -30,6 +31,13 @@ const ConfigPage = () => {
     Promise.all(updatePromises)
       .then(() => {
         message.success('配置更新成功');
+        refreshFrontendCache().then((res) => {
+          if (res) {
+            message.success('刷新缓存成功');
+          } else {
+            message.error('刷新缓存失败');
+          }
+        });
       })
       .catch(() => {
         message.error('配置更新失败');

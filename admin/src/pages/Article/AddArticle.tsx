@@ -5,6 +5,7 @@ import { PageContainer } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
 import { message } from 'antd';
 import { useState } from 'react';
+import {refreshFrontendCache} from "@/services/refersh";
 
 const AddArticle = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const AddArticle = () => {
     title: '',
     content: '',
     cover: '',
+    shortUrl: '',
     categoryId: '',
     isPublished: false,
   });
@@ -27,6 +29,13 @@ const AddArticle = () => {
     }).then((res) => {
       if (res) {
         message.success('文章添加成功');
+        refreshFrontendCache().then((res) => {
+          if (res) {
+            message.success('刷新缓存成功');
+          } else {
+            message.error('刷新缓存失败');
+          }
+        });
         navigate('/article/list');
       }
     });

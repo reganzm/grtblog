@@ -4,6 +4,7 @@ import { useNavigate, useParams } from '@@/exports';
 import { PageContainer } from '@ant-design/pro-components';
 import { message } from 'antd';
 import { useEffect, useState } from 'react';
+import {refreshFrontendCache} from "@/services/refersh";
 
 const EditPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -35,6 +36,13 @@ const EditPage = () => {
       }).then((res) => {
         if (res) {
           message.success('页面成功更新');
+          refreshFrontendCache().then((res) => {
+            if (res) {
+              message.success('刷新缓存成功');
+            } else {
+              message.error('刷新缓存失败');
+            }
+          });
           navigate('/pages/list');
         }
       });

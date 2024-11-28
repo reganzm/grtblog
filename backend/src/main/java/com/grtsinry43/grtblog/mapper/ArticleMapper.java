@@ -17,7 +17,7 @@ import java.util.List;
  * @since 2024-10-09
  */
 public interface ArticleMapper extends BaseMapper<Article> {
-    @Select("SELECT * FROM article WHERE is_published = 1 ORDER BY created_at DESC LIMIT 5")
+    @Select("SELECT * FROM article WHERE is_published = 1 and deleted_at is null ORDER BY created_at DESC LIMIT 5")
     public List<Article> getLastFiveArticles();
 
     /**
@@ -26,9 +26,14 @@ public interface ArticleMapper extends BaseMapper<Article> {
     List<Article> getArticleListByPage(@Param("start") Integer start, @Param("pageSize") Integer pageSize);
 
     /**
+     * 分页查询文章
+     */
+    List<Article> getArticleListByPageAdmin(@Param("start") Integer start, @Param("pageSize") Integer pageSize);
+
+    /**
      * 获取所有文章的短链接
      */
-    @Select("SELECT short_url FROM article")
+    @Select("SELECT short_url FROM article WHERE is_published = 1 and deleted_at is null")
     List<String> getAllArticleShortLinks();
 
     /**
@@ -40,6 +45,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
     /**
      * 根据分类 id 分页获取文章列表
      */
-    @Select("SELECT * FROM article WHERE category_id = #{categoryId} AND is_published = 1 ORDER BY created_at DESC LIMIT #{start}, #{pageSize}")
+    @Select("SELECT * FROM article WHERE category_id = #{categoryId} AND is_published = 1 AND deleted_at is null ORDER BY created_at DESC LIMIT #{start}, #{pageSize}")
     List<Article> getArticleListByCategory(@Param("categoryId") Long categoryId, @Param("start") Integer start, @Param("pageSize") Integer pageSize);
 }

@@ -4,6 +4,7 @@ import { useNavigate, useParams } from '@umijs/max';
 import { message } from 'antd';
 import { useEffect, useState } from 'react';
 import MomentForm from './MomentForm';
+import {refreshFrontendCache} from "@/services/refersh";
 
 const EditMoment = () => {
   const navigate = useNavigate();
@@ -35,6 +36,13 @@ const EditMoment = () => {
       }).then((res) => {
         if (res) {
           message.success('动态修改成功');
+          refreshFrontendCache().then((res) => {
+            if (res) {
+              message.success('刷新缓存成功');
+            } else {
+              message.error('刷新缓存失败');
+            }
+          });
           navigate('/moment/list');
         }
       });

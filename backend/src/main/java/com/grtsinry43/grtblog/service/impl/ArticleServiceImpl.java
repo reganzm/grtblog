@@ -3,6 +3,7 @@ package com.grtsinry43.grtblog.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
+import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.entity.Article;
 import com.grtsinry43.grtblog.entity.CommentArea;
 import com.grtsinry43.grtblog.exception.BusinessException;
@@ -19,6 +20,7 @@ import com.grtsinry43.grtblog.vo.ArticleView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,7 +83,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setCommentId(commentArea.getId());
         this.baseMapper.insert(article);
         articleTagService.syncArticleTag(article.getId(), tagIds);
-        recommendationService.updateArticleStatus(article);
+        if (article.getIsPublished()){
+            recommendationService.updateArticleStatus(article);
+        }
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(article, articleVO);
         articleVO.setId(article.getId().toString());
@@ -99,7 +103,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if (principal.getRoleNames().contains("ROLE_WRITER") && !article.getAuthorId().equals(principal.getUser().getId())) {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
         }
-        this.baseMapper.deleteById(articleId);
+        // 删除文章
+        article.setDeletedAt(LocalDateTime.now());
+        this.baseMapper.updateById(article);
         // 移除文章标签
         articleTagService.deleteArticleTag(articleId);
         // 移除文章推荐状态
@@ -135,11 +141,41 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         this.baseMapper.updateById(article);
         articleTagService.syncArticleTag(article.getId(), tagIds);
-        recommendationService.updateArticleStatus(article);
+        if (article.getIsPublished()){
+            recommendationService.updateArticleStatus(article);
+        } else {
+            recommendationService.deleteArticleStatus(article.getId());
+        }
         ArticleVO articleVO = new ArticleVO();
         BeanUtils.copyProperties(article, articleVO);
         articleVO.setId(article.getId().toString());
         articleVO.setAuthor(userService.getById(userId).getNickname());
+        return articleVO;
+    }
+
+    @Override
+    public ArticleVO updateArticleStatus(Long articleId, PostStatusToggle postStatusToggle) {
+        Article article = this.baseMapper.selectById(articleId);
+        if (article == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND);
+        }
+        article.setIsPublished(postStatusToggle.getIsPublished() == null ? article.getIsPublished() : postStatusToggle.getIsPublished());
+        article.setIsTop(postStatusToggle.getIsTop() == null ? article.getIsTop() : postStatusToggle.getIsTop());
+        article.setIsHot(postStatusToggle.getIsHot() == null ? article.getIsHot() : postStatusToggle.getIsHot());
+        article.setIsOriginal(postStatusToggle.getIsOriginal() == null ? article.getIsOriginal() : postStatusToggle.getIsOriginal());
+
+        this.baseMapper.updateById(article);
+
+        if (article.getIsPublished()) {
+            recommendationService.updateArticleStatus(article);
+        } else {
+            recommendationService.deleteArticleStatus(article.getId());
+        }
+
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtils.copyProperties(article, articleVO);
+        articleVO.setId(article.getId().toString());
+        articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
         return articleVO;
     }
 
@@ -239,7 +275,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public List<ArticleVO> getArticleListAdmin(Integer page, Integer pageSize) {
-        List<Article> articles = this.baseMapper.getArticleListByPage((page - 1) * pageSize, pageSize);
+        List<Article> articles = this.baseMapper.getArticleListByPageAdmin((page - 1) * pageSize, pageSize);
         return articles.stream().map(article -> {
             ArticleVO articleVO = new ArticleVO();
             BeanUtils.copyProperties(article, articleVO);

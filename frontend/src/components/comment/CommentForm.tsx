@@ -101,7 +101,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             flex: '1',
                         }}
                         onChange={(e) => setForm({...form, userName: e.target.value})}
-                        placeholder="昵称"
+                        placeholder="昵称(*)"
                     />
                     <TextField.Root
                         value={form.email}
@@ -112,11 +112,10 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             flex: '1',
                         }}
                         onChange={(e) => setForm({...form, email: e.target.value})}
-                        placeholder="邮箱"
+                        placeholder="邮箱(*)"
                     />
                     <TextField.Root
                         value={form.website}
-                        required={true}
                         style={{
                             backgroundColor: 'rgba(var(--background), 0.3)',
                             flex: '1',

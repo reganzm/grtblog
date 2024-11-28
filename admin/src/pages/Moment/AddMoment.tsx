@@ -5,6 +5,7 @@ import { useNavigate } from '@umijs/max';
 import { message } from 'antd';
 import { useState } from 'react';
 import MomentForm from './MomentForm';
+import {refreshFrontendCache} from "@/services/refersh";
 
 const AddMoment = () => {
   const navigate = useNavigate();
@@ -31,6 +32,13 @@ const AddMoment = () => {
     }).then((res) => {
       if (res) {
         message.success('动态添加成功');
+        refreshFrontendCache().then((res) => {
+          if (res) {
+            message.success('刷新缓存成功');
+          } else {
+            message.error('刷新缓存失败');
+          }
+        });
         navigate('/moment/list');
       }
     });

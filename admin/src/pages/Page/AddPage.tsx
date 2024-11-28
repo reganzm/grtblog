@@ -5,6 +5,7 @@ import { useNavigate } from '@@/exports';
 import { PageContainer } from '@ant-design/pro-components';
 import { message } from 'antd';
 import { useState } from 'react';
+import {refreshFrontendCache} from "@/services/refersh";
 
 const AddPage = () => {
   const navigate = useNavigate();
@@ -28,6 +29,13 @@ const AddPage = () => {
     }).then((res) => {
       if (res) {
         message.success('页面添加成功');
+        refreshFrontendCache().then((res) => {
+          if (res) {
+            message.success('刷新缓存成功');
+          } else {
+            message.error('刷新缓存失败');
+          }
+        });
         navigate('/pages/list');
       }
     });

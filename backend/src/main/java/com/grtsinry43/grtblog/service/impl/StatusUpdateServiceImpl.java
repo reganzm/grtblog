@@ -1,6 +1,7 @@
 package com.grtsinry43.grtblog.service.impl;
 
 import com.grtsinry43.grtblog.common.ErrorCode;
+import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
 import com.grtsinry43.grtblog.entity.StatusUpdate;
 import com.grtsinry43.grtblog.exception.BusinessException;
@@ -15,6 +16,7 @@ import com.grtsinry43.grtblog.vo.StatusUpdateView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -152,7 +154,8 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
     public void deleteStatusUpdate(Long id, LoginUserDetails principal) {
         StatusUpdate statusUpdate = this.getById(id);
         if (Objects.equals(statusUpdate.getAuthorId(), principal.getUser().getId())) {
-            this.removeById(id);
+            statusUpdate.setDeletedAt(LocalDateTime.now());
+            this.updateById(statusUpdate);
         } else {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
         }
@@ -176,6 +179,27 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         } else {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
         }
+    }
+
+    @Override
+    public StatusUpdateVO toggleStatusUpdate(Long id, PostStatusToggle postStatusToggle) {
+        StatusUpdate statusUpdate = this.baseMapper.selectById(id);
+        if (statusUpdate == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND);
+        }
+        statusUpdate.setIsPublished(postStatusToggle.getIsPublished() == null ? statusUpdate.getIsPublished() : postStatusToggle.getIsPublished());
+        statusUpdate.setIsTop(postStatusToggle.getIsTop() == null ? statusUpdate.getIsTop() : postStatusToggle.getIsTop());
+        statusUpdate.setIsHot(postStatusToggle.getIsHot() == null ? statusUpdate.getIsHot() : postStatusToggle.getIsHot());
+        statusUpdate.setIsOriginal(postStatusToggle.getIsOriginal() == null ? statusUpdate.getIsOriginal() : postStatusToggle.getIsOriginal());
+
+        this.baseMapper.updateById(statusUpdate);
+
+        StatusUpdateVO statusUpdateVO = new StatusUpdateVO();
+        BeanUtils.copyProperties(statusUpdate, statusUpdateVO);
+        statusUpdateVO.setAuthorName(userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
+        statusUpdateVO.setId(statusUpdate.getId().toString());
+        statusUpdateVO.setCategoryId(statusUpdate.getCategoryId() != null ? statusUpdate.getCategoryId().toString() : null);
+        return statusUpdateVO;
     }
 
     @Override

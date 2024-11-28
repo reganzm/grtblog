@@ -9,7 +9,7 @@ import { request } from '@umijs/max';
 const addArticle = async (
   data: AddArticleApiParams,
 ): Promise<AddArticleApiRes> => {
-  return request('/api/v1/v1/admin/article', {
+  return request('/api/v1/admin/article', {
     method: 'POST',
     data,
   });
@@ -22,9 +22,12 @@ const getArticleList = async ({
   page: number;
   pageSize: number;
 }): Promise<ApiResponse<ArticleVO[]>> => {
-  return request(`/api/v1/admin/article/all?page=${page}&pageSize=${pageSize}`, {
-    method: 'GET',
-  });
+  return request(
+    `/api/v1/admin/article/all?page=${page}&pageSize=${pageSize}`,
+    {
+      method: 'GET',
+    },
+  );
 };
 
 const deleteArticle = async (id: string): Promise<ApiResponse<null>> => {
@@ -51,10 +54,21 @@ const editArticle = async (
   });
 };
 
+const toggleArticle = async (
+  id: string,
+  data: any,
+): Promise<AddArticleApiRes> => {
+  return request(`/api/v1/admin/article/toggle/${id}`, {
+    method: 'PATCH',
+    data,
+  });
+};
+
 export default {
   addArticle,
   getArticleList,
   deleteArticle,
   getArticleDetail,
   editArticle,
+  toggleArticle,
 };

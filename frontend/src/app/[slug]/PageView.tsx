@@ -14,7 +14,6 @@ import TableView from "@/components/article/TableView";
 import ScrollHandler from "@/components/article/ScrollHandler";
 import {article_font} from "@/app/fonts/font";
 import FloatingTocMobile from "@/components/article/FloatingTocMobile";
-import ReadingProgress from "@/components/article/ReadingProgress";
 import Toc from "@/components/article/Toc";
 import ArticleScrollSync from "@/components/article/ArticleScrollSync";
 import {Calendar, Clock, Eye} from "lucide-react";

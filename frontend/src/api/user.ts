@@ -18,13 +18,9 @@ export function userLogin(data: LoginForm, captcha: string) {
 }
 
 export function userRegister(data: LoginForm, captcha: string) {
-    const formData = new FormData();
-    formData.append('userEmail', data.userEmail);
-    formData.append('password', data.password);
-
     return request('/user/register?captcha=' + captcha, {
         method: 'POST',
-        body: formData,
+        body: JSON.stringify(data),
     });
 }
 
