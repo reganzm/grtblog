@@ -13,7 +13,7 @@ hero:
     - theme: alt
       text: API 文档
       link: /api-examples
-  image: /assets/logo.png
+  image: ./logo.png
 
 features:
   - title: 简单易用（计划开发）
