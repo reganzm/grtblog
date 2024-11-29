@@ -2,9 +2,8 @@ import {defineConfig} from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-    base: '/grtblog/',
     title: "Grtblog",
-    description: "博客站点的一站式解决方案",
+    description: "博客站点的一站式解决方案，使用 Nextjs + SpringBoot 构建的现代化博客管理系统。",
     themeConfig: {
         // https://vitepress.dev/reference/default-theme-config
         nav: [

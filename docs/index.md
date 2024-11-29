@@ -1,10 +1,11 @@
 ---
 layout: home
+title: Grtblog - 博客站点的一站式解决方案
 
 hero:
   name: "Grtblog"
   text: "个人博客站点的\n一站式优雅解决方案"
-  tagline: 一个美观，扩展性强，快速部署的博客框架
+  tagline: "一个美观，扩展性强，快速部署的博客框架，\n使用 Nextjs + SpringBoot 构建。\n致力于轻松搭建和个性化你的博客站点"
   actions:
     - theme: brand
       text: 快速开始
