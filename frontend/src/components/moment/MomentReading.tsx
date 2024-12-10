@@ -125,15 +125,6 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
                                     上次更新于: {new Date(moment.updatedAt).toLocaleString()}
                                 </div>
                             )}
-
-                            {moment.shortUrl && (
-                                <div className="mt-4 text-sm">
-                                    <a href={moment.shortUrl}
-                                       className="text-blue-600 dark:text-blue-400 hover:underline">
-                                        Short link
-                                    </a>
-                                </div>
-                            )}
                         </article>
                     </div>
                 </motion.div>

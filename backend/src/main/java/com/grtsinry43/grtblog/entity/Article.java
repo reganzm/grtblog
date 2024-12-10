@@ -67,7 +67,7 @@ public class Article implements Serializable {
     @TableField("is_published")
     private Boolean isPublished;
 
-    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
     @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;

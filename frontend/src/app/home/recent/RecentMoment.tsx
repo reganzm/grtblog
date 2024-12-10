@@ -14,7 +14,7 @@ const RecentMoment = ({ shareList }: RecentMomentProps) => {
       <div className="text-2xl font-bold text-start mb-8"> 随手记录</div>
       <RecentMomentMotion list={shareList} />
       <div className="text-end mt-8">
-        <Link href="/posts" className="text-blue-500"> 查看更多 </Link>
+        <Link href="/moments" className="text-blue-500"> 查看更多 </Link>
         <ArrowRightIcon className="w-6 h-6 inline-block" />
       </div>
     </div>

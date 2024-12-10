@@ -132,7 +132,8 @@ const PageView = ({page}: { page: PageVO }) => {
                     </ArticleScrollSync>
                 </main>
                 <aside className={styles.tocContainer}>
-                    {page.toc && <Toc toc={JSON.parse(page.toc)} commentId={page.commentId}/>}
+                    {page.toc && <Toc toc={JSON.parse(page.toc)} commentId={page.commentId} likes={page.likes}
+                                      comments={page.comments}/>}
                 </aside>
             </div>
         </div>

@@ -105,4 +105,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
     }
+
+    @Override
+    public User getUserByNickname(String nickname) {
+        return this.baseMapper.selectOne(new QueryWrapper<User>().eq("nickname", nickname));
+    }
 }

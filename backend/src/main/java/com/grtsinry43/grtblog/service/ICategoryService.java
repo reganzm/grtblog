@@ -17,6 +17,8 @@ public interface ICategoryService extends IService<Category> {
 
     CategoryVO addNewCategory(AddCategory addCategory);
 
+    Long getOrCreateCategoryId(String name);
+
     String removeCategory(Long categoryId);
 
     List<CategoryVO> listAllCategories();

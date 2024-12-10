@@ -39,7 +39,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
     /**
      * 根据文章短链接获取文章
      */
-    @Select("SELECT * FROM article WHERE short_url = #{shortUrl}")
+    @Select("SELECT * FROM article WHERE is_published = 1 and deleted_at is null and short_url = #{shortUrl}")
     Article getArticleByShortUrl(String shortUrl);
 
     /**

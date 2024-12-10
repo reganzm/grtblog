@@ -6,6 +6,7 @@ import com.grtsinry43.grtblog.dto.ArticleDTO;
 import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.entity.Article;
 import com.grtsinry43.grtblog.entity.CommentArea;
+import com.grtsinry43.grtblog.entity.User;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.ArticleMapper;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
@@ -19,10 +20,17 @@ import com.grtsinry43.grtblog.vo.ArticleVO;
 import com.grtsinry43.grtblog.vo.ArticleView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.yaml.snakeyaml.Yaml;
 
+import javax.swing.text.html.parser.Parser;
+import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -300,6 +308,90 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
         articleVO.setTags(String.join(",", tagService.getTagNamesByArticleId(article.getId())));
         articleVO.setCategoryId(article.getCategoryId() != null ? article.getCategoryId().toString() : null);
+        return articleVO;
+    }
+
+    public ArticleVO importFromHexoMd(MultipartFile file, Long userId) throws Exception {
+        InputStream inputStream = file.getInputStream();
+        String content = new String(inputStream.readAllBytes());
+
+        // 分割 YAML 前置数据和 Markdown 内容
+        String[] parts = content.split("---", 3);
+        if (parts.length < 3) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+
+        String yamlContent = parts[1];
+        String markdownContent = parts[2];
+
+        // 解析文章并生成目录
+        String toc = null;
+        try {
+            toc = ArticleParser.generateToc(markdownContent);
+        } catch (JsonProcessingException e) {
+            throw new BusinessException(ErrorCode.OPERATION_ERROR);
+        }
+
+        // 解析 YAML 前置数据
+        Yaml yaml = new Yaml();
+        Map<String, Object> metadata = yaml.load(yamlContent);
+
+        // 验证分类是否存在，存在则设置分类 ID，不存在则创建分类并设置分类 ID
+        Long categoryId = null;
+        if (metadata.get("category")!= null) {
+             categoryId = categoryService.getOrCreateCategoryId((String) metadata.get("category"));
+        }
+        Long[] tagIds = null;
+
+        synchronized (this) {
+            try {
+                // 同步标签，将 List 转换为 String 数组
+                List<String> tagsList = (List<String>) metadata.get("tags");
+                String[] tags = tagsList == null ? new String[0] : tagsList.toArray(new String[0]);
+                tagIds = Arrays.stream(tags)
+                        .map(tagService::getOrCreateTagId)
+                        .toArray(Long[]::new);
+            } catch (Exception e) {
+                throw new BusinessException(ErrorCode.PARAMS_ERROR);
+            }
+        }
+        System.out.println(metadata.get("title"));
+
+        // 创建并保存文章
+        Article article = new Article();
+        article.setToc(toc);
+        article.setTitle(metadata.get("title") == null ? "未命名" : (String) metadata.get("title"));
+        User author = userService.getUserByNickname((String) metadata.get("author"));
+        if (author != null) {
+            article.setAuthorId(author.getId());
+        } else {
+            article.setAuthorId(userId);
+        }
+        article.setCategoryId(categoryId);
+        article.setContent(markdownContent);
+        article.setSummary(markdownContent.length() > 200 ? markdownContent.substring(0, 200) : markdownContent);
+        article.setIsPublished(true);
+        article.setIsTop(false);
+        article.setIsHot(false);
+        article.setIsOriginal(true);
+        article.setShortUrl(ArticleParser.generateShortUrl(article.getTitle()));
+        this.baseMapper.insert(article);
+        articleTagService.syncArticleTag(article.getId(), tagIds);
+        this.recommendationService.updateArticleStatus(article);
+        CommentArea commentArea = this.commentAreaService.createCommentArea("文章", article.getTitle());
+        article.setCommentId(commentArea.getId());
+        // 设置文章发行时间
+        Date date = (Date) metadata.get("date");
+        LocalDateTime createdAt = date == null ? LocalDateTime.now() : date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        article.setCreatedAt(createdAt);
+        article.setUpdatedAt(LocalDateTime.now());
+        this.baseMapper.updateById(article);
+
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtils.copyProperties(article, articleVO);
+        articleVO.setId(article.getId().toString());
+        articleVO.setAuthor(userService.getById(userId).getNickname());
+        articleVO.setCategoryId(categoryId == null ? null : categoryId.toString());
         return articleVO;
     }
 

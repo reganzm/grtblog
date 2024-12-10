@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Objects;
@@ -105,6 +106,19 @@ public class AdminController {
         ArticleVO articleVO = articleService.addArticle(articleDTO, userId);
         return ApiResponse.success(articleVO);
     }
+
+    @PreAuthorize("hasAuthority('article:add')")
+    @PostMapping("/article/import")
+    public ApiResponse<ArticleVO> importArticleFromHexoMdApi(@RequestParam("file") MultipartFile file) {
+        Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
+        try {
+            ArticleVO articleVO = articleService.importFromHexoMd(file, userId);
+            return ApiResponse.success(articleVO);
+        } catch (Exception e) {
+            return ApiResponse.error(400, "Failed to import article: " + e.getMessage());
+        }
+    }
+
 
     @PreAuthorize("hasAuthority('article:delete')")
     @DeleteMapping("/article/{id}")

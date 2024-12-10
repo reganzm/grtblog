@@ -37,7 +37,7 @@ const InfoCard = () => {
             transition={{duration: 0.5}}
         >
             <div
-                className="w-64 p-4 bg-card text-card-foreground shadow-sm rounded-lg border border-border sticky mt-80 ml-4">
+                className="w-64 p-4 bg-card text-card-foreground shadow-sm rounded-lg border-b-gray-600 border-opacity-45 dark:border-none sticky mt-80 ml-4">
                 <div className="flex justify-center mb-3">
                     <div className="flex items-center justify-center">
                         <motion.div

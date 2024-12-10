@@ -91,6 +91,22 @@ export default defineConfig({
       ],
     },
     {
+      name: '常用工具',
+      path: '/tools',
+      routes: [
+        {
+          name: '全部工具',
+          path: '/tools/list',
+          component: './Tool',
+        },
+        {
+          name: '从文件导入',
+          path: '/tools/addArticleFromFile',
+          component: './Tool/ImportMd',
+        },
+      ],
+    },
+    {
       name: '登录',
       path: '/login',
       component: './Login',

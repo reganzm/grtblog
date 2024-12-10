@@ -6,6 +6,7 @@ import com.grtsinry43.grtblog.dto.AddCategory;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.mapper.CategoryMapper;
 import com.grtsinry43.grtblog.service.ICategoryService;
+import com.grtsinry43.grtblog.util.ArticleParser;
 import com.grtsinry43.grtblog.vo.CategoryVO;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,19 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         categoryVO.setId(category.getId().toString());
         categoryVO.setName(category.getName());
         return categoryVO;
+    }
+
+    @Override
+    public Long getOrCreateCategoryId(String name) {
+        Category category = getOne(new QueryWrapper<Category>().eq("name", name));
+        if (category == null) {
+            category = new Category();
+            category.setName(name);
+            category.setShortUrl(ArticleParser.generateShortUrl(name));
+            category.setArticle(true);
+            save(category);
+        }
+        return category.getId();
     }
 
     @Override

@@ -64,6 +64,15 @@ const toggleArticle = async (
   });
 };
 
+const importArticle = async (file: any): Promise<AddArticleApiRes> => {
+  const formData = new FormData();
+  formData.append('file', file);
+  return request(`/api/v1/admin/article/import`, {
+    method: 'POST',
+    data: formData,
+  });
+};
+
 export default {
   addArticle,
   getArticleList,
@@ -71,4 +80,5 @@ export default {
   getArticleDetail,
   editArticle,
   toggleArticle,
+  importArticle,
 };

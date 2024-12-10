@@ -227,7 +227,9 @@ export default function Toc({toc, commentId, likes, comments}: {
                 <Button onClick={() => setIsCommentOpen(true)} variant={'soft'}>
                     <ChatBubbleIcon/> <span className="text-sm ml-0.5">{comments}</span>
                 </Button>
-                <IconButton onClick={() => setIsCommentOpen(true)} variant={'soft'}>
+                <IconButton variant={'soft'} onClick={() => {
+                    navigator.clipboard.writeText(window.location.href);
+                }}>
                     <ShareIcon height={12} width={12}/>
                 </IconButton>
             </div>
