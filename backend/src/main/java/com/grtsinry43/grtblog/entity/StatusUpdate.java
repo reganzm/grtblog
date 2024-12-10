@@ -28,7 +28,7 @@ public class StatusUpdate implements Serializable {
     /**
      * 分享 ID，会由雪花算法生成
      */
-    @TableId(value = "id", type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**

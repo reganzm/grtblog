@@ -81,6 +81,10 @@ export default function NavBarDesktop({items}: {
     }, []);
 
     useEffect(() => {
+        setIsTitleVisible(false);
+    }, []);
+
+    useEffect(() => {
         const observer = new IntersectionObserver(
             ([entry]) => {
                 setIsInView(entry.isIntersecting);
@@ -114,7 +118,7 @@ export default function NavBarDesktop({items}: {
     };
 
     const closeLoginModal = () => {
-        
+
         setIsLoginModalOpen(false);
     };
 

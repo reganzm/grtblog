@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -85,6 +86,9 @@ public class UserController {
         User user1 = new User();
         BeanUtils.copyProperties(user, user1);
         user1.setNickname(user.getNickname());
+        // 这里要加密密码！！！！！！！！
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        user1.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userService.save(user1);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user1, userVO);

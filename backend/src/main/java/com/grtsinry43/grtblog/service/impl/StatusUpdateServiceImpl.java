@@ -3,11 +3,13 @@ package com.grtsinry43.grtblog.service.impl;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
+import com.grtsinry43.grtblog.entity.CommentArea;
 import com.grtsinry43.grtblog.entity.StatusUpdate;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.StatusUpdateMapper;
 import com.grtsinry43.grtblog.mapper.UserMapper;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
+import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.IStatusUpdateService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
@@ -33,16 +35,19 @@ import java.util.stream.Collectors;
 public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, StatusUpdate> implements IStatusUpdateService {
     private final UserMapper userMapper;
     private final CategoryServiceImpl categoryService;
+    private final CommentAreaService commentAreaService;
 
-    public StatusUpdateServiceImpl(UserMapper userMapper, CategoryServiceImpl categoryService) {
+    public StatusUpdateServiceImpl(UserMapper userMapper, CategoryServiceImpl categoryService, CommentAreaService commentAreaService) {
         this.userMapper = userMapper;
         this.categoryService = categoryService;
+        this.commentAreaService = commentAreaService;
     }
 
     @Override
     public List<StatusUpdatePreview> getLastFourStatusUpdates() {
         List<StatusUpdate> statusUpdates = baseMapper.selectLastFourStatusUpdates();
         return statusUpdates.stream()
+                .filter(statusUpdate -> statusUpdate.getIsPublished() && Objects.isNull(statusUpdate.getDeletedAt()))
                 .map(statusUpdate -> {
                     StatusUpdatePreview preview = new StatusUpdatePreview();
                     BeanUtils.copyProperties(statusUpdate, preview);
@@ -141,6 +146,9 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         if (!categoryService.isCategoryExist(Long.valueOf(statusUpdateDTO.getCategoryId()))) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        // 创建评论区
+        CommentArea commentArea = commentAreaService.createCommentArea("分享", statusUpdate.getTitle());
+        statusUpdate.setCommentId(commentArea.getId());
         statusUpdate.setSummary(statusUpdateDTO.getSummary() != null ? statusUpdateDTO.getSummary() : statusUpdateDTO.getContent().length() > 200 ? statusUpdateDTO.getContent().substring(0, 200) : statusUpdateDTO.getContent());
         statusUpdate.setCategoryId(Long.valueOf(statusUpdateDTO.getCategoryId()));
         this.save(statusUpdate);
@@ -155,6 +163,8 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         StatusUpdate statusUpdate = this.getById(id);
         if (Objects.equals(statusUpdate.getAuthorId(), principal.getUser().getId())) {
             statusUpdate.setDeletedAt(LocalDateTime.now());
+            // 删除评论区
+            commentAreaService.deleteCommentArea(statusUpdate.getCommentId());
             this.updateById(statusUpdate);
         } else {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);

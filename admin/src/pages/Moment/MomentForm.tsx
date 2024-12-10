@@ -175,6 +175,19 @@ const MomentForm: React.FC<MomentFormProps> = ({
           />
         </Form.Item>
 
+        {/* 短链接 */}
+        <Form.Item
+            label="短链接"
+            name="shortUrl"
+            rules={[{ required: true, message: '请输入短链接' }]}
+        >
+          <Input
+              value={momentInfo?.shortUrl}
+              placeholder="请输入短链接，例如 some-moment"
+              onChange={(e) => onValueChange('shortUrl', e.target.value)}
+          />
+        </Form.Item>
+
         {/* 内容（编辑器） */}
         <Form.Item
           label="内容"

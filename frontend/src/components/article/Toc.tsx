@@ -6,8 +6,12 @@ import {useTheme} from 'next-themes';
 import useIsMobile from '@/hooks/useIsMobile';
 import emitter from '@/utils/eventBus';
 import CommentModal from "@/components/comment/CommentModal";
-import {Button} from "@radix-ui/themes";
+import {Button, IconButton} from "@radix-ui/themes";
 import ReadingProgress from "@/components/article/ReadingProgress";
+import {ChatBubbleIcon, HeartIcon} from "@radix-ui/react-icons";
+import {ShareIcon} from "@heroicons/react/24/outline";
+import {clsx} from "clsx";
+import {article_font} from "@/app/fonts/font";
 
 export type TocItem = {
     level: number
@@ -17,7 +21,12 @@ export type TocItem = {
     children?: TocItem[]
 }
 
-export default function Toc({toc, commentId}: { toc: TocItem[], commentId: string }) {
+export default function Toc({toc, commentId, likes, comments}: {
+    toc: TocItem[],
+    commentId: string,
+    likes: number,
+    comments: number
+}) {
     const isMobile = useIsMobile();
     const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
     const {theme} = useTheme();
@@ -195,23 +204,35 @@ export default function Toc({toc, commentId}: { toc: TocItem[], commentId: strin
     if (isMobile) return null;
 
     return (
-        <nav
-            className="sticky top-24 h-[25em] overflow-y-auto w-56 pr-4 scroll-smooth text-sm"
-            ref={tocRef}
-        >
+        <nav>
             <ReadingProgress/>
-            <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={containerVariants}
+            <div
+                className="sticky h-[20em] overflow-y-auto w-56 pr-4 scroll-smooth text-sm overflow-clip"
+                ref={tocRef}
             >
-                <ul className="space-y-1 py-4 transition">
-                    {tocWithSelect.length > 0 && renderTocItems(tocWithSelect)}
-                </ul>
-                <Button onClick={() => setIsCommentOpen(true)}> 打开评论 </Button>
-                <CommentModal isOpen={isCommentOpen} onClose={() => setIsCommentOpen(false)}
-                              commentId={commentId}/>
-            </motion.div>
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    variants={containerVariants}
+                >
+                    <ul className="space-y-1 py-4 transition">
+                        {tocWithSelect.length > 0 && renderTocItems(tocWithSelect)}
+                    </ul>
+                </motion.div>
+            </div>
+            <div className={clsx(article_font.className, "ml-4 mt-4 flex gap-2")}>
+                <Button onClick={() => setIsCommentOpen(true)} variant={'soft'}>
+                    <HeartIcon/> <span className="text-sm ml-0.5">{likes}</span>
+                </Button>
+                <Button onClick={() => setIsCommentOpen(true)} variant={'soft'}>
+                    <ChatBubbleIcon/> <span className="text-sm ml-0.5">{comments}</span>
+                </Button>
+                <IconButton onClick={() => setIsCommentOpen(true)} variant={'soft'}>
+                    <ShareIcon height={12} width={12}/>
+                </IconButton>
+            </div>
+            <CommentModal isOpen={isCommentOpen} onClose={() => setIsCommentOpen(false)}
+                          commentId={commentId}/>
         </nav>
     );
 }

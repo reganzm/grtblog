@@ -69,7 +69,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         // 添加短链接
-        article.setShortUrl(ArticleParser.generateShortUrl(articleDTO.getTitle()));
+        if (articleDTO.getShortUrl() == null || articleDTO.getShortUrl().isEmpty()) {
+            article.setShortUrl(ArticleParser.generateShortUrl(articleDTO.getTitle()));
+        } else {
+            article.setShortUrl(articleDTO.getShortUrl());
+        }
         // 处理标签
         String[] tagNames = articleDTO.getTags().split(",");
         Long[] tagIds = Arrays.stream(tagNames)
@@ -83,7 +87,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setCommentId(commentArea.getId());
         this.baseMapper.insert(article);
         articleTagService.syncArticleTag(article.getId(), tagIds);
-        if (article.getIsPublished()){
+        if (article.getIsPublished()) {
             recommendationService.updateArticleStatus(article);
         }
         ArticleVO articleVO = new ArticleVO();
@@ -141,7 +145,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         }
         this.baseMapper.updateById(article);
         articleTagService.syncArticleTag(article.getId(), tagIds);
-        if (article.getIsPublished()){
+        if (article.getIsPublished()) {
             recommendationService.updateArticleStatus(article);
         } else {
             recommendationService.deleteArticleStatus(article.getId());

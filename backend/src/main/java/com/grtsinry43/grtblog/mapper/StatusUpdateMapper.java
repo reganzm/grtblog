@@ -54,6 +54,6 @@ public interface StatusUpdateMapper extends BaseMapper<StatusUpdate> {
     /**
      * 管理员获取所有说说
      */
-    @Select("SELECT * FROM status_update ORDER BY is_top DESC, created_at DESC LIMIT #{page}, #{pageSize}")
+    @Select("SELECT * FROM status_update WHERE deleted_at is null ORDER BY is_top DESC, created_at DESC LIMIT #{page}, #{pageSize}")
     public List<StatusUpdate> getStatusUpdateListAdmin(int page, int pageSize);
 }

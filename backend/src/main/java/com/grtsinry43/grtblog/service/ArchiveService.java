@@ -12,11 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.Year;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -67,12 +63,14 @@ public class ArchiveService {
 
     public List<Archive<Article>> getArticleArchives() {
         return articleService.list().stream()
+                .filter(article -> article.getIsPublished() && Objects.isNull(article.getDeletedAt()))
                 .map(this::convertToArticleArchive)
                 .collect(Collectors.toList());
     }
 
     public List<Archive<StatusUpdate>> getStatusUpdateArchives() {
         return statusUpdateService.list().stream()
+                .filter(statusUpdate -> statusUpdate.getIsPublished() && Objects.isNull(statusUpdate.getDeletedAt()))
                 .map(this::convertToStatusUpdateArchive)
                 .collect(Collectors.toList());
     }

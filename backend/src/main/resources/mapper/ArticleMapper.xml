@@ -18,6 +18,7 @@
     <select id="getArticleListByPageAdmin" resultType="com.grtsinry43.grtblog.entity.Article">
         select *
         from article
+        where deleted_at is null
         order by is_top desc, created_at desc
         limit #{start}, #{pageSize}
     </select>
