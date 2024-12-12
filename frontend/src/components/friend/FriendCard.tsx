@@ -8,11 +8,11 @@ import { article_font, noto_sans_sc } from '@/app/fonts/font';
 interface FriendCardProps {
   name: string;
   url: string;
-  avatar: string;
+  logo: string;
   description: string;
 }
 
-const FriendCard: React.FC<FriendCardProps> = ({ name, url, avatar, description }) => {
+const FriendCard: React.FC<FriendCardProps> = ({ name, url, logo, description }) => {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -57,7 +57,7 @@ const FriendCard: React.FC<FriendCardProps> = ({ name, url, avatar, description 
         />
         <Link href={url} target="_blank" rel="noopener noreferrer">
           <Flex align="center" gap="3" className={article_font.className} style={{ position: 'relative', zIndex: 2 }}>
-            <Avatar size="5" src={avatar} fallback={name[0]} radius="full" />
+            <Avatar size="5" src={logo} fallback={name[0]} radius="full" />
             <Box>
               <Text as="div" size="3" weight="bold" className={noto_sans_sc.className}>
                 {name}

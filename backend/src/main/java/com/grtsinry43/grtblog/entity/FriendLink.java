@@ -2,8 +2,11 @@ package com.grtsinry43.grtblog.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,11 +18,11 @@ import lombok.Setter;
  * @author grtsinry43
  * @since 2024-10-09
  */
-@Getter
-@Setter
+@Data
 @TableName("friend_link")
 public class FriendLink implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -48,6 +51,13 @@ public class FriendLink implements Serializable {
      */
     private String description;
 
+    private long userId;
+
+    /**
+     * 是否激活
+     */
+    private Boolean isActive;
+
     @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
     @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
@@ -56,5 +66,5 @@ public class FriendLink implements Serializable {
     /**
      * 友链删除时间（软删除），如果不为空则表示已删除
      */
-    private LocalDateTime deleted;
+    private LocalDateTime deletedAt;
 }

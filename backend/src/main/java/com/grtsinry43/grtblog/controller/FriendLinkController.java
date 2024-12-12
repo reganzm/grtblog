@@ -1,7 +1,14 @@
 package com.grtsinry43.grtblog.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
+import com.grtsinry43.grtblog.dto.ApiResponse;
+import com.grtsinry43.grtblog.dto.FriendLinkRequest;
+import com.grtsinry43.grtblog.service.impl.FriendLinkServiceImpl;
+import com.grtsinry43.grtblog.util.SecurityUtils;
+import com.grtsinry43.grtblog.vo.FriendLinkView;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>
@@ -11,8 +18,23 @@ import org.springframework.stereotype.Controller;
  * @author grtsinry43
  * @since 2024-10-09
  */
-@Controller
+@RestController
 @RequestMapping("/friendLink")
 public class FriendLinkController {
+    private final FriendLinkServiceImpl friendLinkService;
 
+    public FriendLinkController(FriendLinkServiceImpl friendLinkService) {
+        this.friendLinkService = friendLinkService;
+    }
+
+    @GetMapping
+    public ApiResponse<List<FriendLinkView>> getFriendLinkListApi() {
+        return ApiResponse.success(friendLinkService.getFriendLinkList());
+    }
+
+    @PostMapping("/apply")
+    public ApiResponse<FriendLinkView> addFriendLinkApi(@RequestBody FriendLinkRequest friendLinkRequest) {
+        Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
+        return ApiResponse.success(friendLinkService.addFriendLink(friendLinkRequest,userId));
+    }
 }

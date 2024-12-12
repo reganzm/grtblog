@@ -532,6 +532,8 @@ CREATE TABLE IF NOT EXISTS `friend_link`
     `url`         VARCHAR(255) NOT NULL COMMENT '友链URL',
     `logo`        VARCHAR(255) COMMENT '友链Logo',
     `description` TEXT COMMENT '友链描述',
+    `user_id`     BIGINT COMMENT '友链所有者ID',
+    `is_active`   TINYINT   DEFAULT 1 COMMENT '友链是否激活（0：未激活，1：已激活）',
     `created_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '友链创建时间',
     `updated_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '友链更新时间',
     `deleted_at`  TIMESTAMP COMMENT '友链删除时间（软删除），如果不为空则表示已删除',
