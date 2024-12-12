@@ -48,7 +48,7 @@ public interface StatusUpdateMapper extends BaseMapper<StatusUpdate> {
     /**
      * 获取所有短链接
      */
-    @Select("SELECT short_url FROM status_update WHERE is_published = 1 AND deleted_at is null")
+    @Select("SELECT CONCAT(DATE_FORMAT(created_at, '%Y/%m/%d/'), short_url) FROM status_update WHERE is_published = 1 AND deleted_at is null")
     public List<String> getAllShortLinks();
 
     /**

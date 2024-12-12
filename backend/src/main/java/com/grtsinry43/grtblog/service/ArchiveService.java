@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -76,12 +77,16 @@ public class ArchiveService {
     }
 
     private <T> Archive<T> convertToArchive(T entity, String title, String shortUrl, Long categoryId, LocalDateTime createdAt) {
-        Archive<T> Archive = new Archive<>();
-        Archive.setTitle(title);
-        Archive.setShortUrl(shortUrl);
-        Archive.setCategory(categoryService.getById(categoryId) != null ? categoryService.getById(categoryId).getName() : "未分类");
-        Archive.setCreatedAt(createdAt);
-        return Archive;
+        Archive<T> archive = new Archive<>();
+        archive.setTitle(title);
+        if (entity instanceof StatusUpdate) {
+            archive.setShortUrl(createdAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + shortUrl);
+        } else {
+            archive.setShortUrl(shortUrl);
+        }
+        archive.setCategory(categoryService.getById(categoryId) != null ? categoryService.getById(categoryId).getName() : "未分类");
+        archive.setCreatedAt(createdAt);
+        return archive;
     }
 
     private Archive<Article> convertToArticleArchive(Article article) {

@@ -55,7 +55,7 @@ const MomentCardItem = ({moment, index}: { moment: Moment, index: number }) => {
                                 {moment.images.slice(0, 2).map((image, imgIndex) => (
                                     <div key={imgIndex} className="relative aspect-video">
                                         <Image
-                                            src={image}
+                                            src={image.startsWith('http') ? image : `${process.env.NEXT_PUBLIC_BASE_URL}/${image.slice(1)}`}
                                             alt={`Image ${imgIndex + 1} for ${moment.title}`}
                                             layout="fill"
                                             objectFit="cover"

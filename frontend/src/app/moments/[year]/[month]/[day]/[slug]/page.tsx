@@ -3,7 +3,7 @@ import MomentReadingPage from "@/components/moment/MomentReading";
 import CommentArea from "@/components/comment/CommentArea";
 
 // 定义 API 请求的 URL
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 interface Params {
     slug: string;
@@ -11,14 +11,20 @@ interface Params {
 
 // 生成静态参数
 export async function generateStaticParams() {
-    // 从 Spring Boot 后端获取所有 moment 的 slug
+    // 从 Spring Boot 后端获取所有 moment 的详细信息，包括 year, month, day 和 slug
     const res = await fetch(API_URL + '/statusUpdate/shortLinks');
     const moments = await res.json();
 
-    // 返回所有 moment 的 slug，以便 Next.js 生成静态页面
-    return moments.data.map((moment: string) => ({
-        slug: moment,
-    }));
+    // 返回所有 moment 的详细信息，以便 Next.js 生成静态页面
+    return moments.data.map((moment: string) => {
+        const [year, month, day, slug] = moment.split('/');
+        return {
+            year,
+            month,
+            day,
+            slug,
+        };
+    });
 }
 
 interface MomentPageProps {
@@ -51,7 +57,7 @@ export default async function Page({params}: MomentPageProps) {
         next: {revalidate: 60},
     });
     const moment = await res.json();
-    
+
     if (moment.code !== 0) {
         notFound();
     }

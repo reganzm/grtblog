@@ -19,6 +19,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,6 +55,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                     preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
                     preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
                     preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
+                    preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
                     return preview;
                 })
                 .collect(Collectors.toList());
@@ -67,6 +69,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
+        preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
         return preview;
     }
 
@@ -81,6 +84,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                     preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
                     preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
                     preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
+                    preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
                     preview.setSummary(statusUpdate.getSummary() != null ? statusUpdate.getSummary() : statusUpdate.getContent().length() > 200 ? statusUpdate.getContent().substring(0, 200) : statusUpdate.getContent());
                     return preview;
                 })
@@ -97,6 +101,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                     BeanUtils.copyProperties(statusUpdate, preview);
                     preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
                     preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
+                    preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
                     preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
                     preview.setSummary(statusUpdate.getSummary() != null ? statusUpdate.getSummary() : statusUpdate.getContent().length() > 200 ? statusUpdate.getContent().substring(0, 200) : statusUpdate.getContent());
                     return preview;

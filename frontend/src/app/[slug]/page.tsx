@@ -7,7 +7,7 @@ import {noto_sans_sc_bold, noto_serif_sc_bold} from "@/app/fonts/font";
 import {Metadata} from "next";
 
 // 定义 API 请求的 URL
-const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
+const API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 interface Params {
     slug: string;
