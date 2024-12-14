@@ -9,9 +9,9 @@ import {clsx} from 'clsx';
 import {varela_round, noto_sans_sc} from '@/app/fonts/font';
 import {MailIcon} from 'lucide-react';
 import {GitHubLogoIcon} from '@radix-ui/react-icons';
-import {FaApple, FaGoogle} from 'react-icons/fa';
-import {IoLogoWechat} from 'react-icons/io5';
-import {BiLogoMicrosoft} from 'react-icons/bi';
+import {FaGoogle} from 'react-icons/fa';
+// import {IoLogoWechat} from 'react-icons/io5';
+// import {BiLogoMicrosoft} from 'react-icons/bi';
 import {userLogin, userRegister} from '@/api/user';
 import {UserInfo} from '@/redux/userSlice';
 import {useAppDispatch} from '@/redux/hooks';
@@ -47,7 +47,7 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                 setError('登录失败，请检查用户名密码或验证码');
                 setCaptchaRandom(Math.random());
             } else {
-                
+
                 dispatch({type: 'user/initUserInfo', payload: res as UserInfo});
                 dispatch({type: 'user/changeLoginStatus', payload: true});
                 onClose();
@@ -70,7 +70,7 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                 setError('注册失败，可能是邮箱已被注册或验证码错误');
                 setCaptchaRandom(Math.random());
             } else {
-                
+
                 setIsLoginForm(true);
                 setError('注册成功，请登录');
             }
@@ -320,33 +320,33 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                         <div>
                                             <Tooltip content="使用 GitHub 登录">
                                                 <IconButton radius="full" className={styles.icon} onClick={() => {
-                                                    location.href = `https://next.blog.grtsinry43.com/api/v1/oauth2/authorization/github?redirect_uri= ${encodeURIComponent(location.href)}`;
+                                                    location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/oauth2/authorization/github?redirect_uri= ${encodeURIComponent(location.href)}`;
                                                 }}>
                                                     <GitHubLogoIcon/>
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip content="使用 Google 登录">
                                                 <IconButton radius="full" className={styles.icon} onClick={() => {
-                                                    location.href = `https://next.blog.grtsinry43.com/api/v1/oauth2/authorization/google?redirect_uri=${encodeURIComponent(location.href)}`;
+                                                    location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/oauth2/authorization/google?redirect_uri=${encodeURIComponent(location.href)}`;
                                                 }}>
                                                     <FaGoogle/>
                                                 </IconButton>
                                             </Tooltip>
-                                            <Tooltip content={'使用 Microsoft 登录'}>
-                                                <IconButton radius="full" className={styles.icon}>
-                                                    <BiLogoMicrosoft/>
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip content={'使用 Apple 登录'}>
-                                                <IconButton radius="full" className={styles.icon}>
-                                                    <FaApple/>
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip content={'使用微信登录'}>
-                                                <IconButton radius="full" className={styles.icon}>
-                                                    <IoLogoWechat/>
-                                                </IconButton>
-                                            </Tooltip>
+                                            {/*<Tooltip content={'使用 Microsoft 登录'}>*/}
+                                            {/*    <IconButton radius="full" className={styles.icon}>*/}
+                                            {/*        <BiLogoMicrosoft/>*/}
+                                            {/*    </IconButton>*/}
+                                            {/*</Tooltip>*/}
+                                            {/*<Tooltip content={'使用 Apple 登录'}>*/}
+                                            {/*    <IconButton radius="full" className={styles.icon}>*/}
+                                            {/*        <FaApple/>*/}
+                                            {/*    </IconButton>*/}
+                                            {/*</Tooltip>*/}
+                                            {/*<Tooltip content={'使用微信登录'}>*/}
+                                            {/*    <IconButton radius="full" className={styles.icon}>*/}
+                                            {/*        <IoLogoWechat/>*/}
+                                            {/*    </IconButton>*/}
+                                            {/*</Tooltip>*/}
                                         </div>
                                     </>
                                 )}

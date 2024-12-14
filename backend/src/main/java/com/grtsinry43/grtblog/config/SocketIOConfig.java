@@ -16,7 +16,7 @@ public class SocketIOConfig {
     public SocketIOServer socketIOServer() {
         com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
         config.setHostname("localhost");  // 设置服务器主机名
-        config.setPort(9092);              // 设置服务器端口
+        config.setPort(9091);              // 设置服务器端口
 
         // 启用 SSL(如果需要)：
         // config.setKeyStorePassword("password");

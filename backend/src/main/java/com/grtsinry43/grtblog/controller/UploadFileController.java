@@ -34,6 +34,7 @@ public class UploadFileController {
     private static final ConcurrentHashMap<String, UserRequestInfo> userRequestMap = new ConcurrentHashMap<>();
     private static final ConcurrentHashMap<String, String> fileHashMap = new ConcurrentHashMap<>();
 
+    @PreAuthorize("hasAuthority('file:upload')")
     @PostMapping
     public ApiResponse<String> handleFileUpload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
         if (file.isEmpty()) {

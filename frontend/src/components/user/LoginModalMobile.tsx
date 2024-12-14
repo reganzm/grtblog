@@ -48,7 +48,7 @@ const LoginModalMobile = ({isOpen, onClose}: { isOpen: boolean; onClose: () => v
                 setError('登录失败，请检查用户名密码或验证码');
                 setCaptchaRandom(Math.random());
             } else {
-                
+
                 dispatch({type: 'user/initUserInfo', payload: res as UserInfo});
                 dispatch({type: 'user/changeLoginStatus', payload: true});
                 onClose();
@@ -70,7 +70,7 @@ const LoginModalMobile = ({isOpen, onClose}: { isOpen: boolean; onClose: () => v
                 setError('注册失败，可能是邮箱已被注册或验证码错误');
                 setCaptchaRandom(Math.random());
             } else {
-                
+
                 setIsLoginForm(true);
                 setError('注册成功，请登录');
             }
@@ -370,7 +370,7 @@ const LoginModalMobile = ({isOpen, onClose}: { isOpen: boolean; onClose: () => v
                                                         <Tooltip content="使用 GitHub 登录">
                                                             <IconButton radius="full" className={styles.icon}
                                                                         onClick={() => {
-                                                                            location.href = `https://next.blog.grtsinry43.com/api/v1/oauth2/authorization/github?redirect_uri= ${encodeURIComponent(location.href)}`;
+                                                                            location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/oauth2/authorization/github?redirect_uri= ${encodeURIComponent(location.href)}`;
                                                                         }}>
                                                                 <GitHubLogoIcon/>
                                                             </IconButton>
@@ -378,7 +378,7 @@ const LoginModalMobile = ({isOpen, onClose}: { isOpen: boolean; onClose: () => v
                                                         <Tooltip content="使用 Google 登录">
                                                             <IconButton radius="full" className={styles.icon}
                                                                         onClick={() => {
-                                                                            location.href = `https://next.blog.grtsinry43.com/api/v1/oauth2/authorization/google?redirect_uri=${encodeURIComponent(location.href)}`;
+                                                                            location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/oauth2/authorization/google?redirect_uri=${encodeURIComponent(location.href)}`;
                                                                         }}>
                                                                 <FaGoogle/>
                                                             </IconButton>

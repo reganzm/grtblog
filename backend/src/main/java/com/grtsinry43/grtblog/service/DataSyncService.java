@@ -47,16 +47,19 @@ public class DataSyncService {
     public void syncAllRecent() {
         List<Article> articles = articleMapper.selectList(new QueryWrapper<Article>().lambda().ge(Article::getUpdatedAt, LocalDateTime.now().minusMinutes(5)));
         List<ArticleDocument> articleDocuments = articles.stream()
+                .filter(article -> article.getIsPublished() && article.getDeletedAt() == null)
                 .map(article -> new ArticleDocument(article.getId(), article.getTitle(), article.getSummary(), article.getContent(), article.getShortUrl()))
                 .toList();
         articleRepository.saveAll(articleDocuments);
         List<StatusUpdate> statusUpdates = statusUpdateMapper.selectList(new QueryWrapper<StatusUpdate>().lambda().ge(StatusUpdate::getUpdatedAt, LocalDateTime.now().minusMinutes(5)));
         List<MomentDocument> statusUpdateDocuments = statusUpdates.stream()
+                .filter(statusUpdate -> statusUpdate.getIsPublished() && statusUpdate.getDeletedAt() == null)
                 .map(statusUpdate -> new MomentDocument(statusUpdate.getId(), statusUpdate.getTitle(), statusUpdate.getSummary(), statusUpdate.getContent(), statusUpdate.getShortUrl()))
                 .toList();
         momentRepository.saveAll(statusUpdateDocuments);
         List<Page> pages = pageMapper.selectList(new QueryWrapper<Page>().lambda().ge(Page::getUpdatedAt, LocalDateTime.now().minusMinutes(5)));
         List<PageDocument> pageDocuments = pages.stream()
+                .filter(page -> page.getDeletedAt() == null)
                 .map(page -> new PageDocument(page.getId(), page.getTitle(), page.getDescription(), page.getContent(), page.getRefPath()))
                 .toList();
         pageRepository.saveAll(pageDocuments);

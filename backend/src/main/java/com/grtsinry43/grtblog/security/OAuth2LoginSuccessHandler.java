@@ -27,7 +27,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 如果没有指定 redirect_uri，设置默认跳转地址
         if (redirectUri == null || redirectUri.isEmpty()) {
-            redirectUri = "https://next.blog.grtsinry43.com/";
+            redirectUri = "https://blog.grtsinry43.com/";
         }
 
         // 获取 principal 对象

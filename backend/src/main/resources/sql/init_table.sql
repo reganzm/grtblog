@@ -91,7 +91,9 @@ VALUES (1, 'article:add'),
        (41, 'page:add'),
        (42, 'page:edit'),
        (43, 'page:delete'),
-       (44, 'page:view');
+       (44, 'page:view'),
+       (45, 'file:upload'),
+       (46, 'file:delete');
 
 
 -- 创建用户角色关联表
@@ -131,13 +133,13 @@ FROM `permission`
 WHERE `permission_name` NOT IN
       ('article:delete', 'category:delete', 'comment:delete', 'user:delete', 'role:delete', 'permission:delete',
        'page:delete', 'config:delete', 'friend_link:delete', 'share:delete', 'permission:add', 'permission:edit',
-       'permission:delete');
+       'permission:delete', 'file:delete');
 
 -- 合作作者拥有文章管理权限
 INSERT INTO `role_permission` (`role_id`, `permission_id`)
 SELECT 3, id
 FROM `permission`
-WHERE `permission_name` LIKE 'article:%';
+WHERE `permission_name` LIKE 'article:%' OR `permission_name` = 'file:upload';
 
 -- 普通用户拥有文章评论等查看权限
 INSERT INTO `role_permission` (`role_id`, `permission_id`)

@@ -21,10 +21,10 @@ export default function ImageView({ src, alt }: { src: string; alt: string }) {
     if (!img || !isMounted) return; // 只有在挂载时才执行
 
     const handleLoad = () => {
-      
+
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
-      
+
       if (!ctx) return;
 
       canvas.width = img.naturalWidth;
@@ -66,7 +66,7 @@ export default function ImageView({ src, alt }: { src: string; alt: string }) {
         margin: '2em auto',
         objectFit: 'cover',
         borderRadius: '10px',
-        filter: `brightness(1.2) drop-shadow(0 0 10px ${glowColor})`,
+        filter: `drop-shadow(0 0 10px ${glowColor})`,
         transition: 'filter 0.3s ease-in-out',
       }}
       priority

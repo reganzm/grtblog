@@ -80,12 +80,13 @@ public class UserController {
         if (sessionCaptcha == null || !sessionCaptcha.equals(request.getParameter("captcha"))) {
             return ApiResponse.error(401, "验证码错误");
         }
-        if (userService.getUserByEmail(user.getEmail()) != null) {
+        if (userService.getUserByEmail(user.getUserEmail()) != null) {
             return ApiResponse.error(400, "邮箱已被注册");
         }
         User user1 = new User();
         BeanUtils.copyProperties(user, user1);
         user1.setNickname(user.getNickname());
+        user1.setEmail(user.getUserEmail());
         // 这里要加密密码！！！！！！！！
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         user1.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));

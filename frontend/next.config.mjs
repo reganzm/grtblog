@@ -32,7 +32,7 @@ const nextConfig = {
     //   ];
     // },
     images: {
-        domains: ['dogeoss.grtsinry43.com', 'www.w3school.com.cn', 'blogoss.grtsinry43.com','127.0.0.1'],
+        domains: ['dogeoss.grtsinry43.com', 'www.w3school.com.cn', 'blogoss.grtsinry43.com', '127.0.0.1', 'next.blog.grtsinry43.com', 'blog.grtsinry43.com'],
     },
     // 没办法，先暂时抑制警告了
     sassOptions: {
