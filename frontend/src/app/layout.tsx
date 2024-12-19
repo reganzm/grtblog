@@ -13,6 +13,7 @@ import {getAllNavItem} from '@/api/navbar';
 import {getWebsiteInfo} from "@/api/websiteInfo";
 import {WebsiteInfo} from "@/types";
 import {WebsiteInfoProvider} from "@/app/website-info-provider";
+import {OpenPanelComponent} from "@openpanel/nextjs";
 
 const websiteInfo: WebsiteInfo = await getWebsiteInfo({next: {revalidate: 60}});
 
@@ -31,6 +32,14 @@ export default async function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
+                <OpenPanelComponent
+                    clientId="c03c087d-b51c-4263-9659-ab9277b2f09c"
+                    trackScreenViews={true}
+                    // trackAttributes={true}
+                    // trackOutgoingLinks={true}
+                    // If you have a user id, you can pass it here to identify the user
+                    // profileId={'123'}
+                />
                 <StoreProvider>
                     <ThemeProvider
                         attribute="class"
