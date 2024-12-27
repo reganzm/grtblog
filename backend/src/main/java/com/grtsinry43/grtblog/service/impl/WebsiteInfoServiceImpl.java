@@ -1,6 +1,5 @@
 package com.grtsinry43.grtblog.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.grtsinry43.grtblog.entity.WebsiteInfo;
 import com.grtsinry43.grtblog.mapper.WebsiteInfoMapper;
 import com.grtsinry43.grtblog.service.IWebsiteInfoService;
@@ -27,6 +26,12 @@ public class WebsiteInfoServiceImpl extends ServiceImpl<WebsiteInfoMapper, Websi
     @Autowired
     public WebsiteInfoServiceImpl(WebsiteInfoMapper websiteInfoMapper) {
         this.websiteInfoMapper = websiteInfoMapper;
+    }
+
+    @Override
+    public String getWebsiteInfo(String key) {
+        WebsiteInfo websiteInfo = websiteInfoMapper.selectOneByKey(key);
+        return websiteInfo == null ? null : websiteInfo.getValue();
     }
 
     @Override

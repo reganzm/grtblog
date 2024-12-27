@@ -15,6 +15,8 @@ import java.util.Map;
  */
 public interface IWebsiteInfoService extends IService<WebsiteInfo> {
 
+    String getWebsiteInfo(String key);
+
     Map<String, String> getAllWebsiteInfo();
 
     boolean updateWebsiteInfo(String key, String value);

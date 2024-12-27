@@ -31,6 +31,26 @@ const nextConfig = {
     //     },
     //   ];
     // },
+    async rewrites() {
+        return [
+            {
+                source: '/rss',
+                destination: '/feed.xml',
+            },
+            {
+                source: '/rss.xml',
+                destination: '/feed.xml',
+            },
+            {
+                source: '/feed',
+                destination: '/feed.xml',
+            },
+            {
+                source: '/atom.xml',
+                destination: '/feed.xml',
+            }
+        ]
+    },
     images: {
         domains: ['dogeoss.grtsinry43.com', 'www.w3school.com.cn', 'blogoss.grtsinry43.com', '127.0.0.1', 'next.blog.grtsinry43.com', 'blog.grtsinry43.com'],
     },
