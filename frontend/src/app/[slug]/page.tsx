@@ -14,7 +14,9 @@ interface Params {
 }
 
 export async function generateStaticParams() {
-    const res = await fetch(API_URL + '/page/shortLinks');
+    const res = await fetch(API_URL + '/page/shortLinks',{
+        next: {revalidate: 60},
+    });
     const pageUrls = await res.json();
 
     // 返回所有页面的 slug，以便 Next.js 生成静态页面

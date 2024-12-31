@@ -1,6 +1,7 @@
 package com.grtsinry43.grtblog.vo;
 
 import com.grtsinry43.grtblog.entity.Article;
+import com.grtsinry43.grtblog.entity.Page;
 import com.grtsinry43.grtblog.entity.StatusUpdate;
 import com.grtsinry43.grtblog.util.MarkdownConverter;
 import lombok.Data;
@@ -25,7 +26,7 @@ public class FeedPostItem {
     private LocalDateTime publishedAt;
     private String cover;
 
-    public static List<FeedPostItem> buildFeed(List<Article> articles, List<StatusUpdate> statusUpdates, String websiteUrl) {
+    public static List<FeedPostItem> buildFeed(List<Article> articles, List<StatusUpdate> statusUpdates, List<Page> pages, String websiteUrl) {
         List<FeedPostItem> feedPostItems = new ArrayList<>();
         for (Article article : articles) {
             FeedPostItem feedPostItem = new FeedPostItem();
@@ -45,6 +46,16 @@ public class FeedPostItem {
             feedPostItem.setUrl(websiteUrl + "/memonts/" + statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "/" + statusUpdate.getShortUrl());
             feedPostItem.setPublishedAt(statusUpdate.getCreatedAt());
             feedPostItem.setCover(statusUpdate.getImg() == null ? null : statusUpdate.getImg().split(",")[0].startsWith("http") ? statusUpdate.getImg().split(",")[0] : websiteUrl + statusUpdate.getImg().split(",")[0]);
+            feedPostItems.add(feedPostItem);
+        }
+        for (Page page : pages) {
+            FeedPostItem feedPostItem = new FeedPostItem();
+            feedPostItem.setTitle(page.getTitle());
+            feedPostItem.setId(page.getId().toString());
+            feedPostItem.setContent(MarkdownConverter.convertMarkdownToHtml(page.getContent()));
+            feedPostItem.setUrl(websiteUrl+ "/" + page.getRefPath());
+            feedPostItem.setPublishedAt(page.getCreatedAt());
+            feedPostItem.setCover(null);
             feedPostItems.add(feedPostItem);
         }
         feedPostItems.sort(Comparator.comparing(FeedPostItem::getPublishedAt).reversed());

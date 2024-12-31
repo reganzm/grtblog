@@ -14,7 +14,9 @@ interface Params {
 
 export async function generateStaticParams() {
     // 向 Spring Boot 后端获取所有文章的 slug
-    const res = await fetch(API_URL + '/article/shortLinks');
+    const res = await fetch(API_URL + '/article/shortLinks',{
+        next: {revalidate: 60},
+    });
 
     const posts = await res.json(); // 假设返回的数据是一个包含文章列表的 JSON 数组
 

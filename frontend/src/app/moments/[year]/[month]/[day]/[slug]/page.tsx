@@ -12,7 +12,9 @@ interface Params {
 // 生成静态参数
 export async function generateStaticParams() {
     // 从 Spring Boot 后端获取所有 moment 的详细信息，包括 year, month, day 和 slug
-    const res = await fetch(API_URL + '/statusUpdate/shortLinks');
+    const res = await fetch(API_URL + '/statusUpdate/shortLinks',{
+        next: {revalidate: 60},
+    });
     const moments = await res.json();
 
     // 返回所有 moment 的详细信息，以便 Next.js 生成静态页面
