@@ -40,7 +40,7 @@ public class FeedController {
     public ApiResponse<List<FeedPostItem>> getFeed() {
         List<Article> articles = articleService.list();
         List<StatusUpdate> statusUpdates = statusUpdateService.list();
-        List<Page> pages = pageService.list();
+        List<Page> pages = pageService.list().stream().filter(Page::getCanDelete).toList();
         return ApiResponse.success(FeedPostItem.buildFeed(articles, statusUpdates, pages, websiteInfoService.getWebsiteInfo("WEBSITE_URL")));
     }
 }

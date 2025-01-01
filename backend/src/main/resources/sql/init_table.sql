@@ -541,3 +541,13 @@ CREATE TABLE IF NOT EXISTS `friend_link`
     `deleted_at`  TIMESTAMP COMMENT '友链删除时间（软删除），如果不为空则表示已删除',
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE IF NOT EXISTS `global_notification`
+(
+    `id`          BIGINT      NOT NULL AUTO_INCREMENT COMMENT '通知ID，会由雪花算法生成',
+    `content`     TEXT        NOT NULL COMMENT '通知内容',
+    `publish_at`  TIMESTAMP   NOT NULL COMMENT '通知发布时间',
+    `expire_at`   TIMESTAMP   NOT NULL COMMENT '通知过期时间',
+    `allow_close` TINYINT   DEFAULT 1 COMMENT '是否允许关闭（0：否，1：是）',
+    PRIMARY KEY (`id`)
+);

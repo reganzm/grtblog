@@ -159,6 +159,14 @@
             <version>0.18.2</version>
         </dependency>
 
+        <!--邮箱服务-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
+
 
 
     </dependencies>
