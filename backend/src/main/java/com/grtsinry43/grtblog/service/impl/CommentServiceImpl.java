@@ -4,19 +4,22 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.CommentLoginForm;
 import com.grtsinry43.grtblog.dto.CommentNotLoginForm;
-import com.grtsinry43.grtblog.entity.Article;
-import com.grtsinry43.grtblog.entity.Comment;
-import com.grtsinry43.grtblog.entity.User;
+import com.grtsinry43.grtblog.entity.*;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.CommentMapper;
 import com.grtsinry43.grtblog.service.CommentAreaService;
+import com.grtsinry43.grtblog.service.EmailService;
 import com.grtsinry43.grtblog.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.service.PageService;
+import com.grtsinry43.grtblog.util.MarkdownConverter;
 import com.grtsinry43.grtblog.util.UserAgentUtil;
 import com.grtsinry43.grtblog.vo.CommentVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,11 +38,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private final ArticleServiceImpl articleService;
     private final CommentAreaService commentAreaService;
     private final UserServiceImpl userService;
+    private final EmailService emailService;
+    private final StatusUpdateServiceImpl statusUpdateService;
+    private final PageService pageService;
+    private final WebsiteInfoServiceImpl websiteInfoServiceImpl;
 
-    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService, UserServiceImpl userService) {
+    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService, UserServiceImpl userService, EmailService emailService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoServiceImpl) {
         this.articleService = articleService;
         this.commentAreaService = commentAreaService;
         this.userService = userService;
+        this.emailService = emailService;
+        this.statusUpdateService = statusUpdateService;
+        this.pageService = pageService;
+        this.websiteInfoServiceImpl = websiteInfoServiceImpl;
     }
 
     /**
@@ -107,6 +118,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setPlatform(os);
         comment.setBrowser(browser);
         save(comment);
+        // 这里处理一下评论内容，如果有父评论，就发送邮件通知
+        commentEmailNotificationHandle(comment);
         CommentVO vo = new CommentVO();
         BeanUtils.copyProperties(comment, vo);
         return vo;
@@ -134,6 +147,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setPlatform(os);
         comment.setBrowser(browser);
         save(comment);
+        // 这里处理一下评论内容，如果有父评论，就发送邮件通知
+        commentEmailNotificationHandle(comment);
         CommentVO vo = new CommentVO();
         BeanUtils.copyProperties(comment, vo);
         return vo;
@@ -166,5 +181,53 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             return Collections.emptyList();
         }
         return commentTree.subList(fromIndex, toIndex);
+    }
+
+    public void commentEmailNotificationHandle(Comment comment) {
+        // 这里处理一下评论内容，如果有父评论，就发送邮件通知
+        if (comment.getParentId() != null) {
+            Comment parentComment = getById(comment.getParentId());
+            if (parentComment != null) {
+                String content = comment.getContent();
+                // 这里将 md 渲染为 html
+                String contentHtml = MarkdownConverter.convertMarkdownToHtml(content);
+                // 根据评论区 id 获取原内容，可能是文章、动态、页面
+                String title = "";
+                String type = "";
+                String url = websiteInfoServiceImpl.getWebsiteInfo("WEBSITE_URL");
+                if (articleService.lambdaQuery().eq(Article::getCommentId, parentComment.getAreaId()).count() > 0) {
+                    Article article = articleService.lambdaQuery().eq(Article::getCommentId, parentComment.getAreaId()).one();
+                    title = article.getTitle();
+                    type = "文章";
+                    url += "/posts/" + article.getShortUrl();
+                } else if (statusUpdateService.lambdaQuery().eq(StatusUpdate::getCommentId, parentComment.getAreaId()).count() > 0) {
+                    StatusUpdate statusUpdate = statusUpdateService.lambdaQuery().eq(StatusUpdate::getCommentId, parentComment.getAreaId()).one();
+                    title = statusUpdate.getTitle();
+                    type = "动态";
+                    url += "/moments/" + statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "/" + statusUpdate.getShortUrl();
+                } else if (pageService.lambdaQuery().eq(Page::getCommentId, parentComment.getAreaId()).count() > 0) {
+                    Page page = pageService.lambdaQuery().eq(Page::getCommentId, parentComment.getAreaId()).one();
+                    title = page.getTitle();
+                    type = "页面";
+                    url += "/" + page.getRefPath();
+                }
+                HashMap<String, String> info = new HashMap<>();
+                info.put("name", parentComment.getNickName());
+                info.put("type", type);
+                info.put("title", title);
+                info.put("avatarUrl", "");
+                info.put("replyName", comment.getNickName());
+                info.put("replyTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                info.put("replyContent", contentHtml);
+                info.put("commentContent", MarkdownConverter.convertMarkdownToHtml(parentComment.getContent()));
+                info.put("url", url);
+                try {
+                    emailService.sendEmail(parentComment.getAuthorId() != null ? userService.getById(parentComment.getAuthorId()).getEmail() : parentComment.getEmail()
+                            , "[" + websiteInfoServiceImpl.getWebsiteInfo("HOME_TITLE") + "] 有人回复了您的评论", info);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

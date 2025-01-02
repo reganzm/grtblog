@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Comment Reply Notification</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-image: url("https://dogeoss.grtsinry43.com/background/045.webp");
+                background-size: cover;
+                margin: 0;
+                padding: 0;
+            }
+
+            .bg-container {
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(5px);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .main-container {
+                width: 700px;
+                min-height: 400px;
+                margin: 20px;
+                padding: 20px 40px;
+                border: 1px solid #ddd;
+                border-radius: 10px;
+                background-color: rgba(249, 249, 249, 0.60);
+                backdrop-filter: blur(10px);
+            }
+
+            @media (max-width: 800px) {
+                .main-container {
+                    max-width: 800px;
+                    padding: 20px;
+                }
+            }
+
+            .header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .header img {
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+            }
+
+            .header h1 {
+                font-size: 24px;
+                margin: 10px 0;
+            }
+
+            .content {
+                margin-bottom: 20px;
+            }
+
+            .footer {
+                text-align: center;
+                font-size: 12px;
+                color: #777;
+            }
+
+            .user-info {
+                display: flex;
+                align-items: center;
+                font-size: small;
+            }
+
+            .user-avatar {
+                height: 30px;
+                width: 30px;
+                border-radius: 50%;
+            }
+
+            .action-container {
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .more-button {
+                padding: 5px 10px;
+                border: 1px solid #007bff;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: inherit;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="bg-container">
+            <div class="main-container">
+                <div class="header">
+                    <img src="https://dogeoss.grtsinry43.com/img/author.jpeg" alt="Logo">
+                    <h1>Grtsinry43's Blog | 邮件通知 </h1>
+                </div>
+                <div class="content">
+                    <h2 style="font-size: medium"> 亲爱的朋友 <span th:text="${name}"></span>, 您在
+                        <span th:text="${type}"></span>「
+                        <span th:text="${title}"></span>」的评论收到了新的回复哇 </h2>
+                    <div class="user-info">
+                        <img class="user-avatar" th:src="${avatarUrl}" alt="Logo">
+                        <div style="margin-left: 10px"><span th:text="${replyName}"></span> 在 <span
+                                th:text="${replyTime}"></span> 回复了您的评论
+                        </div>
+                    </div>
+                    <div style="margin-top: 10px">
+                        <span th:utext="${replyContent}"></span>
+                    </div>
+                    <div>
+                        <span> 您的原评论内容：</span>
+                        <div style="margin-top: 10px">
+                            <span th:utext="${commentContent}"></span>
+                        </div>
+                    </div>
+                    <div class="action-container">
+                        <a class="more-button" th:href="${url}">
+                            点击查看详情
+                        </a>
+                    </div>
+                </div>
+                <div class="footer">
+                    <p>Powered by Grtblog. 此邮件由系统自动发出，请勿回复。</p>
+                    <p>Copyright &copy; 2022-2025 Grtsinry43's Blog. All rights reserved.</p>
+                    <p><a href="https://blog.grtsinry43.com"> 前往主站 </a></p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

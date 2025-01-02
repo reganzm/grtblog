@@ -166,7 +166,11 @@
             <version>3.4.1</version>
         </dependency>
 
-
+        <!--模板支持-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 
 
     </dependencies>
