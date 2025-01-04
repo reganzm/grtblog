@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
 import com.grtsinry43.grtblog.entity.StatusUpdate;
@@ -53,11 +54,11 @@ public interface IStatusUpdateService extends IService<StatusUpdate> {
 
     List<StatusUpdateVO> getStatusUpdateListAdmin(int page, int pageSize);
 
-    StatusUpdateVO addStatusUpdate(StatusUpdateDTO statusUpdateDTO, Long userId);
+    StatusUpdateVO addStatusUpdate(StatusUpdateDTO statusUpdateDTO, Long userId) throws JsonProcessingException;
 
     void deleteStatusUpdate(Long id, LoginUserDetails principal);
 
-    StatusUpdateVO updateStatusUpdate(Long id, StatusUpdateDTO statusUpdateDTO, Long userId);
+    StatusUpdateVO updateStatusUpdate(Long id, StatusUpdateDTO statusUpdateDTO, Long userId) throws JsonProcessingException;
 
     StatusUpdateVO toggleStatusUpdate(Long id, PostStatusToggle postStatusToggle);
 

@@ -274,6 +274,7 @@ CREATE TABLE IF NOT EXISTS `status_update`
     `summary`      TEXT         NOT NULL COMMENT '分享摘要',
     `content`      TEXT         NOT NULL COMMENT '分享内容，markdown格式，交由前端解析',
     `author_id`    BIGINT       NOT NULL COMMENT '作者ID，逻辑限制',
+    `toc`          JSON         NOT NULL COMMENT '文章目录，由后端根据文章内容生成',
     `img`          TEXT COMMENT '分享图片，多个图片用逗号分隔',
     `category_id`  BIGINT COMMENT '分类ID',
     `views`        INT       DEFAULT 0 COMMENT '分享浏览量',

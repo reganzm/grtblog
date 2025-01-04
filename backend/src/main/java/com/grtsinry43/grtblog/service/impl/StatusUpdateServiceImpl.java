@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.PostStatusToggle;
 import com.grtsinry43.grtblog.dto.StatusUpdateDTO;
@@ -12,6 +13,7 @@ import com.grtsinry43.grtblog.security.LoginUserDetails;
 import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.IStatusUpdateService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.util.ArticleParser;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
 import com.grtsinry43.grtblog.vo.StatusUpdateVO;
 import com.grtsinry43.grtblog.vo.StatusUpdateView;
@@ -55,6 +57,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                     preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
                     preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
                     preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
+                    preview.setCommentId(statusUpdate.getCommentId() != null ? statusUpdate.getCommentId().toString() : null);
                     preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
                     return preview;
                 })
@@ -68,6 +71,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         BeanUtils.copyProperties(statusUpdate, preview);
         preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
+        preview.setCommentId(statusUpdate.getCommentId() != null ? statusUpdate.getCommentId().toString() : null);
         preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
         preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
         return preview;
@@ -83,6 +87,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                     BeanUtils.copyProperties(statusUpdate, preview);
                     preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
                     preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
+                    preview.setCommentId(statusUpdate.getCommentId() != null ? statusUpdate.getCommentId().toString() : null);
                     preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
                     preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
                     preview.setSummary(statusUpdate.getSummary() != null ? statusUpdate.getSummary() : statusUpdate.getContent().length() > 200 ? statusUpdate.getContent().substring(0, 200) : statusUpdate.getContent());
@@ -100,6 +105,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                     StatusUpdatePreview preview = new StatusUpdatePreview();
                     BeanUtils.copyProperties(statusUpdate, preview);
                     preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
+                    preview.setCommentId(statusUpdate.getCommentId() != null ? statusUpdate.getCommentId().toString() : null);
                     preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
                     preview.setShortUrl(statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd/")) + statusUpdate.getShortUrl());
                     preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
@@ -117,6 +123,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());
+        preview.setCommentId(statusUpdate.getCommentId() != null ? statusUpdate.getCommentId().toString() : null);
         preview.setCommentId(statusUpdate.getCommentId() != null ? statusUpdate.getCommentId().toString() : null);
         preview.setCategoryName(statusUpdate.getCategoryId() != null ? categoryService.getById(statusUpdate.getCategoryId()).getName() : null);
         return preview;
@@ -144,10 +151,11 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
     }
 
     @Override
-    public StatusUpdateVO addStatusUpdate(StatusUpdateDTO statusUpdateDTO, Long userId) {
+    public StatusUpdateVO addStatusUpdate(StatusUpdateDTO statusUpdateDTO, Long userId) throws JsonProcessingException {
         StatusUpdate statusUpdate = new StatusUpdate();
         BeanUtils.copyProperties(statusUpdateDTO, statusUpdate);
         statusUpdate.setAuthorId(userId);
+        statusUpdate.setToc(ArticleParser.generateToc(statusUpdateDTO.getContent()));
         if (!categoryService.isCategoryExist(Long.valueOf(statusUpdateDTO.getCategoryId()))) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -156,6 +164,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         statusUpdate.setCommentId(commentArea.getId());
         statusUpdate.setSummary(statusUpdateDTO.getSummary() != null ? statusUpdateDTO.getSummary() : statusUpdateDTO.getContent().length() > 200 ? statusUpdateDTO.getContent().substring(0, 200) : statusUpdateDTO.getContent());
         statusUpdate.setCategoryId(Long.valueOf(statusUpdateDTO.getCategoryId()));
+        statusUpdate.setImg(String.join(",", ArticleParser.extractImages(statusUpdateDTO.getContent())));
         this.save(statusUpdate);
         StatusUpdateVO statusUpdateVO = new StatusUpdateVO();
         BeanUtils.copyProperties(statusUpdate, statusUpdateVO);
@@ -177,10 +186,11 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
     }
 
     @Override
-    public StatusUpdateVO updateStatusUpdate(Long id, StatusUpdateDTO statusUpdateDTO, Long userId) {
+    public StatusUpdateVO updateStatusUpdate(Long id, StatusUpdateDTO statusUpdateDTO, Long userId) throws JsonProcessingException {
         StatusUpdate statusUpdate = this.getById(id);
         if (Objects.equals(statusUpdate.getAuthorId(), userId)) {
             BeanUtils.copyProperties(statusUpdateDTO, statusUpdate);
+            statusUpdate.setToc(ArticleParser.generateToc(statusUpdateDTO.getContent()));
             if (!categoryService.isCategoryExist(Long.valueOf(statusUpdateDTO.getCategoryId()))) {
                 throw new BusinessException(ErrorCode.PARAMS_ERROR);
             }

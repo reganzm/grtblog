@@ -51,6 +51,8 @@ public class StatusUpdatePreview {
      */
     private Integer comments;
 
+    private String commentId;
+
     /**
      * 点赞次数
      */

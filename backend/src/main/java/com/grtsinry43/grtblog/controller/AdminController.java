@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.dto.*;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.entity.User;
@@ -183,7 +184,7 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('share:add')")
     @PostMapping("/statusUpdate")
-    public ApiResponse<StatusUpdateVO> addStatusUpdateApi(@RequestBody StatusUpdateDTO statusUpdateDTO) {
+    public ApiResponse<StatusUpdateVO> addStatusUpdateApi(@RequestBody StatusUpdateDTO statusUpdateDTO) throws JsonProcessingException {
         Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
         StatusUpdateVO statusUpdateVO = statusUpdateService.addStatusUpdate(statusUpdateDTO, userId);
         return ApiResponse.success(statusUpdateVO);
@@ -200,7 +201,7 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('share:edit')")
     @PatchMapping("/statusUpdate/{id}")
-    public ApiResponse<StatusUpdateVO> updateStatusUpdateApi(@PathVariable Long id, @RequestBody StatusUpdateDTO statusUpdateDTO) {
+    public ApiResponse<StatusUpdateVO> updateStatusUpdateApi(@PathVariable Long id, @RequestBody StatusUpdateDTO statusUpdateDTO) throws JsonProcessingException {
         Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
         StatusUpdateVO statusUpdateVO = statusUpdateService.updateStatusUpdate(id, statusUpdateDTO, userId);
         return ApiResponse.success(statusUpdateVO);

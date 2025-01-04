@@ -46,6 +46,9 @@ public class StatusUpdate implements Serializable {
      */
     private String content;
 
+    @TableField("toc")
+    private String toc;
+
     /**
      * 作者 ID，逻辑限制
      */

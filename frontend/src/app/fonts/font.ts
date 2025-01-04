@@ -1,4 +1,4 @@
-import {Edu_AU_VIC_WA_NT_Hand, Ma_Shan_Zheng, Noto_Serif_SC, PT_Serif, Varela_Round} from 'next/font/google';
+import {Edu_AU_VIC_WA_NT_Hand, Ma_Shan_Zheng, Noto_Serif_SC, Varela_Round} from 'next/font/google';
 import {Noto_Sans_SC} from 'next/font/google';
 import {Playwrite_US_Modern} from 'next/font/google';
 import {JetBrains_Mono} from 'next/font/google';
@@ -52,15 +52,14 @@ export const noto_serif_sc_bold = Noto_Serif_SC({
     weight: ['600'],
 });
 
-export const moment_font = PT_Serif({
+export const moment_font = Noto_Serif_SC({
     subsets: ['latin'],
     display: 'swap',
-    weight: ['400'],
-    fallback: ['Noto Serif SC'],
+    weight: ['300'],
 });
 
-export const ma_shan_zheng = Ma_Shan_Zheng({
-    weight: ['400'],
+export const title_font = Noto_Serif_SC({
+    weight: ['600'],
     subsets: ['latin'],
     display: 'swap'
 });

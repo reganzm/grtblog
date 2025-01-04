@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
  */
 
 public class ArticleParser {
+    private static final Pattern IMAGE_PATTERN = Pattern.compile("!\\[.*?\\]\\((.*?)\\)");
 
     public static String generateToc(String content) throws JsonProcessingException {
         List<HeadingNode> toc = new ArrayList<>();
@@ -108,5 +109,14 @@ public class ArticleParser {
         }
 
         return pinyinTitle.toString().replaceAll("[^a-zA-Z0-9-]", "").toLowerCase();
+    }
+
+    public static String[] extractImages(String markdown) {
+        List<String> images = new ArrayList<>();
+        Matcher matcher = IMAGE_PATTERN.matcher(markdown);
+        while (matcher.find()) {
+            images.add(matcher.group(1));
+        }
+        return images.toArray(new String[0]);
     }
 }

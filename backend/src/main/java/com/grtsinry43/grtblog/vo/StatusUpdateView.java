@@ -33,6 +33,8 @@ public class StatusUpdateView {
      */
     private String[] images;
 
+    private String toc;
+
     /**
      * 说说标题
      */

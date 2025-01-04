@@ -1,8 +1,8 @@
 .moment {
-  background-image: linear-gradient(0deg, transparent 31px, #e5e7eb 31px, #e5e7eb 32px, transparent 32px),
+  background-image: linear-gradient(0deg, transparent 31px, rgba(229, 231, 235, 0.27) 31px, rgba(229, 231, 235, 0.3) 32px, transparent 32px),
   linear-gradient(90deg, #f3f4f6 1px, transparent 1px);
   background-size: 100% 32px, 32px 100%;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.05), 0 8px 16px rgba(0, 0, 0, 0.05);
 }
 
 .moment-dark {
@@ -10,4 +10,121 @@
   linear-gradient(90deg, rgba(36, 36, 38, 0.66) 1px, transparent 1px);
   background-size: 100% 32px, 32px 100%;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.heading1,
+.heading2,
+.heading3 {
+  scroll-margin-top: 84px;
+  padding-top: 20px;
+}
+
+.articleContent {
+  flex: 1;
+  transition: all 1s;
+  min-width: 0;
+  padding: 1rem;
+}
+
+.markdown {
+  transition: color 0.3s;
+  width: 100%;
+}
+
+.underlineAnimation {
+  position: relative;
+  display: inline-block;
+}
+
+.underlineAnimation::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.underlineAnimation:hover::after {
+  width: 100%;
+}
+
+.glowAnimation {
+  color: var(--primary);
+}
+
+@keyframes glow {
+  0% {
+    text-shadow: 0 0 10px rgba(var(--primary), 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(var(--primary), 1);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(var(--primary), 0.5);
+  }
+}
+
+.glowAnimation:hover {
+  animation: glow 1s forwards;
+}
+
+.paragraph {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  line-height: 1.8;
+  color: var(--foreground);
+}
+
+.paragraph:first-of-type::first-letter {
+  float: left;
+  font-size: 3rem; /* 调整首字的大小 */
+  line-height: 1;
+  padding-right: 0.1em;
+  padding-bottom: 0.1em;
+  color: var(--primary); /* 调整首字的颜色 */
+}
+
+.heading1 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.heading2 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.heading3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+@media (max-width: 768px) {
+  .articleContainer {
+    flex-direction: column;
+  }
+
+  .tocContainer {
+    position: static;
+    height: auto;
+    max-height: 300px;
+    flex: none;
+    width: 100%;
+  }
+
+  .articleContent {
+    padding: 1rem;
+  }
 }
