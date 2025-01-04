@@ -1,4 +1,4 @@
-import {Edu_AU_VIC_WA_NT_Hand, Ma_Shan_Zheng, Noto_Serif_SC, Varela_Round} from 'next/font/google';
+import {Edu_AU_VIC_WA_NT_Hand, Noto_Serif_SC, Varela_Round} from 'next/font/google';
 import {Noto_Sans_SC} from 'next/font/google';
 import {Playwrite_US_Modern} from 'next/font/google';
 import {JetBrains_Mono} from 'next/font/google';
