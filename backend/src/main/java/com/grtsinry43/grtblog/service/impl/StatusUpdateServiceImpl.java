@@ -196,6 +196,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
             }
             statusUpdate.setCategoryId(Long.valueOf(statusUpdateDTO.getCategoryId()));
             statusUpdate.setUpdatedAt(LocalDateTime.now());
+            statusUpdate.setImg(String.join(",", ArticleParser.extractImages(statusUpdateDTO.getContent())));
             statusUpdate.setSummary(statusUpdateDTO.getSummary() != null ? statusUpdateDTO.getSummary() : statusUpdateDTO.getContent().length() > 200 ? statusUpdateDTO.getContent().substring(0, 200) : statusUpdateDTO.getContent());
             this.updateById(statusUpdate);
             StatusUpdateVO statusUpdateVO = new StatusUpdateVO();
