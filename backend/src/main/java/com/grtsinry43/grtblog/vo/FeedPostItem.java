@@ -43,7 +43,7 @@ public class FeedPostItem {
             feedPostItem.setTitle(statusUpdate.getTitle());
             feedPostItem.setId(statusUpdate.getId().toString());
             feedPostItem.setContent(MarkdownConverter.convertMarkdownToHtml(statusUpdate.getContent()));
-            feedPostItem.setUrl(websiteUrl + "/memonts/" + statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "/" + statusUpdate.getShortUrl());
+            feedPostItem.setUrl(websiteUrl + "/moments/" + statusUpdate.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")) + "/" + statusUpdate.getShortUrl());
             feedPostItem.setPublishedAt(statusUpdate.getCreatedAt());
             feedPostItem.setCover(statusUpdate.getImg() == null ? null : statusUpdate.getImg().split(",")[0].startsWith("http") ? statusUpdate.getImg().split(",")[0] : websiteUrl + statusUpdate.getImg().split(",")[0]);
             feedPostItems.add(feedPostItem);
