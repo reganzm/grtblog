@@ -69,7 +69,7 @@ public class Article implements Serializable {
 
     @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
-    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
 
     @TableField("deleted_at")

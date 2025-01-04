@@ -151,6 +151,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         if (article.getSummary() == null) {
             article.setSummary(article.getContent().length() > 200 ? article.getContent().substring(0, 200) : article.getContent());
         }
+        article.setUpdatedAt(LocalDateTime.now());
         this.baseMapper.updateById(article);
         articleTagService.syncArticleTag(article.getId(), tagIds);
         if (article.getIsPublished()) {

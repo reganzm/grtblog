@@ -94,9 +94,9 @@ public class StatusUpdate implements Serializable {
      */
     private Boolean isPublished;
 
-    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
-    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
 
     /**
