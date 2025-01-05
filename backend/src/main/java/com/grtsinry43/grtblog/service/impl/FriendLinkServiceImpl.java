@@ -42,4 +42,8 @@ public class FriendLinkServiceImpl extends ServiceImpl<FriendLinkMapper, FriendL
         friendLinkView.setId(friendLink.getId().toString());
         return friendLinkView;
     }
+
+    public Boolean isMyFriend(Long userId) {
+        return count() > 0 && list().stream().anyMatch(friendLink -> friendLink.getUserId() == userId);
+    }
 }

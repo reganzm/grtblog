@@ -18,5 +18,7 @@ public interface UserRoleMapper {
      * @return 用户角色列表
      */
     List<UserRole> getUserRolesByUserId(Long userId);
+
+    Boolean isUserAdmin(Long userId);
 }
 

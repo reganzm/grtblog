@@ -56,6 +56,21 @@ public class CommentVO {
     private String browser;
 
     /**
+     * 评论者是否是博主
+     */
+    private Boolean isOwner;
+
+    /**
+     * 评论者是否是作者
+     */
+    private Boolean isAuthor;
+
+    /**
+     * 评论者是否是好友
+     */
+    private Boolean isFriend;
+
+    /**
      * 评论创建时间
      */
     private LocalDateTime createdAt;

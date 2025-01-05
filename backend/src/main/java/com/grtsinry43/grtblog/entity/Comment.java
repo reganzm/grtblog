@@ -34,7 +34,7 @@ public class Comment implements Serializable {
     private Long id;
 
     /**
-     * 评论区id
+     * 评论区 id
      */
     private Long areaId;
 
@@ -87,6 +87,21 @@ public class Comment implements Serializable {
     private LocalDateTime createdAt;
     @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime updatedAt;
+
+    /**
+     * 评论者是否是博主
+     */
+    private Boolean isOwner;
+
+    /**
+     * 评论者是否是作者
+     */
+    private Boolean isAuthor;
+
+    /**
+     * 评论者是否是好友
+     */
+    private Boolean isFriend;
 
     /**
      * 评论删除时间（软删除），如果不为空则表示已删除

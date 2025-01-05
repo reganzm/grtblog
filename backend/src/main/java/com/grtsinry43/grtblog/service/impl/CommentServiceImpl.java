@@ -7,11 +7,13 @@ import com.grtsinry43.grtblog.dto.CommentNotLoginForm;
 import com.grtsinry43.grtblog.entity.*;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.CommentMapper;
+import com.grtsinry43.grtblog.mapper.UserRoleMapper;
 import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.EmailService;
 import com.grtsinry43.grtblog.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.service.PageService;
+import com.grtsinry43.grtblog.util.MD5Util;
 import com.grtsinry43.grtblog.util.MarkdownConverter;
 import com.grtsinry43.grtblog.util.UserAgentUtil;
 import com.grtsinry43.grtblog.vo.CommentVO;
@@ -42,8 +44,10 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private final StatusUpdateServiceImpl statusUpdateService;
     private final PageService pageService;
     private final WebsiteInfoServiceImpl websiteInfoServiceImpl;
+    private final FriendLinkServiceImpl friendLinkServiceImpl;
+    private final UserRoleMapper userRoleMapper;
 
-    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService, UserServiceImpl userService, EmailService emailService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoServiceImpl) {
+    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService, UserServiceImpl userService, EmailService emailService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoServiceImpl, FriendLinkServiceImpl friendLinkServiceImpl, UserRoleMapper userRoleMapper) {
         this.articleService = articleService;
         this.commentAreaService = commentAreaService;
         this.userService = userService;
@@ -51,6 +55,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         this.statusUpdateService = statusUpdateService;
         this.pageService = pageService;
         this.websiteInfoServiceImpl = websiteInfoServiceImpl;
+        this.friendLinkServiceImpl = friendLinkServiceImpl;
+        this.userRoleMapper = userRoleMapper;
     }
 
     /**
@@ -67,7 +73,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
             commentVO.setId(comment.getId().toString());
             commentVO.setAreaId(comment.getAreaId().toString());
             commentVO.setUserName(comment.getNickName());
-            commentVO.setAvatarUrl(comment.getAuthorId() == null ? null : userService.getById(comment.getAuthorId()).getAvatar());
+            commentVO.setAvatarUrl(comment.getAuthorId() == null ? "https://cravatar.cn/avatar/" + MD5Util.getMD5(comment.getEmail()).toLowerCase() + "?d=retro"
+                    : userService.getById(comment.getAuthorId()).getAvatar());
             commentVO.setParentId(comment.getParentId() == null ? null : comment.getParentId().toString());
             commentVO.setParentUserName(comment.getParentId() == null ? null : getById(comment.getParentId()).getNickName());
             return commentVO;
@@ -143,6 +150,8 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         comment.setAuthorId(user.getId());
         comment.setParentId(Objects.equals(form.getParentId(), "") ? null : Long.parseLong(form.getParentId()));
         comment.setIp(ip);
+        comment.setIsFriend(friendLinkServiceImpl.isMyFriend(user.getId()));
+        comment.setIsOwner(userRoleMapper.isUserAdmin(user.getId()));
         comment.setLocation(location);
         comment.setPlatform(os);
         comment.setBrowser(browser);

@@ -12,4 +12,12 @@
         WHERE user_id = #{userId}
     </select>
 
+    <!-- 查询用户是否是管理员 -->
+    <select id="isUserAdmin" resultType="java.lang.Boolean">
+        SELECT COUNT(*)
+        FROM user_role
+        WHERE user_id = #{userId}
+        AND role_id = 1
+    </select>
+
 </mapper>

@@ -57,7 +57,7 @@ public class PageMatcher {
             }
             return "文章：" + (matchedArticle != null ? matchedArticle.getTitle().length() > 15 ? matchedArticle.getTitle().substring(0, 15) + "..." : matchedArticle.getTitle() : "未知 (屮゜Д゜)屮");
         } else if (path.startsWith("/moments/")) {
-            StatusUpdate matchedStatusUpdate = statusUpdateService.getBaseMapper().getStatusUpdateByShortUrl(path.substring(9));
+            StatusUpdate matchedStatusUpdate = statusUpdateService.getBaseMapper().getStatusUpdateByShortUrl(path.substring(20));
             if (matchedStatusUpdate != null) {
                 matchedStatusUpdate.setViews(matchedStatusUpdate.getViews() + 1);
                 statusUpdateService.updateById(matchedStatusUpdate);
@@ -83,7 +83,7 @@ public class PageMatcher {
             Article matchedArticle = articleService.getBaseMapper().getArticleByShortUrl(path.substring(7));
             return "文章：" + (matchedArticle != null ? matchedArticle.getTitle().length() > 15 ? matchedArticle.getTitle().substring(0, 15) + "..." : matchedArticle.getTitle() : "未知 (屮゜Д゜)屮");
         } else if (path.startsWith("/moments/")) {
-            StatusUpdate matchedStatusUpdate = statusUpdateService.getBaseMapper().getStatusUpdateByShortUrl(path.substring(9));
+            StatusUpdate matchedStatusUpdate = statusUpdateService.getBaseMapper().getStatusUpdateByShortUrl(path.substring(20));
             return "记录：" + (matchedStatusUpdate != null ? matchedStatusUpdate.getTitle().length() > 15 ? matchedStatusUpdate.getTitle().substring(0, 15) + "..." : matchedStatusUpdate.getTitle() : "未知 (屮゜Д゜)屮");
         } else if (path.isEmpty() || "/".equals(path)) {
             return "主页";

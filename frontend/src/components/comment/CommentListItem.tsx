@@ -10,7 +10,7 @@ import CodeBlock from '@/components/CodeBlock';
 import {clsx} from 'clsx';
 import TableView from '@/components/article/TableView';
 import ReactMarkdown from 'react-markdown';
-import {Avatar, Button, Link} from '@radix-ui/themes';
+import {Avatar, Button, Link, Tooltip} from '@radix-ui/themes';
 import {formatDistanceToNow, parseISO} from 'date-fns';
 import {zhCN} from 'date-fns/locale';
 import {motion} from 'framer-motion';
@@ -19,12 +19,13 @@ import CommentList from "@/components/comment/CommentList";
 import {article_font} from "@/app/fonts/font";
 import {FaWindows, FaApple, FaLinux, FaAndroid} from 'react-icons/fa';
 import {SiSafari, SiFirefox, SiGooglechrome, SiMicrosoftedge} from 'react-icons/si';
+import {VscVerifiedFilled} from "react-icons/vsc";
 
 const getPlatformIcon = (platform: string) => {
-    if (platform.includes('Windows')) return <FaWindows size={'10'} style={{color: '#0078D7'}}/>;
-    if (platform.includes('Mac')) return <FaApple size={'10'} style={{color: '#000'}}/>;
-    if (platform.includes('Linux')) return <FaLinux size={'10'} style={{color: '#000'}}/>;
     if (platform.includes('Android')) return <FaAndroid size={'10'} style={{color: '#3DDC84'}}/>;
+    if (platform.includes('Windows')) return <FaWindows size={'10'} style={{color: '#0078D7'}}/>;
+    if (platform.includes('Mac')) return <FaApple size={'10'} style={{color: '#787878'}}/>;
+    if (platform.includes('Linux')) return <FaLinux size={'10'} style={{color: 'rgba(207,144,2,0.9)'}}/>;
     return null;
 };
 
@@ -67,7 +68,32 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                             })()}
                         </>
                     ) : (
-                        <div className={styles.commentUserName}> {comment.userName}</div>
+                        <div className={clsx(styles.commentUserName, "flex items-center")}>
+                            <span className="mr-1">
+                             {comment.userName}
+                            </span>
+                            {
+                                comment.isOwner && (
+                                    <Tooltip content="这个是本站的主人捏" side="top" align="center">
+                                        <VscVerifiedFilled color={'blue'}/>
+                                    </Tooltip>
+                                )
+                            }
+                            {
+                                comment.isFriend && (
+                                    <Tooltip content="这位小伙伴是本站的友链捏" side="top" align="center">
+                                        <VscVerifiedFilled color={'green'}/>
+                                    </Tooltip>
+                                )
+                            }
+                            {
+                                comment.isAuthor && (
+                                    <Tooltip content="本文作者呀" side="top" align="center">
+                                        <VscVerifiedFilled color={'orange'}/>
+                                    </Tooltip>
+                                )
+                            }
+                        </div>
                     )}
                     <div className="gap-1 flex">
                         {comment.platform && getPlatformIcon(comment.platform)}

@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2024-10-09
  */
 public interface IUserService extends IService<User> {
+
     void loginByGithub(String code);
 
     User getUserByNickname(String nickname);
