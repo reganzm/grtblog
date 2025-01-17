@@ -69,7 +69,7 @@ public class PageMatcher {
             Category matchedCategory = categoryService.getCategoryByShortUrl(path.substring(12));
             return "分类：" + (matchedCategory != null ? matchedCategory.getName() : "未知 (屮゜Д゜)屮");
         } else {
-            Page matchedPage = pageService.getPageByPath(path);
+            Page matchedPage = pageService.getPageByPath(path.substring(1));
             if (matchedPage != null) {
                 matchedPage.setViews(matchedPage.getViews() + 1);
                 pageService.updateById(matchedPage);

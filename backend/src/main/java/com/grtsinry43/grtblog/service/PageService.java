@@ -38,7 +38,7 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
 
     public PageVO getPageByShortUrl(String shortUrl) {
         Page pageFind = this.lambdaQuery()
-                .eq(Page::getRefPath, "/" + shortUrl)
+                .eq(Page::getRefPath, shortUrl)
                 .eq(Page::getEnable, true)
                 .eq(Page::getCanDelete, true)
                 .isNull(Page::getDeletedAt)
@@ -56,7 +56,6 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
 
     public String[] getAllPageRefPath() {
         return this.lambdaQuery()
-                .select(Page::getRefPath)
                 .list()
                 .stream()
                 .filter(Objects::nonNull)

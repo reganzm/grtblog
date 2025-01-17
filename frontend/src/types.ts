@@ -64,6 +64,9 @@ export type Comment = {
     parentUserName: string;
     updatedAt: string;
     userName: string;
+    isOwner: boolean;
+    isFriend: boolean;
+    isAuthor: boolean;
     website: string;
     platform: string;
     browser: string;

@@ -1,5 +1,4 @@
 import React from 'react';
-import rehypeSanitize from 'rehype-sanitize';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import InlineCodeBlock from '@/components/InlineCodeBlock';
@@ -17,6 +16,13 @@ import FloatingTocMobile from '@/components/article/FloatingTocMobile';
 import ArticleScrollSync from '@/components/article/ArticleScrollSync';
 import ArticleTopPaddingAnimate from '@/components/article/ArticleTopPaddingAnimate';
 import ScrollHandler from '@/components/article/ScrollHandler';
+import customCalloutRemarkPlugin from "@/plugins/markdown/Callout";
+import remarkDirective from "remark-directive";
+import rehypeCallouts from "rehype-callouts";
+import 'rehype-callouts/theme/github'
+// import rehypeRaw from "rehype-raw";
+// import rehypeKatex from "rehype-katex";
+import rehypeReact from "rehype-react";
 
 export type Post = {
     id: string;
@@ -48,7 +54,8 @@ const ArticleView = ({post}: { post: Post }) => {
             {post.toc && <FloatingTocMobile toc={JSON.parse(post.toc)}/>}
             <div className={styles.articleContainer}>
                 <aside className={styles.tocContainer}>
-                    {post.toc && <Toc toc={JSON.parse(post.toc)} commentId={post.commentId} likes={post.likes} comments={post.comments}/>}
+                    {post.toc && <Toc toc={JSON.parse(post.toc)} commentId={post.commentId} likes={post.likes}
+                                      comments={post.comments}/>}
                 </aside>
                 <main className={styles.articleContent}>
                     <ArticleScrollSync post={post} type={"文章"}>
@@ -63,8 +70,22 @@ const ArticleView = ({post}: { post: Post }) => {
                         />
                         <ReactMarkdown
                             className={styles.markdown}
-                            rehypePlugins={[rehypeSanitize]}
-                            remarkPlugins={[remarkGfm, remarkBreaks]}
+                            rehypePlugins={[
+                                rehypeCallouts,
+                                [rehypeReact, {
+                                    components: {
+                                        InfoBlock: ({children}: { children: React.ReactNode }) => {
+                                            console.log("Rendering InfoBlock");
+                                            return <div className={styles.infoBlock}>45345{children}</div>;
+                                        },
+                                    },
+                                }],
+                                // rehypeRaw,
+                                // rehypeSanitize,
+                                // rehypeKatex,
+                            ]}
+
+                            remarkPlugins={[remarkGfm, remarkBreaks, customCalloutRemarkPlugin, remarkDirective]}
                             components={{
                                 code({inline, className, children, ...props}) {
                                     const match = /language-(\w+)/.exec(className || '');

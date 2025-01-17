@@ -27,12 +27,21 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
         setIsLogin(user.isLogin);
     }, [user.isLogin]);
 
+    useEffect(() => {
+        setForm({
+            content: '',
+            userName: localStorage.getItem('userName') || '',
+            email: localStorage.getItem('email') || '',
+            website: localStorage.getItem('website') || '',
+        });
+    }, []);
+
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const rippleRef = useRef<HTMLSpanElement>(null);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        
+
         if (!isLogin) {
             addNewComment({
                 areaId: id,
@@ -43,7 +52,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                 parentId: parentId || '',
             }).then((res) => {
                 if (res) {
-                    
+
                     // 使用事件总线触发评论列表的刷新
                     emitter.emit('refreshCommentList');
                 }
@@ -55,7 +64,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                 parentId: parentId || '',
             }).then((res) => {
                 if (res) {
-                    
+
                     // 使用事件总线触发评论列表的刷新
                     emitter.emit('refreshCommentList');
                 }
@@ -91,6 +100,9 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
     return (
         <form onSubmit={handleSubmit} className={styles.form}>
             {
+                !isLogin && <span> 登录之后评论体验更好哦 ~</span>
+            }
+            {
                 !isLogin &&
                 <Flex direction="row" gap="4" className={styles.flex}>
                     <TextField.Root
@@ -100,7 +112,10 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             backgroundColor: 'rgba(var(--background), 0.3)',
                             flex: '1',
                         }}
-                        onChange={(e) => setForm({...form, userName: e.target.value})}
+                        onChange={(e) => {
+                            setForm({...form, userName: e.target.value})
+                            localStorage.setItem('userName', e.target.value);
+                        }}
                         placeholder="昵称(*)"
                     />
                     <TextField.Root
@@ -111,7 +126,10 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             height: '2rem',
                             flex: '1',
                         }}
-                        onChange={(e) => setForm({...form, email: e.target.value})}
+                        onChange={(e) => {
+                            setForm({...form, email: e.target.value})
+                            localStorage.setItem('email', e.target.value);
+                        }}
                         placeholder="邮箱(*)"
                     />
                     <TextField.Root
@@ -120,7 +138,10 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             backgroundColor: 'rgba(var(--background), 0.3)',
                             flex: '1',
                         }}
-                        onChange={(e) => setForm({...form, website: e.target.value})}
+                        onChange={(e) => {
+                            setForm({...form, website: e.target.value})
+                            localStorage.setItem('website', e.target.value);
+                        }}
                         placeholder="网站"
                     />
                 </Flex>

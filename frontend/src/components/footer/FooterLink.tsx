@@ -12,7 +12,8 @@ const Footer = () => {
                     <div className={styles.footerSection}>
                         <Text className={styles.footerTitle}> 想要了解我 &gt; </Text>
                         <Link href="/about" className={styles.footerLink}> 关于我 </Link>
-                        <Link href="/about-grtblog" className={styles.footerLink}> 关于 Grtblog 的故事 </Link>
+                        <Link href="/about-site" className={styles.footerLink}> 本站历史 </Link>
+                        <Link href="/about-grtblog" className={styles.footerLink}> 关于此项目 </Link>
                     </div>
                     <div className={styles.footerSection}>
                         <Text className={styles.footerTitle}> 你也许在找 &gt;  </Text>
