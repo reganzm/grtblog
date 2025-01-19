@@ -129,6 +129,18 @@ const ArticleView = ({post}: { post: Post }) => {
                                     return <h3 id={generateId(headingIndex++)}
                                                className={styles.heading3} {...props} />;
                                 },
+                                h4({...props}) {
+                                    return <h2 id={generateId(headingIndex++)}
+                                               className={styles.heading2} {...props} />;
+                                },
+                                h5({...props}) {
+                                    return <h3 id={generateId(headingIndex++)}
+                                               className={styles.heading3} {...props} />;
+                                },
+                                h6({...props}) {
+                                    return <h2 id={generateId(headingIndex++)}
+                                               className={styles.heading2} {...props} />;
+                                },
                                 strong({...props}) {
                                     return <strong className={styles.bold} {...props} />;
                                 },

@@ -40,6 +40,8 @@ const HomePageMomentShow = () => {
                     </span>
                     <p className="text-right text-gray-400 text-[0.75rem] mt-4
                     "> 发布于 2024-10-27 </p>
+                    <p className="text-right text-gray-400 text-[0.75rem] mt-4
+                    "> 发布于 2024-10-27 </p>
                 </motion.div>
             </div>
             <div className={styles.arrowContainer}>

@@ -40,10 +40,10 @@ const PageView = ({page}: { page: PageVO }) => {
     let headingIndex = 0;
 
     return (
-        <div className={clsx(styles.article, article_font.className)}>
+        <div className={clsx(styles.articleNoPadding, article_font.className)}>
             <ScrollHandler/>
             {page.toc && <FloatingTocMobile toc={JSON.parse(page.toc)}/>}
-            <div className={styles.articleContainer}>
+            <div className={styles.articleContainerNoPadding}>
                 <main className={styles.articleContent}>
                     <ArticleScrollSync post={page} type={"页面"}>
                         <div className="meta-data">
@@ -67,7 +67,7 @@ const PageView = ({page}: { page: PageVO }) => {
                                 </div>
                             </div>
                         </div>
-                        <ArticleTopPaddingAnimate/>
+                        <ArticleTopPaddingAnimate reverse={true}/>
                         <ScrollHandler/>
                         <ReactMarkdown
                             className={styles.markdown}

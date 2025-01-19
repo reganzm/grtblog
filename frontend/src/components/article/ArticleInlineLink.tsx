@@ -28,7 +28,6 @@ const ArticleInlineLink = ({linkTitle, linkUrl}: { linkTitle: string; linkUrl: s
         linkUrl = `https://${linkUrl}`;
     }
 
-    
 
     useEffect(() => {
         fetchSiteInfo(linkUrl).then(data => setSiteInfo(data));
@@ -46,6 +45,11 @@ const ArticleInlineLink = ({linkTitle, linkUrl}: { linkTitle: string; linkUrl: s
                 <HoverCard.Trigger>
                     <a
                         href={linkUrl}
+                        style={{
+                            wordWrap: "break-word",
+                            overflowWrap: "break-word",
+                            wordBreak: "break-all",
+                        }}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={clsx(styles.underlineAnimation, 'text-blue-500 dark:text-blue-400', styles.glowAnimation, jetbrains_mono.className)}

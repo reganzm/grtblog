@@ -5,6 +5,13 @@
   scroll-behavior: smooth;
 }
 
+.articleNoPadding {
+  margin-top: 1em;
+  width: 100%;
+  max-width: 100%;
+  scroll-behavior: smooth;
+}
+
 .title {
   text-align: center;
   margin-bottom: 1rem;
@@ -23,6 +30,11 @@
   gap: 2rem;
 }
 
+.articleContainerNoPadding {
+  display: flex;
+  gap: 2rem;
+}
+
 .bold {
   font-weight: bold;
 }
@@ -35,6 +47,8 @@
   border-left: 4px solid rgba(var(--foreground), 0.5);
   margin: 1.5em 10px;
   padding: 0 10px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .tocContainer {
