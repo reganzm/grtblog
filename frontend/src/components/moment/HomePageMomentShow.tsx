@@ -38,10 +38,10 @@ const HomePageMomentShow = () => {
                         我们终此一生，就是摆脱他人的期待，找到真正的自己
                         {/*{msg}*/}
                     </span>
-                    <p className="text-right text-gray-400 text-[0.75rem] mt-4
-                    "> 发布于 2024-10-27 </p>
-                    <p className="text-right text-gray-400 text-[0.75rem] mt-4
-                    "> 发布于 2024-10-27 </p>
+                    <p className="mt-4 flex justify-end text-gray-400 text-[0.75rem]">
+                        <span className="mr-4"> 原创 </span>
+                        <span className="mr-1"> 发布于 2024-10-27 </span>
+                    </p>
                 </motion.div>
             </div>
             <div className={styles.arrowContainer}>

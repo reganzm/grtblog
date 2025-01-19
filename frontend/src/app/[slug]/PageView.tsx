@@ -43,7 +43,7 @@ const PageView = ({page}: { page: PageVO }) => {
         <div className={clsx(styles.articleNoPadding, article_font.className)}>
             <ScrollHandler/>
             {page.toc && <FloatingTocMobile toc={JSON.parse(page.toc)}/>}
-            <div className={styles.articleContainerNoPadding}>
+            <div className={styles.articleContainer}>
                 <main className={styles.articleContent}>
                     <ArticleScrollSync post={page} type={"页面"}>
                         <div className="meta-data">
