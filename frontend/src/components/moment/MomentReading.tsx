@@ -42,7 +42,7 @@ export interface MomentView {
 const generateId = (index: number) => `article-md-title-${index + 1}`;
 
 function MomentReadingPage({moment}: { moment: MomentView }) {
-    const isDark = useTheme().theme === 'dark';
+    const isDark = useTheme().resolvedTheme === 'dark';
     let headingIndex = 0;
     const isMobile = useIsMobile();
     return (
