@@ -13,11 +13,13 @@ import com.grtsinry43.grtblog.security.LoginUserDetails;
 import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.IStatusUpdateService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.service.SocketIOService;
 import com.grtsinry43.grtblog.util.ArticleParser;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
 import com.grtsinry43.grtblog.vo.StatusUpdateVO;
 import com.grtsinry43.grtblog.vo.StatusUpdateView;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -39,11 +41,13 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
     private final UserMapper userMapper;
     private final CategoryServiceImpl categoryService;
     private final CommentAreaService commentAreaService;
+    private final SocketIOService socketIOService;
 
-    public StatusUpdateServiceImpl(UserMapper userMapper, CategoryServiceImpl categoryService, CommentAreaService commentAreaService) {
+    public StatusUpdateServiceImpl(UserMapper userMapper, CategoryServiceImpl categoryService, CommentAreaService commentAreaService, @Lazy SocketIOService socketIOService) {
         this.userMapper = userMapper;
         this.categoryService = categoryService;
         this.commentAreaService = commentAreaService;
+        this.socketIOService = socketIOService;
     }
 
     @Override
@@ -169,6 +173,9 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         StatusUpdateVO statusUpdateVO = new StatusUpdateVO();
         BeanUtils.copyProperties(statusUpdate, statusUpdateVO);
         statusUpdateVO.setAuthorName(userMapper.selectById(userId).getNickname());
+        if (statusUpdate.getIsPublished()) {
+            socketIOService.broadcastMessage("分享：" + statusUpdate.getTitle() + " 已发布，新鲜事儿来啦");
+        }
         return statusUpdateVO;
     }
 
@@ -202,6 +209,9 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
             StatusUpdateVO statusUpdateVO = new StatusUpdateVO();
             BeanUtils.copyProperties(statusUpdate, statusUpdateVO);
             statusUpdateVO.setAuthorName(userMapper.selectById(userId).getNickname());
+            if (statusUpdate.getIsPublished()) {
+                socketIOService.broadcastMessage("分享：" + statusUpdate.getTitle() + " 已更新");
+            }
             return statusUpdateVO;
         } else {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
@@ -226,6 +236,9 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         statusUpdateVO.setAuthorName(userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         statusUpdateVO.setId(statusUpdate.getId().toString());
         statusUpdateVO.setCategoryId(statusUpdate.getCategoryId() != null ? statusUpdate.getCategoryId().toString() : null);
+        if (statusUpdate.getIsPublished()) {
+            socketIOService.broadcastMessage("分享" + statusUpdate.getTitle() + " 状态已更新");
+        }
         return statusUpdateVO;
     }
 

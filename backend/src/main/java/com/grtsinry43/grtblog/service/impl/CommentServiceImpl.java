@@ -8,16 +8,14 @@ import com.grtsinry43.grtblog.entity.*;
 import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.CommentMapper;
 import com.grtsinry43.grtblog.mapper.UserRoleMapper;
-import com.grtsinry43.grtblog.service.CommentAreaService;
-import com.grtsinry43.grtblog.service.EmailService;
-import com.grtsinry43.grtblog.service.ICommentService;
+import com.grtsinry43.grtblog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.grtsinry43.grtblog.service.PageService;
 import com.grtsinry43.grtblog.util.MD5Util;
 import com.grtsinry43.grtblog.util.MarkdownConverter;
 import com.grtsinry43.grtblog.util.UserAgentUtil;
 import com.grtsinry43.grtblog.vo.CommentVO;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -46,8 +44,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private final WebsiteInfoServiceImpl websiteInfoServiceImpl;
     private final FriendLinkServiceImpl friendLinkServiceImpl;
     private final UserRoleMapper userRoleMapper;
+    private final SocketIOService socketIOService;
 
-    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService, UserServiceImpl userService, EmailService emailService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoServiceImpl, FriendLinkServiceImpl friendLinkServiceImpl, UserRoleMapper userRoleMapper) {
+    public CommentServiceImpl(ArticleServiceImpl articleService, CommentAreaService commentAreaService, UserServiceImpl userService, EmailService emailService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoServiceImpl, FriendLinkServiceImpl friendLinkServiceImpl, UserRoleMapper userRoleMapper, @Lazy SocketIOService socketIOService) {
         this.articleService = articleService;
         this.commentAreaService = commentAreaService;
         this.userService = userService;
@@ -57,6 +56,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         this.websiteInfoServiceImpl = websiteInfoServiceImpl;
         this.friendLinkServiceImpl = friendLinkServiceImpl;
         this.userRoleMapper = userRoleMapper;
+        this.socketIOService = socketIOService;
     }
 
     /**
@@ -129,6 +129,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         commentEmailNotificationHandle(comment);
         CommentVO vo = new CommentVO();
         BeanUtils.copyProperties(comment, vo);
+        socketIOService.broadcastMessage("有新的评论发布，作者：" + comment.getNickName() + "，内容：" + comment.getContent() + "，评论区：" + comment.getAreaId() + "，快去围观吧！");
         return vo;
     }
 
@@ -160,6 +161,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         commentEmailNotificationHandle(comment);
         CommentVO vo = new CommentVO();
         BeanUtils.copyProperties(comment, vo);
+        socketIOService.broadcastMessage("有新的评论发布，作者：" + comment.getNickName() + "，内容：" + comment.getContent() + "，评论区：" + comment.getAreaId() + "，快去围观吧！");
         return vo;
     }
 

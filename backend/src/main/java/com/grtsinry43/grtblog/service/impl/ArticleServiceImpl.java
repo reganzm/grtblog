@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service.impl;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
@@ -14,11 +15,13 @@ import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.IArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.service.RecommendationService;
+import com.grtsinry43.grtblog.service.SocketIOService;
 import com.grtsinry43.grtblog.util.ArticleParser;
 import com.grtsinry43.grtblog.vo.ArticlePreview;
 import com.grtsinry43.grtblog.vo.ArticleVO;
 import com.grtsinry43.grtblog.vo.ArticleView;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.yaml.snakeyaml.Yaml;
@@ -49,14 +52,16 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private final UserServiceImpl userService;
     private final RecommendationService recommendationService;
     private final CommentAreaService commentAreaService;
+    private final SocketIOService socketIOService;
 
-    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, CategoryServiceImpl categoryService, UserServiceImpl userService, RecommendationService recommendationService, CommentAreaService commentAreaService) {
+    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, CategoryServiceImpl categoryService, UserServiceImpl userService, RecommendationService recommendationService, CommentAreaService commentAreaService, @Lazy SocketIOService socketIOService) {
         this.articleTagService = articleTagService;
         this.tagService = tagService;
         this.categoryService = categoryService;
         this.userService = userService;
         this.recommendationService = recommendationService;
         this.commentAreaService = commentAreaService;
+        this.socketIOService = socketIOService;
     }
 
     @Override
@@ -102,6 +107,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         BeanUtils.copyProperties(article, articleVO);
         articleVO.setId(article.getId().toString());
         articleVO.setAuthor(userService.getById(userId).getNickname());
+        if (article.getIsPublished()) {
+            socketIOService.broadcastMessage("文章：" + article.getTitle() + " 已发布，新鲜出炉，快来看看吧！");
+        }
         return articleVO;
     }
 
@@ -163,6 +171,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         BeanUtils.copyProperties(article, articleVO);
         articleVO.setId(article.getId().toString());
         articleVO.setAuthor(userService.getById(userId).getNickname());
+        if (article.getIsPublished()) {
+            socketIOService.broadcastMessage("文章：" + article.getTitle() + " 已更新");
+        }
         return articleVO;
     }
 
@@ -189,6 +200,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         BeanUtils.copyProperties(article, articleVO);
         articleVO.setId(article.getId().toString());
         articleVO.setAuthor(userService.getById(article.getAuthorId()).getNickname());
+        if (article.getIsPublished()) {
+            socketIOService.broadcastMessage("文章：" + article.getTitle() + " 的状态已更新");
+        }
         return articleVO;
     }
 
@@ -339,8 +353,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         // 验证分类是否存在，存在则设置分类 ID，不存在则创建分类并设置分类 ID
         Long categoryId = null;
-        if (metadata.get("category")!= null) {
-             categoryId = categoryService.getOrCreateCategoryId((String) metadata.get("category"));
+        if (metadata.get("category") != null) {
+            categoryId = categoryService.getOrCreateCategoryId((String) metadata.get("category"));
         }
         Long[] tagIds = null;
 

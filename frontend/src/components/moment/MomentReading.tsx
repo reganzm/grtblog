@@ -16,6 +16,8 @@ import ScrollHandler from "@/components/article/ScrollHandler";
 import ImageView from "@/components/article/ImageView";
 import ArticleInlineLink from "@/components/article/ArticleInlineLink";
 import TableView from "@/components/article/TableView";
+import InlineCodeBlock from "@/components/InlineCodeBlock";
+import CodeBlock from "@/components/CodeBlock";
 
 export interface MomentView {
     authorName: string;
@@ -135,6 +137,17 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
                                             img({...props}) {
                                                 return <ImageView {...props} />;
                                             },
+                                            code({inline, className, children, ...props}) {
+                                                const match = /language-(\w+)/.exec(className || '');
+                                                if (!match) {
+                                                    return <InlineCodeBlock {...props}>{children}</InlineCodeBlock>;
+                                                }
+                                                return inline ? (
+                                                    <InlineCodeBlock {...props}>{children}</InlineCodeBlock>
+                                                ) : (
+                                                    <CodeBlock language={match[1]} value={String(children).replace(/\n$/, '')}/>
+                                                );
+                                            },
                                             a({...props}) {
                                                 return (
                                                     <ArticleInlineLink
@@ -162,6 +175,18 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
                                             h3({...props}) {
                                                 return <h3 id={generateId(headingIndex++)}
                                                            className={styles.heading3} {...props} />;
+                                            },
+                                            h4({...props}) {
+                                                return <h4 id={generateId(headingIndex++)}
+                                                           className={styles.heading4} {...props} />;
+                                            },
+                                            h5({...props}) {
+                                                return <h5 id={generateId(headingIndex++)}
+                                                           className={styles.heading5} {...props} />;
+                                            },
+                                            h6({...props}) {
+                                                return <h6 id={generateId(headingIndex++)}
+                                                           className={styles.heading6} {...props} />;
                                             },
                                             strong({...props}) {
                                                 return <strong className={styles.bold} {...props} />;

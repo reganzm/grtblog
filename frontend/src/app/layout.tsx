@@ -15,6 +15,7 @@ import {WebsiteInfo} from "@/types";
 import {WebsiteInfoProvider} from "@/app/website-info-provider";
 import {OpenPanelComponent} from "@openpanel/nextjs";
 import GlobalNotification from "@/components/notification/GlobalNotification";
+import UpdateNotification from "@/components/notification/UpdateNotification";
 
 const websiteInfo: WebsiteInfo = await getWebsiteInfo({next: {revalidate: 60}});
 
@@ -56,6 +57,7 @@ export default async function RootLayout({
                                 <Footer websiteInfo={websiteInfo}/>
                             </WebsiteInfoProvider>
                             <GlobalNotification/>
+                            <UpdateNotification/>
                         </Theme>
                     </ThemeProvider>
                 </StoreProvider>

@@ -32,6 +32,10 @@ public class SocketIOService {
     private final ConcurrentHashMap<String, ScheduledFuture<?>> debounceTasks = new ConcurrentHashMap<>();
     private final PageMatcher pageMatcher;
 
+    public void broadcastMessage(String message) {
+        socketIOServer.getBroadcastOperations().sendEvent("updateNotification", message);
+    }
+
     @Autowired
     public SocketIOService(SocketIOServer socketIOServer, PageMatcher pageMatcher) {
         this.socketIOServer = socketIOServer;

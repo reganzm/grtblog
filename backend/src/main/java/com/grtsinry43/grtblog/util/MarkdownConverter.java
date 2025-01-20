@@ -1,8 +1,12 @@
 package com.grtsinry43.grtblog.util;
 
-import org.commonmark.node.Node;
-import org.commonmark.parser.Parser;
-import org.commonmark.renderer.html.HtmlRenderer;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
+import com.vladsch.flexmark.html.HtmlRenderer;
+import com.vladsch.flexmark.parser.Parser;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.util.ast.Node;
+
+import java.util.Arrays;
 
 /**
  * @author grtsinry43
@@ -11,9 +15,9 @@ import org.commonmark.renderer.html.HtmlRenderer;
  */
 public class MarkdownConverter {
     public static String convertMarkdownToHtml(String markdown) {
-        Parser parser = Parser.builder().build();
+        Parser parser = Parser.builder().extensions(Arrays.asList(TablesExtension.create(), StrikethroughExtension.create())).build();
         Node document = parser.parse(markdown);
-        HtmlRenderer renderer = HtmlRenderer.builder().build();
+        HtmlRenderer renderer = HtmlRenderer.builder().extensions(Arrays.asList(TablesExtension.create(), StrikethroughExtension.create())).build();
         return renderer.render(document);
     }
 }

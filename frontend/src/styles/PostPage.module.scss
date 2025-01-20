@@ -82,9 +82,27 @@
 
 .heading1,
 .heading2,
-.heading3 {
+.heading3,
+.heading4,
+.heading5,
+.heading6 {
   scroll-margin-top: 84px;
-  padding-top: 20px;
+  padding-top: 10px;
+  position: relative;
+}
+
+.heading1:hover::before,
+.heading2:hover::before,
+.heading3:hover::before,
+.heading4:hover::before,
+.heading5:hover::before,
+.heading6:hover::before {
+  content: '#';
+  position: absolute;
+  left: -1em;
+  color: var(--foreground);
+  opacity: 0.6;
+  margin-right: 0.5rem;
 }
 
 .articleContent {

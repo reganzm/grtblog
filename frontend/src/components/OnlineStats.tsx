@@ -5,6 +5,7 @@ import {io, Socket} from "socket.io-client";
 import {useAppDispatch} from "@/redux/hooks";
 import {usePathname} from "next/navigation";
 import {getPageView} from "@/api/pageView";
+import channel from "@/utils/channel";
 
 const url = process.env.NEXT_PUBLIC_SOCKET_IO_URL;
 
@@ -18,12 +19,12 @@ const OnlineStats = () => {
 
     // 初始化 Socket.IO 连接
     useEffect(() => {
-        
+
         const newSocket = io(url);
         setSocket(newSocket);
 
         getPageView().then((res) => {
-            
+
             dispatch({
                 type: "onlineCount/initPageView",
                 payload: res
@@ -33,7 +34,7 @@ const OnlineStats = () => {
         // 监听总在线人数事件
         newSocket.on("totalOnlineCount", (count: number) => {
             setTotalOnlineCount(count);
-            
+
             dispatch({type: "onlineCount/updateOnlineCount", payload: count});
         });
 
@@ -41,8 +42,19 @@ const OnlineStats = () => {
         newSocket.on("pageViewCount", (page, count) => {
             if (page === param) {
                 setPageViewCount(count);
-                
+
             }
+
+            // 用于发送更新通知
+            newSocket.on("updateNotification", (content) => {
+                console.log(content);
+                channel.port2.postMessage({
+                    content: content,
+                    publishAt: new Date().toISOString(),
+                });
+                console.log("send message");
+            });
+
             dispatch({
                 type: "onlineCount/updatePageView", payload: {
                     name: page,
