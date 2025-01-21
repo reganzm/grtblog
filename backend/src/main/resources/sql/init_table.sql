@@ -414,6 +414,8 @@ CREATE TABLE IF NOT EXISTS `comment`
     `is_owner`   TINYINT   DEFAULT 0 COMMENT '是否是站长（0：否，1：是）',
     `is_friend`  TINYINT   DEFAULT 0 COMMENT '是否是友链（0：否，1：是）',
     `is_author`  TINYINT   DEFAULT 0 COMMENT '是否是作者（0：否，1：是）',
+    `is_viewed`  TINYINT   DEFAULT 0 COMMENT '是否已查看（0：否，1：是）',
+    `is_top`     TINYINT   DEFAULT 0 COMMENT '是否置顶（0：否，1：是）',
     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '评论创建时间',
     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '评论更新时间',
     `deleted_at` TIMESTAMP COMMENT '评论删除时间（软删除），如果不为空则表示已删除',

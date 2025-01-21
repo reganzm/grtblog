@@ -83,6 +83,16 @@ public class Comment implements Serializable {
      */
     private String website;
 
+    /**
+     * 评论是否查看过
+     */
+    private boolean isViewed;
+
+    /**
+     * 置顶
+     */
+    private boolean isTop;
+
     @TableField(value = "created_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
     @TableField(value = "updated_at", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)

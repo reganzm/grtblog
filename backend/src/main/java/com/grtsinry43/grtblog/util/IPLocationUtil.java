@@ -1,5 +1,8 @@
 package com.grtsinry43.grtblog.util;
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.model.AsnResponse;
+import com.maxmind.geoip2.model.CityResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.lionsoul.ip2region.xdb.Searcher;
@@ -7,13 +10,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileCopyUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * Utility class for getting address by IP using ip2region library.
+ * Utility class for getting address by IP using GeoIP2 library.
  *
  * @date 2024/11/2 23:58
  * @description 热爱可抵岁月漫长
@@ -22,18 +26,26 @@ public class IPLocationUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(IPLocationUtil.class);
     private static final String LOCAL_IP = "127.0.0.1";
+    private static final String LOCAL_IPV6 = "::1";
 
     private static final Searcher searcher;
+    private static DatabaseReader dbReader;
+    private static DatabaseReader asnReader;
 
     static {
         try {
+            File database = new File(IPLocationUtil.class.getResource("/GeoLite2-City.mmdb").getFile());
+            File databaseASN = new File(IPLocationUtil.class.getResource("/GeoLite2-ASN.mmdb").getFile());
+            dbReader = new DatabaseReader.Builder(database).build();
+            asnReader = new DatabaseReader.Builder(databaseASN).build();
             InputStream ris = IPLocationUtil.class.getResourceAsStream("/ip2region.xdb");
             byte[] dbBinStr = FileCopyUtils.copyToByteArray(ris);
             searcher = Searcher.newWithBuffer(dbBinStr);
             logger.debug("ip2region 数据库加载成功");
+            logger.debug("GeoIP2 数据库加载成功");
         } catch (IOException e) {
-            logger.error("无法创建搜索器: {}", e.getMessage());
-            throw new RuntimeException("无法加载 ip2region 数据库", e);
+            logger.error("无法创建数据库读取器: {}", e.getMessage());
+            throw new RuntimeException("无法加载 GeoIP2 数据库", e);
         }
     }
 
@@ -51,7 +63,7 @@ public class IPLocationUtil {
         }
         if (StringUtils.isBlank(ipAddress) || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
-            if (LOCAL_IP.equals(ipAddress)) {
+            if (LOCAL_IP.equals(ipAddress) || LOCAL_IPV6.equals(ipAddress)) {
                 try {
                     InetAddress inet = InetAddress.getLocalHost();
                     ipAddress = inet.getHostAddress();
@@ -67,7 +79,7 @@ public class IPLocationUtil {
                 ipAddress = ipAddress.substring(0, commaIndex);
             }
         }
-        return "0:0:0:0:0:0:0:1".equals(ipAddress) ? LOCAL_IP : ipAddress;
+        return LOCAL_IPV6.equals(ipAddress) ? LOCAL_IP : ipAddress;
     }
 
     /**
@@ -80,20 +92,20 @@ public class IPLocationUtil {
         return request.getHeader("User-Agent");
     }
 
-    /**
-     * 根据 IP 获取城市信息
-     *
-     * @param ipAddress IP 地址
-     * @return 城市信息
-     */
-    public static String getCityInfo(String ipAddress) {
-        try {
-            return searcher.search(ipAddress);
-        } catch (Exception e) {
-            logger.error("搜索IP失败: {} - {}", ipAddress, e.getMessage());
-            return null;
-        }
-    }
+//    /**
+//     * 根据 IP 获取城市信息
+//     *
+//     * @param ipAddress IP 地址
+//     * @return 城市信息
+//     */
+//    public static String getCityInfo(String ipAddress) {
+//        try {
+//            return searcher.search(ipAddress);
+//        } catch (Exception e) {
+//            logger.error("搜索IP失败: {} - {}", ipAddress, e.getMessage());
+//            return null;
+//        }
+//    }
 
     /**
      * 根据 IP 获取 ip2region 信息
@@ -108,9 +120,30 @@ public class IPLocationUtil {
         }
 
         try {
-            String ipInfo = searcher.search(ip);
-            if (!StringUtils.isEmpty(ipInfo)) {
-                return ipInfo.replace("|0", "").replace("0|", "").replace("|", "");
+            InetAddress ipAddress = InetAddress.getByName(ip);
+            // 判断是 ipv4 还是 ipv6
+            if (ipAddress instanceof java.net.Inet4Address) {
+                String ipInfo = searcher.search(ip);
+                if (!StringUtils.isEmpty(ipInfo)) {
+                    return ipInfo.replace("|0", "").replace("0|", "").replace("|", "");
+                }
+            } else if (ipAddress instanceof java.net.Inet6Address) {
+                CityResponse response = dbReader.city(ipAddress);
+                AsnResponse asnResponse = asnReader.asn(ipAddress);
+                String isp = asnResponse.getAutonomousSystemOrganization();
+                if (StringUtils.isBlank(isp)) {
+                    isp = "未知运营商";
+                } else if (isp.startsWith("China Telecom")) {
+                    isp = "电信";
+                } else if (isp.startsWith("China Unicom")) {
+                    isp = "联通";
+                } else if (isp.startsWith("China Mobile")) {
+                    isp = "移动";
+                } else if (isp.startsWith("CERNET2 IX")) {
+                    isp = "教育网";
+                }
+                return response.getCountry().getNames().get("zh-CN") + response.getMostSpecificSubdivision().getNames().get("zh-CN") +
+                        response.getCity().getNames().get("zh-CN") + isp;
             }
         } catch (Exception e) {
             logger.error("解析IP信息失败: {}", e.getMessage());

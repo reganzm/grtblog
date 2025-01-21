@@ -27,6 +27,7 @@ export async function GET(req: Request) {
       subtitle,
     });
   } catch (error) {
+    console.log('Failed to fetch site info');
     console.error(error);
     return NextResponse.json({ error: 'Failed to fetch site info' }, { status: 500 });
   }
