@@ -13,6 +13,8 @@ import TableView from "@/components/article/TableView";
 import InlineCodeBlock from "@/components/InlineCodeBlock";
 import CodeBlock from "@/components/CodeBlock";
 import ArticleTopPaddingAnimate from "@/components/article/ArticleTopPaddingAnimate";
+import remarkGfm from 'remark-gfm';
+import BackgroundGrid from "@/components/moment/BackgroundGrid";
 
 export interface MomentView {
     authorName: string;
@@ -58,6 +60,7 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
                     <ArticleScrollSync post={moment} type={"记录"}>
                         <div
                             className={clsx(styles.moment, "mx-auto bg-white dark:bg-black rounded-lg overflow-hidden")}>
+                            <BackgroundGrid/>
                             <article className="px-8 py-12 prose prose-slate dark:prose-invert max-w-none">
                                 <h1 className={clsx(title_font.className, "text-3xl font-bold mb-4 text-gray-900 dark:text-gray-100")}>{moment.title}</h1>
 
@@ -119,72 +122,74 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
 
                                 <div
                                     className={clsx(moment_font.className, "space-y-6 text-gray-800 dark:text-gray-200 leading-relaxed")}>
-                                    <ReactMarkdown components={{
-                                        img({...props}) {
-                                            return <ImageView {...props} />;
-                                        },
-                                        code({inline, className, children, ...props}) {
-                                            const match = /language-(\w+)/.exec(className || '');
-                                            if (!match) {
-                                                return <InlineCodeBlock {...props}>{children}</InlineCodeBlock>;
-                                            }
-                                            return inline ? (
-                                                <InlineCodeBlock {...props}>{children}</InlineCodeBlock>
-                                            ) : (
-                                                <CodeBlock language={match[1]}
-                                                           value={String(children).replace(/\n$/, '')}/>
-                                            );
-                                        },
-                                        a({...props}) {
-                                            return (
-                                                <ArticleInlineLink
-                                                    className={clsx(styles.underlineAnimation, styles.glowAnimation)}
-                                                    {...props}
-                                                    linkTitle={props.children}
-                                                    linkUrl={props.href}
-                                                />
-                                            );
-                                        },
-                                        p({...props}) {
-                                            return <p className={styles.paragraph} {...props} />;
-                                        },
-                                        table({...props}) {
-                                            return <TableView {...props} />;
-                                        },
-                                        h1({...props}) {
-                                            return <h1 id={generateId(headingIndex++)}
-                                                       className={styles.heading1} {...props} />;
-                                        },
-                                        h2({...props}) {
-                                            return <h2 id={generateId(headingIndex++)}
-                                                       className={styles.heading2} {...props} />;
-                                        },
-                                        h3({...props}) {
-                                            return <h3 id={generateId(headingIndex++)}
-                                                       className={styles.heading3} {...props} />;
-                                        },
-                                        h4({...props}) {
-                                            return <h4 id={generateId(headingIndex++)}
-                                                       className={styles.heading4} {...props} />;
-                                        },
-                                        h5({...props}) {
-                                            return <h5 id={generateId(headingIndex++)}
-                                                       className={styles.heading5} {...props} />;
-                                        },
-                                        h6({...props}) {
-                                            return <h6 id={generateId(headingIndex++)}
-                                                       className={styles.heading6} {...props} />;
-                                        },
-                                        strong({...props}) {
-                                            return <strong className={styles.bold} {...props} />;
-                                        },
-                                        em({...props}) {
-                                            return <em className={styles.italic} {...props} />;
-                                        },
-                                        blockquote({...props}) {
-                                            return <blockquote className={styles.blockquote} {...props} />;
-                                        },
-                                    }}>{moment.content || ''}</ReactMarkdown>
+                                    <ReactMarkdown
+                                        remarkPlugins={[remarkGfm]}
+                                        components={{
+                                            img({...props}) {
+                                                return <ImageView {...props} />;
+                                            },
+                                            code({inline, className, children, ...props}) {
+                                                const match = /language-(\w+)/.exec(className || '');
+                                                if (!match) {
+                                                    return <InlineCodeBlock {...props}>{children}</InlineCodeBlock>;
+                                                }
+                                                return inline ? (
+                                                    <InlineCodeBlock {...props}>{children}</InlineCodeBlock>
+                                                ) : (
+                                                    <CodeBlock language={match[1]}
+                                                               value={String(children).replace(/\n$/, '')}/>
+                                                );
+                                            },
+                                            a({...props}) {
+                                                return (
+                                                    <ArticleInlineLink
+                                                        className={clsx(styles.underlineAnimation, styles.glowAnimation)}
+                                                        {...props}
+                                                        linkTitle={props.children}
+                                                        linkUrl={props.href}
+                                                    />
+                                                );
+                                            },
+                                            p({...props}) {
+                                                return <p className={styles.paragraph} {...props} />;
+                                            },
+                                            table({...props}) {
+                                                return <TableView {...props} />;
+                                            },
+                                            h1({...props}) {
+                                                return <h1 id={generateId(headingIndex++)}
+                                                           className={styles.heading1} {...props} />;
+                                            },
+                                            h2({...props}) {
+                                                return <h2 id={generateId(headingIndex++)}
+                                                           className={styles.heading2} {...props} />;
+                                            },
+                                            h3({...props}) {
+                                                return <h3 id={generateId(headingIndex++)}
+                                                           className={styles.heading3} {...props} />;
+                                            },
+                                            h4({...props}) {
+                                                return <h4 id={generateId(headingIndex++)}
+                                                           className={styles.heading4} {...props} />;
+                                            },
+                                            h5({...props}) {
+                                                return <h5 id={generateId(headingIndex++)}
+                                                           className={styles.heading5} {...props} />;
+                                            },
+                                            h6({...props}) {
+                                                return <h6 id={generateId(headingIndex++)}
+                                                           className={styles.heading6} {...props} />;
+                                            },
+                                            strong({...props}) {
+                                                return <strong className={styles.bold} {...props} />;
+                                            },
+                                            em({...props}) {
+                                                return <em className={styles.italic} {...props} />;
+                                            },
+                                            blockquote({...props}) {
+                                                return <blockquote className={styles.blockquote} {...props} />;
+                                            },
+                                        }}>{moment.content || ''}</ReactMarkdown>
                                 </div>
 
                                 {moment.updatedAt && moment.updatedAt !== moment.createdAt && (

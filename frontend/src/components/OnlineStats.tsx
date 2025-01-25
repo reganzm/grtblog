@@ -45,22 +45,22 @@ const OnlineStats = () => {
 
             }
 
-            // 用于发送更新通知
-            newSocket.on("updateNotification", (content) => {
-                console.log(content);
-                channel.port2.postMessage({
-                    content: content,
-                    publishAt: new Date().toISOString(),
-                });
-                console.log("send message");
-            });
-
             dispatch({
                 type: "onlineCount/updatePageView", payload: {
                     name: page,
                     count: count
                 }
             });
+        });
+
+        // 用于发送更新通知
+        newSocket.on("updateNotification", (content) => {
+            console.log(content);
+            channel.port2.postMessage({
+                content: content,
+                publishAt: new Date().toISOString(),
+            });
+            console.log("send message");
         });
 
         // 在组件卸载时关闭连接

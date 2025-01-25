@@ -1,4 +1,18 @@
 .moment {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.05), 0 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.moment-light,
+.moment-dark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Ensure it is behind the content */
+}
+
+.moment-light {
   background-image: linear-gradient(0deg, transparent 31px, rgba(229, 231, 235, 0.27) 31px, rgba(229, 231, 235, 0.3) 32px, transparent 32px),
   linear-gradient(90deg, rgba(243, 244, 246, 0.63) 1px, transparent 1px);
   background-size: 100% 32px, 32px 100%;
@@ -6,8 +20,8 @@
 }
 
 .moment-dark {
-  background-image: linear-gradient(0deg, transparent 31px, rgba(50, 48, 48, 0.71) 31px, rgba(22, 21, 21, 0.71) 32px, transparent 32px),
-  linear-gradient(90deg, rgba(36, 36, 38, 0.66) 1px, transparent 1px);
+  background-image: linear-gradient(0deg, transparent 31px, rgba(50, 48, 48, 0.32) 31px, rgba(22, 21, 21, 0.24) 32px, transparent 32px),
+  linear-gradient(90deg, rgba(36, 36, 38, 0.21) 1px, transparent 1px);
   background-size: 100% 32px, 32px 100%;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
 }

@@ -34,10 +34,13 @@ public class IPLocationUtil {
 
     static {
         try {
-            File database = new File(IPLocationUtil.class.getResource("/GeoLite2-City.mmdb").getFile());
-            File databaseASN = new File(IPLocationUtil.class.getResource("/GeoLite2-ASN.mmdb").getFile());
-            dbReader = new DatabaseReader.Builder(database).build();
-            asnReader = new DatabaseReader.Builder(databaseASN).build();
+            InputStream cityDbStream = IPLocationUtil.class.getResourceAsStream("/GeoLite2-City.mmdb");
+            InputStream asnDbStream = IPLocationUtil.class.getResourceAsStream("/GeoLite2-ASN.mmdb");
+            if (cityDbStream == null || asnDbStream == null) {
+                throw new IOException("GeoIP2 database files not found in classpath");
+            }
+            dbReader = new DatabaseReader.Builder(cityDbStream).build();
+            asnReader = new DatabaseReader.Builder(asnDbStream).build();
             InputStream ris = IPLocationUtil.class.getResourceAsStream("/ip2region.xdb");
             byte[] dbBinStr = FileCopyUtils.copyToByteArray(ris);
             searcher = Searcher.newWithBuffer(dbBinStr);
