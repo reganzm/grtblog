@@ -1,6 +1,6 @@
 package com.grtsinry43.grtblog.controller;
 
-import com.grtsinry43.grtblog.plugin.BlogPlugin;
+import com.grtblog.BlogPlugin;
 import org.pf4j.PluginManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,7 @@ public class PluginController {
 
     @GetMapping
     public List<String> getPlugins() {
+        System.out.println(pluginManager.getExtensions(BlogPlugin.class));
         return pluginManager.getExtensions(BlogPlugin.class)
                 .stream()
                 .map(plugin -> plugin.getClass().getSimpleName())
