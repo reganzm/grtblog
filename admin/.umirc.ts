@@ -3,14 +3,33 @@ import { defineConfig } from '@umijs/max';
 export default defineConfig({
   base: process.env.NODE_ENV === 'production' ? '/admin/' : '/',
   publicPath: process.env.NODE_ENV === 'production' ? '/admin/' : '/',
-  antd: {},
+  antd: {
+    // themes
+    // dark: true,
+    // less or css, default less
+    // style: 'less',
+    // // shortcut of `configProvider.theme`
+    // // use to configure theme token, antd v5 only
+    // theme: {},
+    // // antd <App /> valid for version 5.1.0 or higher, default: undefined
+    // appConfig: {},
+    // // Transform DayJS to MomentJS
+    // momentPicker: true,
+    // // Add StyleProvider for legacy browsers
+    // styleProvider: {
+    //   hashPriority: 'high',
+    //   legacyTransformer: true,
+    // },
+  },
   access: {},
   dva: {},
   model: {},
   initialState: {},
   request: {},
+  // ssr: {},
   layout: {
-    title: 'Grtblog 后台管理系统',
+    title: 'Grtblog Admin',
+    favicon: '/favicon.ico',
   },
   routes: [
     {

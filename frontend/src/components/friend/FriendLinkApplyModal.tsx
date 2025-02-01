@@ -44,8 +44,11 @@ const FriendLinkApplyModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () 
     const isLogin = useAppSelector((state) => state.user.isLogin);
 
     useEffect(() => {
+        console.log(isLogin);
         if (!isLogin) {
             setError('请先登录后再申请友链哦');
+        } else {
+            setError('');
         }
     }, [isLogin]);
 

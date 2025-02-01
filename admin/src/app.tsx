@@ -1,8 +1,11 @@
 // 运行时配置
 
+import imgUrl from '@/assets/logo.png';
+
 // 全局初始化数据配置，用于 Layout 用户信息和权限初始化
 // 更多信息见文档：https://umijs.org/docs/api/runtime-config#getinitialstate
 
+import Footer from '@/components/layout/footer/Footer';
 import UserController from '@/services/user/UserController';
 import { getToken, setToken } from '@/utils/token';
 import { message } from 'antd';
@@ -26,15 +29,14 @@ export async function getInitialState() {
       }
     }
   } else {
-    
     // 强行要跳内部页面，得看看 token 有没有效
     const res = await UserController.getUserInfoApi();
-    
+
     const data = res.data;
-    
+
     if (data) {
       // 说明有 token，并且 token 有效
-      
+
       return {
         name: data.nickname,
         avatar: data.avatar,
@@ -43,7 +45,7 @@ export async function getInitialState() {
     } else {
       // token 验证失败，跳转至登录
       localStorage.removeItem('adminToken');
-      
+
       location.href =
         process.env.NODE_ENV === 'production' ? '/admin/login' : '/login';
       message.warning('请重新登录');
@@ -53,7 +55,8 @@ export async function getInitialState() {
 
 export const layout = () => {
   return {
-    logo: 'https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg',
+    logo: imgUrl,
+    footerRender: () => <Footer />,
     menu: {
       locale: false,
     },
@@ -84,7 +87,6 @@ export const request = {
   // 响应拦截器
   responseInterceptors: [
     async function (response: AxiosResponse) {
-      
       if (response.headers.authorization) {
         setToken(response.headers.authorization);
       }
