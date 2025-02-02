@@ -64,6 +64,8 @@ export type Comment = {
     parentUserName: string;
     updatedAt: string;
     userName: string;
+    isTop: boolean;
+    isDeleted: boolean;
     isOwner: boolean;
     isFriend: boolean;
     isAuthor: boolean;

@@ -3,7 +3,7 @@ import {
   AddPageApiRes,
   PageVO,
 } from '@/services/page/typings';
-import { ApiResponse } from '@/services/typings';
+import { ApiResponse, PagedApiResponse } from '@/services/typings';
 import { request } from '@umijs/max';
 
 const addPage = async (data: AddPageApiParams): Promise<AddPageApiRes> => {
@@ -19,7 +19,7 @@ const getPageList = async ({
 }: {
   page: number;
   pageSize: number;
-}): Promise<ApiResponse<PageVO[]>> => {
+}): Promise<PagedApiResponse<PageVO[]>> => {
   return request(`/api/v1/admin/page/all?page=${page}&pageSize=${pageSize}`, {
     method: 'GET',
   });

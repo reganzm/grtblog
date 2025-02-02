@@ -20,6 +20,7 @@ import {article_font} from "@/app/fonts/font";
 import {FaWindows, FaApple, FaLinux, FaAndroid} from 'react-icons/fa';
 import {SiSafari, SiFirefox, SiGooglechrome, SiMicrosoftedge} from 'react-icons/si';
 import {VscVerifiedFilled} from "react-icons/vsc";
+import {PinTopIcon} from "@radix-ui/react-icons";
 
 const getPlatformIcon = (platform: string) => {
     if (platform.includes('Android')) return <FaAndroid size={'10'} style={{color: '#3DDC84'}}/>;
@@ -112,13 +113,16 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                             </div>
                         )
                     }
+                    {comment.isTop && (
+                        <PinTopIcon width={16} height={16} className="absolute right-4 top-4"/>
+                    )}
                 </div>
                 <div className={styles.commentMeta}>
                     <div className={styles.commentTime}>{formattedCreatedAt}</div>
                     <span className={styles.commentLocation}>{comment.location}</span>
                 </div>
                 <ReactMarkdown
-                    className={styles.commentContent}
+                    className={clsx(styles.commentContent, comment.isDeleted && 'opacity-55')}
                     rehypePlugins={[rehypeSanitize]}
                     remarkPlugins={[remarkGfm]}
                     components={{

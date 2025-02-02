@@ -3,7 +3,7 @@ import {
   AddMomentApiRes,
   MomentVO,
 } from '@/services/moment/typings';
-import { ApiResponse } from '@/services/typings';
+import {ApiResponse, PagedApiResponse} from '@/services/typings';
 import { request } from '@umijs/max';
 
 const addMoment = async (
@@ -21,7 +21,7 @@ const getMomentList = async ({
 }: {
   page: number;
   pageSize: number;
-}): Promise<ApiResponse<MomentVO[]>> => {
+}): Promise<PagedApiResponse<MomentVO[]>> => {
   return request(
     `/api/v1/admin/statusUpdate/all?page=${page}&pageSize=${pageSize}`,
     {

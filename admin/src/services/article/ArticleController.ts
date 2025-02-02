@@ -3,7 +3,7 @@ import {
   AddArticleApiRes,
   ArticleVO,
 } from '@/services/article/typings';
-import { ApiResponse } from '@/services/typings';
+import {ApiResponse, PagedApiResponse} from '@/services/typings';
 import { request } from '@umijs/max';
 
 const addArticle = async (
@@ -21,7 +21,7 @@ const getArticleList = async ({
 }: {
   page: number;
   pageSize: number;
-}): Promise<ApiResponse<ArticleVO[]>> => {
+}): Promise<PagedApiResponse<ArticleVO[]>> => {
   return request(
     `/api/v1/admin/article/all?page=${page}&pageSize=${pageSize}`,
     {

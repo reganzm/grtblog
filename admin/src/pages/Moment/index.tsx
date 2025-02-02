@@ -228,6 +228,10 @@ const Index = () => {
   return (
     <PageContainer title={'随手记录列表'}>
       <ProTable
+        tableStyle={{
+          overflowX: 'auto',
+          overflowY: 'hidden',
+        }}
         columns={columns}
         actionRef={actionRef}
         style={{
@@ -239,9 +243,9 @@ const Index = () => {
             pageSize: params.pageSize || 10,
           });
           return {
-            data: response.data,
+            data: response.data.data,
             success: response.code === 0,
-            total: response.data.length,
+            total: response.data.total,
           };
         }}
       />

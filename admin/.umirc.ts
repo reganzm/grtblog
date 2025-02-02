@@ -44,7 +44,7 @@ export default defineConfig({
     },
     {
       name: '文章',
-      icon: '',
+      icon: 'PicLeftOutlined',
       path: '/article',
       routes: [
         {
@@ -68,6 +68,7 @@ export default defineConfig({
     {
       name: '随手记录',
       path: '/moment',
+      icon: 'SnippetsOutlined',
       routes: [
         {
           name: '随手记录列表',
@@ -90,6 +91,7 @@ export default defineConfig({
     {
       name: '页面管理',
       path: '/pages',
+      icon: 'FileTextOutlined',
       routes: [
         {
           name: '全部页面',
@@ -110,7 +112,14 @@ export default defineConfig({
       ],
     },
     {
+      name: '评论管理',
+      icon: 'comment',
+      path: '/comment',
+      component: './Comment',
+    },
+    {
       name: '常用工具',
+      icon: 'ToolOutlined',
       path: '/tools',
       routes: [
         {
@@ -128,6 +137,7 @@ export default defineConfig({
     {
       name: '友链',
       path: '/friend',
+      icon: 'LinkOutlined',
       routes: [
         {
           name: '友链列表',
@@ -139,6 +149,7 @@ export default defineConfig({
     {
       name: '插件',
       path: '/plugin',
+      icon: 'AppstoreAddOutlined',
       routes: [
         {
           name: '插件列表',
@@ -167,9 +178,11 @@ export default defineConfig({
     },
     {
       name: '配置信息',
+      icon: 'SettingOutlined',
       path: '/config',
       component: './Config',
     },
+    { path: '/*', component: '@/pages/404.tsx' },
   ],
   npmClient: 'pnpm',
   proxy: {
