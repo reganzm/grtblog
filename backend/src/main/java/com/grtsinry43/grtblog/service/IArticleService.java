@@ -42,5 +42,7 @@ public interface IArticleService extends IService<Article> {
 
     List<ArticleVO> getArticleListAdmin(Integer page, Integer pageSize);
 
+    long countAllArticles();
+
     ArticleVO getArticleByIdAdmin(Long articleId);
 }

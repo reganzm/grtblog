@@ -14,11 +14,10 @@ import com.grtsinry43.grtblog.service.impl.CommentServiceImpl;
 import com.grtsinry43.grtblog.service.impl.StatusUpdateServiceImpl;
 import com.grtsinry43.grtblog.util.IPLocationUtil;
 import com.grtsinry43.grtblog.util.SecurityUtils;
-import com.grtsinry43.grtblog.vo.CommentVO;
+import com.grtsinry43.grtblog.vo.CommentView;
 import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -50,14 +49,14 @@ public class CommentController {
 
     @PermitAll
     @GetMapping("/article/{shortUrl}")
-    public ApiResponse<List<CommentVO>> listCommentByArticleId(@PathVariable String shortUrl) {
+    public ApiResponse<List<CommentView>> listCommentByArticleId(@PathVariable String shortUrl) {
         return ApiResponse.success(commentService.listCommentByArticleId(shortUrl));
     }
 
     @PermitAll
     @GetMapping("/{id}")
-    public ApiResponse<List<CommentVO>> getCommentListById(@PathVariable String id, @RequestParam(value = "page", defaultValue = "1") int page,
-                                                           @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+    public ApiResponse<List<CommentView>> getCommentListById(@PathVariable String id, @RequestParam(value = "page", defaultValue = "1") int page,
+                                                             @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
         try {
             Long idLong = Long.parseLong(id);
             return ApiResponse.success(commentService.getListById(idLong, page, pageSize));
@@ -68,10 +67,10 @@ public class CommentController {
 
     @PermitAll
     @PostMapping
-    public ApiResponse<CommentVO> addNewComment(@RequestBody CommentNotLoginForm form, HttpServletRequest request) {
+    public ApiResponse<CommentView> addNewComment(@RequestBody CommentNotLoginForm form, HttpServletRequest request) {
         String location = IPLocationUtil.getIp2region(IPLocationUtil.getIp(request));
         String ua = request.getHeader("User-Agent");
-        CommentVO comment = commentService.addNewComment(form, IPLocationUtil.getIp(request), location, ua);
+        CommentView comment = commentService.addNewComment(form, IPLocationUtil.getIp(request), location, ua);
         // 这里看一下评论区对应的是不是文章，如果是文章的话，就记录一下用户行为
         if (articleService.lambdaQuery().eq(Article::getCommentId, form.getAreaId()).count() > 0) {
             UserBehavior userBehavior = new UserBehavior();
@@ -110,11 +109,11 @@ public class CommentController {
     }
 
     @PostMapping("/add")
-    public ApiResponse<CommentVO> addNewCommentLogin(@RequestBody CommentLoginForm form, HttpServletRequest request) {
+    public ApiResponse<CommentView> addNewCommentLogin(@RequestBody CommentLoginForm form, HttpServletRequest request) {
         User user = SecurityUtils.getCurrentUser();
         String location = IPLocationUtil.getIp2region(IPLocationUtil.getIp(request));
         String ua = request.getHeader("User-Agent");
-        CommentVO comment = commentService.addNewCommentLogin(user, form, IPLocationUtil.getIp(request), location, ua);
+        CommentView comment = commentService.addNewCommentLogin(user, form, IPLocationUtil.getIp(request), location, ua);
         // 这里看一下评论区对应的是不是文章，如果是文章的话，就记录一下用户行为
         if (articleService.lambdaQuery().eq(Article::getCommentId, form.getAreaId()).count() > 0) {
             UserBehavior userBehavior = new UserBehavior();

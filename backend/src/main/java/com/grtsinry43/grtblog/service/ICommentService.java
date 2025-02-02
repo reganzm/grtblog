@@ -5,7 +5,7 @@ import com.grtsinry43.grtblog.dto.CommentNotLoginForm;
 import com.grtsinry43.grtblog.entity.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.grtsinry43.grtblog.entity.User;
-import com.grtsinry43.grtblog.vo.CommentVO;
+import com.grtsinry43.grtblog.vo.CommentView;
 
 import java.util.List;
 
@@ -19,12 +19,12 @@ import java.util.List;
  */
 public interface ICommentService extends IService<Comment> {
 
-    public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua);
+    public CommentView addNewComment(CommentNotLoginForm form, String ip, String location, String ua);
 
-    CommentVO addNewCommentLogin(User user, CommentLoginForm form, String ip, String location, String ua);
+    CommentView addNewCommentLogin(User user, CommentLoginForm form, String ip, String location, String ua);
 
     public Object listCommentByArticleId(String shortUrl);
 
-    public List<CommentVO> getListById(Long id, int page, int pageSize);
+    public List<CommentView> getListById(Long id, int page, int pageSize);
 
 }

@@ -36,6 +36,8 @@ public interface IStatusUpdateService extends IService<StatusUpdate> {
      */
     public List<StatusUpdatePreview> listStatusUpdatesByPage(int page, int pageSize);
 
+    Long getStatusUpdateCount();
+
     /**
      * 根据分类获取说说
      */

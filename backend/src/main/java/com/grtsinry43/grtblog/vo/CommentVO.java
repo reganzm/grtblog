@@ -3,16 +3,17 @@ package com.grtsinry43.grtblog.vo;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author grtsinry43
- * @date 2024/11/2 22:49
+ * @date 2025/2/1 22:25
  * @description 热爱可抵岁月漫长
  */
 @Data
 public class CommentVO {
+    /**
+     * 评论 ID，会由雪花算法生成
+     */
     private String id;
 
     /**
@@ -26,24 +27,24 @@ public class CommentVO {
     private String content;
 
     /**
-     * 评论者头像
+     * 评论者 ID
      */
-    private String avatarUrl;
+    private String authorId;
 
     /**
      * 评论者昵称
      */
-    private String userName;
+    private String nickName;
+
+    /**
+     * 评论者 IP 地址
+     */
+    private String ip;
 
     /**
      * 评论者归属地
      */
     private String location;
-
-    /**
-     * 评论者网站
-     */
-    private String website;
 
     /**
      * 评论者操作系统
@@ -54,6 +55,30 @@ public class CommentVO {
      * 评论者浏览器
      */
     private String browser;
+
+    /**
+     * 评论者邮箱
+     */
+    private String email;
+
+    /**
+     * 评论者网站
+     */
+    private String website;
+
+    /**
+     * 评论是否查看过
+     */
+    private Boolean isViewed;
+
+    /**
+     * 置顶
+     */
+    private Boolean isTop;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
     /**
      * 评论者是否是博主
@@ -71,21 +96,12 @@ public class CommentVO {
     private Boolean isFriend;
 
     /**
-     * 评论创建时间
+     * 评论删除时间（软删除），如果不为空则表示已删除
      */
-    private LocalDateTime createdAt;
+    private LocalDateTime deletedAt;
 
     /**
-     * 评论更新时间
+     * 父评论 ID，如果为空则表示是顶级评论，否则是回复评论
      */
-    private LocalDateTime updatedAt;
-
     private String parentId;
-
-    private String parentUserName;
-
-    /**
-     * 查看时候存储子评论，而存储时候存储父评论 id
-     */
-    private List<CommentVO> children = new ArrayList<>();
 }

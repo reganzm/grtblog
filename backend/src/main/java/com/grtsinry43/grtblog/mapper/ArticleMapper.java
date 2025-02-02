@@ -30,6 +30,12 @@ public interface ArticleMapper extends BaseMapper<Article> {
      */
     List<Article> getArticleListByPageAdmin(@Param("start") Integer start, @Param("pageSize") Integer pageSize);
 
+    /*
+     * 获取发布文章总数
+     */
+    @Select("SELECT COUNT(*) FROM article WHERE deleted_at is null")
+    Long getArticleCount();
+
     /**
      * 获取所有文章的短链接
      */

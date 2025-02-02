@@ -1,5 +1,6 @@
 package com.grtsinry43.grtblog.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.dto.PostStatusToggle;
@@ -99,6 +100,12 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
                 })
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Long getStatusUpdateCount() {
+        return count(new QueryWrapper<StatusUpdate>().isNull("deleted_at"));
+    }
+
 
     @Override
     public List<StatusUpdatePreview> getStatusUpdatesByCategory(int page, int pageSize, String shortUrl) {

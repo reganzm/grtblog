@@ -340,6 +340,11 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     }
 
     @Override
+    public long countAllArticles() {
+        return this.baseMapper.getArticleCount();
+    }
+
+    @Override
     public ArticleVO getArticleByIdAdmin(Long id) {
         Article article = this.baseMapper.selectById(id);
         ArticleVO articleVO = new ArticleVO();

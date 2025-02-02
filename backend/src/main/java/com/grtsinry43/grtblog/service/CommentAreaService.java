@@ -3,7 +3,10 @@ package com.grtsinry43.grtblog.service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.grtsinry43.grtblog.entity.CommentArea;
 import com.grtsinry43.grtblog.mapper.CommentAreaMapper;
+import com.grtsinry43.grtblog.vo.CommentAreaVO;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author grtsinry43
@@ -30,5 +33,16 @@ public class CommentAreaService extends ServiceImpl<CommentAreaMapper, CommentAr
 
     public boolean isExist(String id) {
         return baseMapper.selectById(id) != null;
+    }
+
+    public List<CommentAreaVO> listAllCommentArea() {
+        return list().stream().map(commentArea -> {
+            CommentAreaVO commentAreaVO = new CommentAreaVO();
+            commentAreaVO.setId(commentArea.getId().toString());
+            commentAreaVO.setAreaName(commentArea.getAreaName());
+            commentAreaVO.setCreatedAt(commentArea.getCreatedAt());
+            commentAreaVO.setUpdatedAt(commentArea.getUpdatedAt());
+            return commentAreaVO;
+        }).toList();
     }
 }

@@ -94,7 +94,8 @@ VALUES (1, 'article:add'),
        (44, 'page:view'),
        (45, 'file:upload'),
        (46, 'file:delete'),
-       (47, 'system:core');
+       (47, 'system:core'),
+       (48, 'comment:admin');
 
 
 -- 创建用户角色关联表
@@ -148,7 +149,7 @@ INSERT INTO `role_permission` (`role_id`, `permission_id`)
 SELECT 4, id
 FROM `permission`
 WHERE `permission_name` IN ('article:view', 'comment:view', 'category:view', 'share:view', 'friend_link:view',
-                            'thinking:view', 'page:view');
+                            'thinking:view', 'page:view', 'file:upload', 'comment:admin');
 
 -- 封禁用户没有任何权限
 -- No insert needed for role_id 5 as they have no permissions

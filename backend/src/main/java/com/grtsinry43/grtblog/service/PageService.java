@@ -129,6 +129,10 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
         }).toList();
     }
 
+    public Long getPageCount() {
+        return this.lambdaQuery().eq(Page::getCanDelete, true).count();
+    }
+
     public PageVO getPageByIdAdmin(String id) {
         Page page = getById(id);
         if (page == null) {

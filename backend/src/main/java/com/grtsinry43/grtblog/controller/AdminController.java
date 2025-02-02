@@ -2,10 +2,13 @@ package com.grtsinry43.grtblog.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.GrtblogBackendApplication;
+import com.grtsinry43.grtblog.common.PagedResponse;
 import com.grtsinry43.grtblog.dto.*;
 import com.grtsinry43.grtblog.entity.Category;
+import com.grtsinry43.grtblog.entity.Comment;
 import com.grtsinry43.grtblog.entity.User;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
+import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.PageService;
 import com.grtsinry43.grtblog.service.impl.*;
 import com.grtsinry43.grtblog.util.JwtUtil;
@@ -30,6 +33,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -55,8 +59,10 @@ public class AdminController {
     private final StatusUpdateServiceImpl statusUpdateService;
     private final PageService pageService;
     private final WebsiteInfoServiceImpl websiteInfoService;
+    private final CommentServiceImpl commentServiceImpl;
+    private final CommentAreaService commentAreaService;
 
-    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoService) {
+    public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoService, CommentServiceImpl commentServiceImpl, CommentAreaService commentAreaService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.articleService = articleService;
@@ -64,6 +70,8 @@ public class AdminController {
         this.statusUpdateService = statusUpdateService;
         this.pageService = pageService;
         this.websiteInfoService = websiteInfoService;
+        this.commentServiceImpl = commentServiceImpl;
+        this.commentAreaService = commentAreaService;
     }
 
     @PostMapping("/login")
@@ -173,8 +181,10 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('article:edit')")
     @GetMapping("/article/all")
-    public ApiResponse<List<ArticleVO>> listAllArticlesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return ApiResponse.success(articleService.getArticleListAdmin(page, pageSize));
+    public ApiResponse<PagedResponse<ArticleVO>> listAllArticlesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        List<ArticleVO> articles = articleService.getArticleListAdmin(page, pageSize);
+        long total = articleService.countAllArticles();
+        return ApiResponse.success(new PagedResponse<>(articles, total));
     }
 
     @PreAuthorize("hasAuthority('article:edit')")
@@ -192,8 +202,10 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('share:edit')")
     @GetMapping("/statusUpdate/all")
-    public ApiResponse<List<StatusUpdateVO>> listAllStatusUpdatesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return ApiResponse.success(statusUpdateService.getStatusUpdateListAdmin(page, pageSize));
+    public ApiResponse<PagedResponse<StatusUpdateVO>> listAllStatusUpdatesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        List<StatusUpdateVO> statusUpdates = statusUpdateService.getStatusUpdateListAdmin(page, pageSize);
+        long total = statusUpdateService.getStatusUpdateCount();
+        return ApiResponse.success(new PagedResponse<>(statusUpdates, total));
     }
 
     @PreAuthorize("hasAuthority('share:add')")
@@ -251,8 +263,10 @@ public class AdminController {
 
     @PreAuthorize("hasAuthority('page:edit')")
     @GetMapping("/page/all")
-    public ApiResponse<List<PageVO>> listAllPagesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
-        return ApiResponse.success(pageService.getPageListAdmin(page, pageSize));
+    public ApiResponse<PagedResponse<PageVO>> listAllPagesByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        List<PageVO> pages = pageService.getPageListAdmin(page, pageSize);
+        long total = pageService.getPageCount();
+        return ApiResponse.success(new PagedResponse<>(pages, total));
     }
 
     @PreAuthorize("hasAuthority('page:edit')")
@@ -360,4 +374,64 @@ public class AdminController {
         thread.start();
     }
 
+    @PreAuthorize("hasAuthority('comment:admin')")
+    @GetMapping("/comment/allArea")
+    public ApiResponse<List<CommentAreaVO>> listAllCommentAreasByPageAdmin() {
+        return ApiResponse.success(commentAreaService.listAllCommentArea());
+    }
+
+    @PreAuthorize("hasAuthority('comment:admin')")
+    @GetMapping("/comment/all")
+    public ApiResponse<PagedResponse<CommentVO>> listAllCommentsByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize,@RequestParam Boolean notRead) {
+        List<CommentVO> comments = notRead ? commentServiceImpl.listAllNotReadAdmin(page, pageSize) : commentServiceImpl.listAllAdmin(page, pageSize);
+        long total = notRead ? commentServiceImpl.countAllNotReadAdmin() : commentServiceImpl.countAllAdmin();
+        return ApiResponse.success(new PagedResponse<>(comments, total));
+    }
+
+    @PreAuthorize("hasAuthority('comment:admin')")
+    @GetMapping("/comment/{areaId}")
+    public ApiResponse<PagedResponse<CommentVO>> listCommentsByIdByPageAdmin(@PathVariable Long areaId, @RequestParam Integer page, @RequestParam Integer pageSize, @RequestParam Boolean notRead) {
+        List<CommentVO> comments = notRead ? commentServiceImpl.listByAreaIdNotReadAdmin(areaId, page, pageSize) : commentServiceImpl.listByAreaIdAdmin(areaId, page, pageSize);
+        long total = notRead ? commentServiceImpl.countByAreaIdNotReadAdmin(areaId) : commentServiceImpl.countByAreaIdAdmin(areaId);
+        return ApiResponse.success(new PagedResponse<>(comments, total));
+    }
+
+    // 删除评论 API
+    @PreAuthorize("hasAuthority('comment:admin')")
+    @DeleteMapping("/comment/{id}")
+    public ApiResponse<String> deleteComment(@PathVariable Long id) {
+        // 如果有子评论，则递归删除
+        Comment comment = commentServiceImpl.getById(id);
+        comment.setDeletedAt(LocalDateTime.now());
+        commentServiceImpl.updateById(comment);
+        return ApiResponse.success("删除成功");
+    }
+
+    // 置顶评论 API
+    @PreAuthorize("hasAuthority('comment:admin')")
+    @PatchMapping("/comment/top/{id}")
+    public ApiResponse<String> topComment(@PathVariable Long id) {
+        Comment comment = commentServiceImpl.getById(id);
+        if (comment != null) {
+            comment.setIsTop(!comment.getIsTop());
+            commentServiceImpl.updateById(comment);
+            return ApiResponse.success(comment.getIsTop() ? "置顶成功" : "取消置顶成功");
+        } else {
+            return ApiResponse.error(404, "评论不存在");
+        }
+    }
+
+    // 标记评论为已读 API
+    @PreAuthorize("hasAuthority('comment:admin')")
+    @PatchMapping("/comment/read/{id}")
+    public ApiResponse<String> markCommentAsRead(@PathVariable Long id) {
+        Comment comment = commentServiceImpl.getById(id);
+        if (comment != null) {
+            comment.setIsViewed(true);
+            commentServiceImpl.updateById(comment);
+            return ApiResponse.success("标记为已读成功");
+        } else {
+            return ApiResponse.error(404, "评论不存在");
+        }
+    }
 }

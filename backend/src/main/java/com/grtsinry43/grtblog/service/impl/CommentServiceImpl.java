@@ -14,6 +14,7 @@ import com.grtsinry43.grtblog.util.MD5Util;
 import com.grtsinry43.grtblog.util.MarkdownConverter;
 import com.grtsinry43.grtblog.util.UserAgentUtil;
 import com.grtsinry43.grtblog.vo.CommentVO;
+import com.grtsinry43.grtblog.vo.CommentView;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -63,37 +64,43 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @param comments 评论列表
      * @return 评论树
      */
-    public List<CommentVO> getCommentTree(List<Comment> comments) {
-        // 首先流式将 Comment 转换为 CommentVO
-        List<CommentVO> commentVOList = comments.stream().map(comment -> {
-            CommentVO commentVO = new CommentVO();
-            BeanUtils.copyProperties(comment, commentVO);
-            commentVO.setId(comment.getId().toString());
-            commentVO.setAreaId(comment.getAreaId().toString());
-            commentVO.setUserName(comment.getNickName());
-            commentVO.setAvatarUrl(comment.getAuthorId() == null ? "https://cravatar.cn/avatar/" + MD5Util.getMD5(comment.getEmail()).toLowerCase() + "?d=retro"
+    public List<CommentView> getCommentTree(List<Comment> comments) {
+        // 首先流式将 Comment 转换为 CommentView
+        List<CommentView> commentViewList = comments.stream().map(comment -> {
+            CommentView commentView = new CommentView();
+            BeanUtils.copyProperties(comment, commentView);
+            if (comment.getDeletedAt() != null) {
+                commentView.setContent("***该评论已被删除***");
+                commentView.setIsDeleted(true);
+            } else {
+                commentView.setIsDeleted(false);
+            }
+            commentView.setId(comment.getId().toString());
+            commentView.setAreaId(comment.getAreaId().toString());
+            commentView.setUserName(comment.getNickName());
+            commentView.setAvatarUrl(comment.getAuthorId() == null ? "https://cravatar.cn/avatar/" + MD5Util.getMD5(comment.getEmail()).toLowerCase() + "?d=retro"
                     : userService.getById(comment.getAuthorId()).getAvatar());
-            commentVO.setParentId(comment.getParentId() == null ? null : comment.getParentId().toString());
-            commentVO.setParentUserName(comment.getParentId() == null ? null : getById(comment.getParentId()).getNickName());
-            return commentVO;
+            commentView.setParentId(comment.getParentId() == null ? null : comment.getParentId().toString());
+            commentView.setParentUserName(comment.getParentId() == null ? null : getById(comment.getParentId()).getNickName());
+            return commentView;
         }).toList();
 
         // 构建评论映射
-        Map<String, CommentVO> commentVOMap = commentVOList.stream()
-                .collect(Collectors.toMap(CommentVO::getId, commentVO -> commentVO));
+        Map<String, CommentView> commentVOMap = commentViewList.stream()
+                .collect(Collectors.toMap(CommentView::getId, commentView -> commentView));
 
         // 组装评论树
-        List<CommentVO> commentTree = new ArrayList<>();
-        for (CommentVO commentVO : commentVOList) {
-            String parentId = commentVO.getParentId();
+        List<CommentView> commentTree = new ArrayList<>();
+        for (CommentView commentView : commentViewList) {
+            String parentId = commentView.getParentId();
             if (parentId == null) {
                 // 顶级评论
-                commentTree.add(commentVO);
+                commentTree.add(commentView);
             } else {
                 // 子评论，添加到父评论的子评论列表
-                CommentVO parentComment = commentVOMap.get(parentId);
+                CommentView parentComment = commentVOMap.get(parentId);
                 if (parentComment != null) {
-                    parentComment.getChildren().add(commentVO);
+                    parentComment.getChildren().add(commentView);
                 }
             }
         }
@@ -101,7 +108,7 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
-    public CommentVO addNewComment(CommentNotLoginForm form, String ip, String location, String ua) {
+    public CommentView addNewComment(CommentNotLoginForm form, String ip, String location, String ua) {
         System.out.println(form.toString());
 
         String os = UserAgentUtil.extractOS(ua);
@@ -125,14 +132,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         save(comment);
         // 这里处理一下评论内容，如果有父评论，就发送邮件通知
         commentEmailNotificationHandle(comment);
-        CommentVO vo = new CommentVO();
+        CommentView vo = new CommentView();
         BeanUtils.copyProperties(comment, vo);
         socketIOService.broadcastNotification("有新的评论发布，作者：" + comment.getNickName() + "，内容：" + comment.getContent() + "，评论区：" + comment.getAreaId() + "，快去围观吧！");
         return vo;
     }
 
     @Override
-    public CommentVO addNewCommentLogin(User user, CommentLoginForm form, String ip, String location, String ua) {
+    public CommentView addNewCommentLogin(User user, CommentLoginForm form, String ip, String location, String ua) {
         String os = UserAgentUtil.extractOS(ua);
 
         String browser = UserAgentUtil.extractBrowser(ua);
@@ -157,14 +164,14 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         save(comment);
         // 这里处理一下评论内容，如果有父评论，就发送邮件通知
         commentEmailNotificationHandle(comment);
-        CommentVO vo = new CommentVO();
+        CommentView vo = new CommentView();
         BeanUtils.copyProperties(comment, vo);
         socketIOService.broadcastNotification("有新的评论发布，作者：" + comment.getNickName() + "，内容：" + comment.getContent() + "，评论区：" + comment.getAreaId() + "，快去围观吧！");
         return vo;
     }
 
     @Override
-    public List<CommentVO> listCommentByArticleId(String shortUrl) {
+    public List<CommentView> listCommentByArticleId(String shortUrl) {
         Article article = articleService.getBaseMapper().getArticleByShortUrl(shortUrl);
         Long commentId = article.getCommentId();
         List<Comment> comments = list(new QueryWrapper<Comment>().lambda().eq(Comment::getAreaId, commentId));
@@ -172,16 +179,17 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     }
 
     @Override
-    public List<CommentVO> getListById(Long id, int page, int pageSize) {
+    public List<CommentView> getListById(Long id, int page, int pageSize) {
         // 查询所有评论
         List<Comment> allComments = list(new QueryWrapper<Comment>()
                 .lambda()
                 .eq(Comment::getAreaId, id)
+                .orderByDesc(Comment::getIsTop) // 先按置顶字段降序排列
                 .orderByAsc(Comment::getParentId)
                 .orderByDesc(Comment::getCreatedAt));
 
         // 构建评论树
-        List<CommentVO> commentTree = getCommentTree(allComments);
+        List<CommentView> commentTree = getCommentTree(allComments);
 
         // 进行分页处理
         int fromIndex = (page - 1) * pageSize;
@@ -238,5 +246,67 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
                 }
             }
         }
+    }
+
+    public List<CommentVO> listAllAdmin(int page, int pageSize) {
+        List<Comment> comments = list(new QueryWrapper<Comment>()
+                .orderByDesc("created_at")
+                .isNull("deleted_at")
+                .last("LIMIT " + (page - 1) * pageSize + "," + pageSize));
+        return comments.stream().map(this::convertToCommentVO).collect(Collectors.toList());
+    }
+
+    public List<CommentVO> listByAreaIdAdmin(Long areaId, int page, int pageSize) {
+        List<Comment> comments = list(new QueryWrapper<Comment>()
+                .lambda()
+                .eq(Comment::getAreaId, areaId)
+                .orderByDesc(Comment::getCreatedAt)
+                .last("LIMIT " + (page - 1) * pageSize + "," + pageSize));
+        return comments.stream().map(this::convertToCommentVO).collect(Collectors.toList());
+    }
+
+    public List<CommentVO> listAllNotReadAdmin(int page, int pageSize) {
+        List<Comment> comments = list(new QueryWrapper<Comment>()
+                .lambda()
+                .eq(Comment::getIsViewed, false)
+                .orderByDesc(Comment::getCreatedAt)
+                .last("LIMIT " + (page - 1) * pageSize + "," + pageSize));
+        return comments.stream().map(this::convertToCommentVO).collect(Collectors.toList());
+    }
+
+    public List<CommentVO> listByAreaIdNotReadAdmin(Long areaId, int page, int pageSize) {
+        List<Comment> comments = list(new QueryWrapper<Comment>()
+                .lambda()
+                .eq(Comment::getAreaId, areaId)
+                .eq(Comment::getIsViewed, false)
+                .orderByDesc(Comment::getCreatedAt)
+                .last("LIMIT " + (page - 1) * pageSize + "," + pageSize));
+        return comments.stream().map(this::convertToCommentVO).collect(Collectors.toList());
+    }
+
+    public long countAllAdmin() {
+        return count(new QueryWrapper<Comment>());
+    }
+
+    public long countAllNotReadAdmin() {
+        return count(new QueryWrapper<Comment>().lambda().eq(Comment::getIsViewed, false));
+    }
+
+    public long countByAreaIdAdmin(Long areaId) {
+        return count(new QueryWrapper<Comment>().lambda().eq(Comment::getAreaId, areaId));
+    }
+
+    public long countByAreaIdNotReadAdmin(Long areaId) {
+        return count(new QueryWrapper<Comment>().lambda().eq(Comment::getAreaId, areaId).eq(Comment::getIsViewed, false));
+    }
+
+    private CommentVO convertToCommentVO(Comment comment) {
+        CommentVO commentVO = new CommentVO();
+        BeanUtils.copyProperties(comment, commentVO);
+        commentVO.setId(comment.getId().toString());
+        commentVO.setAuthorId(commentVO.getAuthorId());
+        commentVO.setAreaId(comment.getAreaId().toString());
+        commentVO.setParentId(comment.getParentId() == null ? null : comment.getParentId().toString());
+        return commentVO;
     }
 }
