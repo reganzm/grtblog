@@ -11,8 +11,11 @@ import java.util.List;
  */
 @Data
 public class NavMenuVO {
+    private Long id;
     private String name;
     private Boolean isArticle;
     private String href;
+    private Integer sort;
+    private Long parentId;
     private List<NavMenuVO> children;
 }

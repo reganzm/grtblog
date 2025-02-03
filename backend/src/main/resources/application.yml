@@ -23,6 +23,7 @@ spring:
 
 # mybatis-plus configuration
 mybatis-plus:
+  type-handlers-package: com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
   global-config:
     sequence:
       datacenter-id: 1

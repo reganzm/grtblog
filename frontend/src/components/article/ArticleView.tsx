@@ -52,10 +52,13 @@ const ArticleView = ({post}: { post: Post }) => {
     return (
         <div className={clsx(styles.article, article_font.className)}>
             <ScrollHandler/>
-            {post.toc && <FloatingTocMobile toc={JSON.parse(post.toc)}/>}
+            {post.toc && <FloatingTocMobile
+                type={"article"} targetId={post.id}
+                toc={JSON.parse(post.toc)}/>}
             <div className={styles.articleContainer}>
                 <aside className={styles.tocContainer}>
                     {post.toc && <Toc toc={JSON.parse(post.toc)} commentId={post.commentId} likes={post.likes}
+                                      targetId={post.id} type={"article"}
                                       comments={post.comments}/>}
                 </aside>
                 <main className={styles.articleContent}>

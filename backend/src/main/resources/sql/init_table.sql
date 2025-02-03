@@ -597,3 +597,20 @@ CREATE TABLE IF NOT EXISTS `oauth2_client_registration`
     redirect_uri    VARCHAR(255) NOT NULL,
     client_name     VARCHAR(255) NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS `like_record`
+(
+    `id`         BIGINT                            NOT NULL AUTO_INCREMENT COMMENT '点赞记录ID，会由雪花算法生成',
+    `type`       ENUM ('article', 'moment','page') NOT NULL COMMENT '点赞类型',
+    `target_id`  BIGINT                            NOT NULL COMMENT '点赞目标ID',
+    `user_id`    VARCHAR(45)                       NOT NULL COMMENT '点赞用户ID，如果登录则userId，没有则浏览器指纹',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '点赞时间',
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `footer_section`
+(
+    id    BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    links JSON         NOT NULL
+);

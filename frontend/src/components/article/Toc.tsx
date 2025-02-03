@@ -12,6 +12,8 @@ import {ChatBubbleIcon, HeartIcon} from "@radix-ui/react-icons";
 import {ShareIcon} from "@heroicons/react/24/outline";
 import {clsx} from "clsx";
 import {article_font} from "@/app/fonts/font";
+import {likeRequest} from "@/api/like";
+import {toast} from "react-toastify";
 
 export type TocItem = {
     level: number
@@ -21,17 +23,20 @@ export type TocItem = {
     children?: TocItem[]
 }
 
-export default function Toc({toc, commentId, likes, comments}: {
+export default function Toc({toc, commentId, targetId, likes, comments, type}: {
     toc: TocItem[],
     commentId: string,
+    targetId: string,
     likes: number,
     comments: number
+    type: "article" | "moment" | "page"
 }) {
     const isMobile = useIsMobile();
     const [activeAnchor, setActiveAnchor] = useState<string | null>(null);
     const {theme} = useTheme();
     const isDark = theme === 'dark';
     const [curTheme, setCurTheme] = useState('');
+    const [likesNum, setLikesNum] = useState(likes);
     const tocRef = useRef<HTMLDivElement>(null);
     const [activeItemRef, setActiveItemRef] = useState<HTMLLIElement | null>(null);
     const [isCommentOpen, setIsCommentOpen] = React.useState(false);
@@ -201,6 +206,17 @@ export default function Toc({toc, commentId, likes, comments}: {
         ));
     }, [isDark, itemVariants, containerVariants, setItemRef]);
 
+    const likeHandle = () => {
+        likeRequest(type, targetId).then((res) => {
+            if (res) {
+                toast('点赞成功，感谢您的支持！');
+                setLikesNum(+res);
+            } else {
+                toast('您已经点过赞了捏！感谢！', {type: 'info'});
+            }
+        });
+    };
+
     if (isMobile) return null;
 
     return (
@@ -221,8 +237,8 @@ export default function Toc({toc, commentId, likes, comments}: {
                 </motion.div>
             </div>
             <div className={clsx(article_font.className, "ml-4 mt-4 flex gap-2")}>
-                <Button onClick={() => setIsCommentOpen(true)} variant={'soft'}>
-                    <HeartIcon/> <span className="text-sm ml-0.5">{likes}</span>
+                <Button onClick={likeHandle} variant={'soft'}>
+                    <HeartIcon/> <span className="text-sm ml-0.5">{likesNum}</span>
                 </Button>
                 <Button onClick={() => setIsCommentOpen(true)} variant={'soft'}>
                     <ChatBubbleIcon/> <span className="text-sm ml-0.5">{comments}</span>

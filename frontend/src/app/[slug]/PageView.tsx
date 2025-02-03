@@ -19,6 +19,7 @@ import ArticleScrollSync from "@/components/article/ArticleScrollSync";
 import {Calendar, Clock, Eye} from "lucide-react";
 
 export type PageVO = {
+    id: string;
     commentId: string,
     comments: number,
     content: string;
@@ -42,7 +43,8 @@ const PageView = ({page}: { page: PageVO }) => {
     return (
         <div className={clsx(styles.articleNoPadding, article_font.className)}>
             <ScrollHandler/>
-            {page.toc && <FloatingTocMobile toc={JSON.parse(page.toc)}/>}
+            {page.toc && <FloatingTocMobile type={"page"} targetId={page.id}
+                                            toc={JSON.parse(page.toc)}/>}
             <div className={styles.articleContainer}>
                 <main className={styles.articleContent}>
                     <ArticleScrollSync post={page} type={"页面"}>
@@ -133,6 +135,7 @@ const PageView = ({page}: { page: PageVO }) => {
                 </main>
                 <aside className={styles.tocContainer}>
                     {page.toc && <Toc toc={JSON.parse(page.toc)} commentId={page.commentId} likes={page.likes}
+                                      targetId={page.id} type={"page"}
                                       comments={page.comments}/>}
                 </aside>
             </div>

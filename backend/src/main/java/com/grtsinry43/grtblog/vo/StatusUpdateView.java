@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
  */
 @Data
 public class StatusUpdateView {
+    private String id;
     /**
      * 说说短链接
      */

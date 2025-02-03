@@ -10,6 +10,7 @@
     "postbuild": "next-sitemap"
   },
   "dependencies": {
+    "@fingerprintjs/fingerprintjs": "^4.5.1",
     "@heroicons/react": "^2.1.5",
     "@hey-api/client-axios": "^0.2.9",
     "@hey-api/client-fetch": "^0.4.2",

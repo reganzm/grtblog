@@ -11,8 +11,10 @@ import useIsMobile from '@/hooks/useIsMobile';
 import {motion} from 'framer-motion';
 import emitter from '@/utils/eventBus';
 import {HeartIcon, PinTopIcon} from "@radix-ui/react-icons";
+import {likeRequest} from "@/api/like";
+import {toast} from "react-toastify";
 
-const FloatingTocMobile = ({toc}: { toc: TocItem[] }) => {
+const FloatingTocMobile = ({toc, targetId, type}: { toc: TocItem[], targetId: string, type: string }) => {
     const isMobile = useIsMobile();
     const [anchors, setAnchors] = useState([0, 0, 0]);
     const [showPanel, setShowPanel] = useState(false);
@@ -82,6 +84,16 @@ const FloatingTocMobile = ({toc}: { toc: TocItem[] }) => {
             timeout = setTimeout(() => func(...args), wait);
         };
     }, []);
+
+    const likeHandle = () => {
+        likeRequest(type, targetId).then((res) => {
+            if (res) {
+                toast('点赞成功，感谢您的支持！');
+            } else {
+                toast('您已经点过赞了捏！感谢！', {type: 'info'});
+            }
+        });
+    };
 
     const getDoms = useCallback((items: TocItem[]): HTMLElement[] => {
         const doms: HTMLElement[] = [];
@@ -204,7 +216,7 @@ const FloatingTocMobile = ({toc}: { toc: TocItem[] }) => {
                     borderRadius: '5px',
                     border: '1px solid rgba(var(--foreground), 0.1)',
                 }}
-                onClick={showPanelHandle}
+                onClick={likeHandle}
             >
                 <HeartIcon height={24} width={24}/>
             </IconButton>

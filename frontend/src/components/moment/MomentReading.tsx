@@ -15,8 +15,10 @@ import CodeBlock from "@/components/CodeBlock";
 import ArticleTopPaddingAnimate from "@/components/article/ArticleTopPaddingAnimate";
 import remarkGfm from 'remark-gfm';
 import BackgroundGrid from "@/components/moment/BackgroundGrid";
+import FloatingTocMobile from "@/components/article/FloatingTocMobile";
 
 export interface MomentView {
+    id: string;
     authorName: string;
     categoryName: string;
     toc: string;
@@ -58,6 +60,8 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
                     minWidth: "0",
                 }}>
                     <ArticleScrollSync post={moment} type={"记录"}>
+                        {moment.toc && <FloatingTocMobile type={"page"} targetId={moment.id}
+                                                          toc={JSON.parse(moment.toc)}/>}
                         <div
                             className={clsx(styles.moment, "mx-auto bg-white dark:bg-black rounded-lg overflow-hidden")}>
                             <BackgroundGrid/>
@@ -210,6 +214,7 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
                     overflowX: "hidden",
                 }}>
                     <Toc toc={JSON.parse(moment.toc)} commentId={moment.commentId} likes={moment.likes}
+                         targetId={moment.id} type={"moment"}
                          comments={moment.likes}/>
                 </aside>
             </div>

@@ -1,6 +1,10 @@
 package com.grtsinry43.grtblog.service;
 
+import com.grtsinry43.grtblog.dto.NavMenuBatchUpdateDTO;
+import com.grtsinry43.grtblog.dto.NavMenuDTO;
+import com.grtsinry43.grtblog.entity.NavMenu;
 import com.grtsinry43.grtblog.vo.NavMenuVO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,4 +20,16 @@ public interface INavMenuService {
      * @return 导航菜单
      */
     List<NavMenuVO> getNavMenu();
+
+    @Transactional
+    NavMenu createNavMenu(NavMenuDTO dto);
+
+    @Transactional
+    NavMenu updateNavMenu(Long id, NavMenuDTO dto);
+
+    @Transactional
+    void deleteNavMenu(Long id);
+
+    @Transactional
+    void batchUpdateNavMenus(List<NavMenuBatchUpdateDTO> updates);
 }

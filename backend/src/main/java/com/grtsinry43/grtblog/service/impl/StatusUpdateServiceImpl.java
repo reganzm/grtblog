@@ -131,6 +131,7 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         StatusUpdate statusUpdate = baseMapper.getStatusUpdateByShortUrl(shortUrl);
         StatusUpdateView preview = new StatusUpdateView();
         BeanUtils.copyProperties(statusUpdate, preview);
+        preview.setId(statusUpdate.getId().toString());
         preview.setImages(statusUpdate.getImg() != null ? statusUpdate.getImg().split(",") : new String[0]);
         preview.setAuthorName(this.userMapper.selectById(statusUpdate.getAuthorId()).getNickname());
         preview.setAuthorAvatar(this.userMapper.selectById(statusUpdate.getAuthorId()).getAvatar());

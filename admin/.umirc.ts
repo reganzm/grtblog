@@ -136,6 +136,23 @@ export default defineConfig({
       component: './Friend',
     },
     {
+      name: '自定义',
+      path: '/custom',
+      icon: 'SettingOutlined',
+      routes: [
+        {
+          name: '导航菜单',
+          path: '/custom/nav',
+          component: './Custom/NavMenu',
+        },
+        {
+          name: '页脚设置',
+          path: '/custom/footer',
+          component: './Custom/Footer',
+        },
+      ],
+    },
+    {
       name: '插件',
       path: '/plugin',
       icon: 'AppstoreAddOutlined',
