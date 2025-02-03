@@ -11,9 +11,7 @@
 
 ## 简单叙述
 
-前端部分使用的是 Next.js 框架，可以在 [Release](https://github.com/grtsinry43/grtblog/releases) 中下载前端的 zip 包。
-
-如果你来的比较早，或是正在试用技术预览版本（TP），只需按照以下部分进行构建：
+前端部分使用的是 Next.js 框架，需要从源码构建，只需按照以下部分进行操作：
 
 ## 构建
 

@@ -10,7 +10,7 @@
 
 后端部分使用的是 Spring Boot 框架，可以在 [Release](https://github.com/grtsinry43/grtblog/releases) 中下载后端的 jar 包。
 
-如果你来的比较早，或是正在试用技术预览版本（TP），只需按照以下部分进行构建：
+如果你需要从源码构建，只需按照以下部分进行操作：
 
 ## 构建
 
@@ -26,6 +26,9 @@
 spring:
   application:
     name: grtblog-backend
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/your_db
   datasource:
     url: jdbc:mysql://localhost:3306/your_db?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver

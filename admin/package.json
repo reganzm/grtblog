@@ -1,5 +1,6 @@
 {
   "private": true,
+  "version": "1.0.0-beta",
   "author": "grtsinry43 <grtsinry43@outlook.com>",
   "scripts": {
     "dev": "max dev",

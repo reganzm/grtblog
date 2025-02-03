@@ -73,8 +73,7 @@ const Footer: React.FC = () => {
         )}
         <div className={styles.copyright}>
           <p>
-            © 2024-2025 | Powered by Grtblog / Under MIT License | 版本: 0.2.0 | SSR:{' '}
-            {isSSR ? '是' : '否'}
+            © 2024-2025 | Powered by Grtblog / Under MIT License | 版本: 1.0.0-beta
           </p>
         </div>
       </div>
