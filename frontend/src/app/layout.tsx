@@ -16,6 +16,8 @@ import {WebsiteInfoProvider} from "@/app/website-info-provider";
 import {OpenPanelComponent} from "@openpanel/nextjs";
 import GlobalNotification from "@/components/notification/GlobalNotification";
 import UpdateNotification from "@/components/notification/UpdateNotification";
+import {ToastContainer} from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const websiteInfo: WebsiteInfo = await getWebsiteInfo({next: {revalidate: 60}});
 
@@ -58,6 +60,7 @@ export default async function RootLayout({
                             </WebsiteInfoProvider>
                             <GlobalNotification/>
                             <UpdateNotification/>
+                            <ToastContainer position="top-center"/>
                         </Theme>
                     </ThemeProvider>
                 </StoreProvider>

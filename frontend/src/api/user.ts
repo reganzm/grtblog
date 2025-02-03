@@ -25,15 +25,24 @@ export function userRegister(data: LoginForm, captcha: string) {
 }
 
 export function updateNickname(nickname: string) {
-    const formData = new FormData();
-    formData.append('nickname', nickname);
-
     return request('/user/update/nickname', {
         method: 'PATCH',
-        body: formData,
+        body: JSON.stringify({nickname}),
     });
 }
 
 export function userInfo() {
     return request('/user/info');
+}
+
+export function resetPassword(token: string, newPassword: string) {
+    return request(`/user/reset-password?token=${token}&newPassword=${newPassword}`, {
+        method: 'POST',
+    });
+}
+
+export function resetPasswordRequest(captcha: string, email: string) {
+    return request(`/user/request-password-reset?captcha=${captcha}&email=${email}`, {
+        method: 'POST',
+    });
 }

@@ -45,7 +45,9 @@ const ImportMd: React.FC = () => (
         支持单个或批量上传，支持 Hexo 的包含 yaml 头部的 md 文件
       </p>
     </Dragger>
-    我们将自动处理您源文件的 Meta 信息，解析文章并发布，快速完成文章迁移与配置
+    <div style={{ marginTop: '2em' }}>
+      我们将自动处理您源文件的 Meta 信息，解析文章并发布，快速完成文章迁移与配置
+    </div>
   </PageContainer>
 );
 

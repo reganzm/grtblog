@@ -6,15 +6,23 @@ import {Theme, Box, Flex, Text, Avatar, Card, Button, Dialog, TextField} from '@
 import {format} from 'date-fns';
 import {UserInfo} from "@/redux/userSlice";
 import {updateNickname} from "@/api/user";
+import {useRouter} from "next/navigation";
+import {toast} from "react-toastify";
 
 const LoginUserInformation = () => {
+    const router = useRouter();
     const user = useAppSelector(state => state.user);
     const userInfo: UserInfo = user.userInfo;
     const [newNickname, setNewNickname] = React.useState<string>("");
 
     const nicknameUpdateHandle = (newNickname: string) => {
-        updateNickname(newNickname).then(() => {
-            location.reload();
+        updateNickname(newNickname).then((res) => {
+            if (res) {
+                toast('昵称更新成功', {type: 'success'});
+            } else {
+                toast('昵称更新失败', {type: 'error'});
+            }
+            router.refresh();
         })
     }
 

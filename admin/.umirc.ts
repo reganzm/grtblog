@@ -123,11 +123,6 @@ export default defineConfig({
       path: '/tools',
       routes: [
         {
-          name: '全部工具',
-          path: '/tools/list',
-          component: './Tool',
-        },
-        {
           name: '从文件导入',
           path: '/tools/addArticleFromFile',
           component: './Tool/ImportMd',
@@ -138,13 +133,7 @@ export default defineConfig({
       name: '友链',
       path: '/friend',
       icon: 'LinkOutlined',
-      routes: [
-        {
-          name: '友链列表',
-          path: '/friend/list',
-          component: './Friend/FriendList',
-        },
-      ],
+      component: './Friend',
     },
     {
       name: '插件',

@@ -2,11 +2,14 @@ package com.grtsinry43.grtblog.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.grtsinry43.grtblog.GrtblogBackendApplication;
+import com.grtsinry43.grtblog.common.ErrorCode;
 import com.grtsinry43.grtblog.common.PagedResponse;
 import com.grtsinry43.grtblog.dto.*;
 import com.grtsinry43.grtblog.entity.Category;
 import com.grtsinry43.grtblog.entity.Comment;
+import com.grtsinry43.grtblog.entity.FriendLink;
 import com.grtsinry43.grtblog.entity.User;
+import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
 import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.PageService;
@@ -61,6 +64,8 @@ public class AdminController {
     private final WebsiteInfoServiceImpl websiteInfoService;
     private final CommentServiceImpl commentServiceImpl;
     private final CommentAreaService commentAreaService;
+    @Autowired
+    private FriendLinkServiceImpl friendLinkServiceImpl;
 
     public AdminController(UserServiceImpl userService, AuthenticationManager authenticationManager, ArticleServiceImpl articleService, CategoryServiceImpl categoryService, StatusUpdateServiceImpl statusUpdateService, PageService pageService, WebsiteInfoServiceImpl websiteInfoService, CommentServiceImpl commentServiceImpl, CommentAreaService commentAreaService) {
         this.userService = userService;
@@ -433,5 +438,54 @@ public class AdminController {
         } else {
             return ApiResponse.error(404, "评论不存在");
         }
+    }
+
+    @PreAuthorize("hasAuthority('friend_link:edit')")
+    @GetMapping("/friendLink/all")
+    public ApiResponse<PagedResponse<FriendLinkVO>> listAllFriendLinksByPageAdmin(@RequestParam Integer page, @RequestParam Integer pageSize) {
+        List<FriendLinkVO> friendLinks = friendLinkServiceImpl.getFriendLinkListAdmin(page, pageSize);
+        long total = friendLinkServiceImpl.getFriendLinkCount();
+        return ApiResponse.success(new PagedResponse<>(friendLinks, total));
+    }
+
+    @PreAuthorize("hasAuthority('friend_link:add')")
+    @PostMapping("/friendLink")
+    public ApiResponse<FriendLinkView> addFriendLink(@RequestBody FriendLinkRequest friendLinkRequest) {
+        Long userId = Objects.requireNonNull(SecurityUtils.getCurrentUser()).getId();
+        FriendLinkView friendLinkView = friendLinkServiceImpl.addFriendLinkAdmin(friendLinkRequest, userId);
+        return ApiResponse.success(friendLinkView);
+    }
+
+    @PreAuthorize("hasAuthority('friend_link:edit')")
+    @PatchMapping("/friendLink/{id}")
+    public ApiResponse<FriendLinkView> updateFriendLink(@PathVariable Long id, @RequestBody FriendLinkRequest friendLinkRequest) {
+        FriendLinkView friendLinkView = friendLinkServiceImpl.updateFriendLinkAdmin(id, friendLinkRequest);
+        return ApiResponse.success(friendLinkView);
+    }
+
+    @PreAuthorize("hasAuthority('friend_link:edit')")
+    @PatchMapping("/friendLink/toggle/{id}")
+    public ApiResponse<String> toggleFriendLink(@PathVariable Long id) {
+        FriendLink friendLink = friendLinkServiceImpl.getById(id);
+        if (friendLink == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND);
+        } else {
+            friendLink.setIsActive(!friendLink.getIsActive());
+            friendLinkServiceImpl.updateById(friendLink);
+        }
+        return ApiResponse.success(friendLink.getIsActive() ? "启用成功" : "禁用成功");
+    }
+
+    @PreAuthorize("hasAuthority('friend_link:delete')")
+    @DeleteMapping("/friendLink/{id}")
+    public ApiResponse<String> deleteFriendLink(@PathVariable Long id) {
+        FriendLink friendLink = friendLinkServiceImpl.getById(id);
+        if (friendLink == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND);
+        } else {
+            friendLink.setDeletedAt(LocalDateTime.now());
+            friendLinkServiceImpl.updateById(friendLink);
+        }
+        return ApiResponse.success("删除成功");
     }
 }

@@ -3,8 +3,10 @@ package com.grtsinry43.grtblog.config;
 import com.grtsinry43.grtblog.security.*;
 import com.grtsinry43.grtblog.service.CustomOAuth2UserService;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -14,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -66,7 +69,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable) // 防止跨站请求伪造
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)) // 取消 session
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/user/login", "/user/logout", "/oauth2/authorization/**", "/login**", "/captcha", "/admin/login", "/page-view", "/page/**", "/search/**", "/websiteInfo/**", "/uploads/**", "/friendLink", "/feed", "/notification", "/plugins/**", "/onlineStatus", "/overview", "/recommend", "/user-behavior/**", "/thinking/**").permitAll() // 登录和未登录的人都可以访问
+                        .requestMatchers("/user/login", "/user/logout", "/user/request-password-reset", "/user/reset-password", "/oauth2/authorization/**", "/login**", "/captcha", "/admin/login", "/page-view", "/page/**", "/search/**", "/websiteInfo/**", "/uploads/**", "/friendLink", "/feed", "/notification", "/plugins/**", "/onlineStatus", "/overview", "/recommend", "/user-behavior/**", "/thinking/**").permitAll() // 登录和未登录的人都可以访问
                         // 这里感觉还是把对外的接口放在统一的路径，而需要权限认证和登录的或者管理员接口每个都需要校验
                         .requestMatchers("/article/**", "/statusUpdate/**", "/comment/**", "/tag/**", "/nav/**", "/category/**", "/archive").permitAll()
                         // TODO : 仅开发使用

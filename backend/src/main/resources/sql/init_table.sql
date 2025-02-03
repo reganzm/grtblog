@@ -546,7 +546,7 @@ CREATE TABLE IF NOT EXISTS `friend_link`
     `logo`        VARCHAR(255) COMMENT '友链Logo',
     `description` TEXT COMMENT '友链描述',
     `user_id`     BIGINT COMMENT '友链所有者ID',
-    `is_active`   TINYINT   DEFAULT 1 COMMENT '友链是否激活（0：未激活，1：已激活）',
+    `is_active`   TINYINT   DEFAULT 0 COMMENT '友链是否激活（0：未激活，1：已激活）',
     `created_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '友链创建时间',
     `updated_at`  TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '友链更新时间',
     `deleted_at`  TIMESTAMP COMMENT '友链删除时间（软删除），如果不为空则表示已删除',
@@ -586,3 +586,14 @@ CREATE TABLE IF NOT EXISTS `thinking`
 
 INSERT INTO `thinking` (`id`, `content`, `author`, `created_at`)
 VALUES (1, '我们终此一生，就是摆脱他人的期待，找到真正的自己', '原创', NOW());
+
+CREATE TABLE IF NOT EXISTS `oauth2_client_registration`
+(
+    id              BIGINT AUTO_INCREMENT PRIMARY KEY,
+    registration_id VARCHAR(255) NOT NULL,
+    client_id       VARCHAR(255) NOT NULL,
+    client_secret   VARCHAR(255) NOT NULL,
+    scope           VARCHAR(255) NOT NULL,
+    redirect_uri    VARCHAR(255) NOT NULL,
+    client_name     VARCHAR(255) NOT NULL
+);

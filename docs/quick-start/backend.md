@@ -42,6 +42,16 @@ spring:
   web:
     resources:
       static-locations: file:/path/to/your/backend/uploads/
+  mail:
+    host: smtp.larksuite.com
+    port: 587
+    username: username@your_domain.com
+    password: your_password
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+    default-encoding: UTF-8
   security:
     oauth2:
       client:

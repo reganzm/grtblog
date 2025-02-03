@@ -87,6 +87,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         } else {
             article.setShortUrl(articleDTO.getShortUrl());
         }
+        // 查看是否有重复的短链接
+        if (lambdaQuery().eq(Article::getShortUrl, article.getShortUrl()).count() > 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
         // 处理标签
         String[] tagNames = articleDTO.getTags().split(",");
         Long[] tagIds = Arrays.stream(tagNames)
@@ -140,6 +144,10 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         BeanUtils.copyProperties(articleDTO, article);
         article.setCategoryId(Long.parseLong(articleDTO.getCategoryId()));
         article.setAuthorId(userId);
+        // 查看是否有重复的短链接
+        if (lambdaQuery().eq(Article::getShortUrl, articleDTO.getShortUrl()).count() > 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
         // 解析文章并生成目录
         String toc = null;
         try {
@@ -404,6 +412,13 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
         // 创建并保存文章
         Article article = new Article();
+        String shortUrl = ArticleParser.generateShortUrl((String) metadata.get("title"));
+        // 查看是否有重复的短链接
+        if (lambdaQuery().isNull(Article::getDeletedAt).eq(Article::getShortUrl, shortUrl).count() > 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        } else {
+            article.setShortUrl(shortUrl);
+        }
         article.setToc(toc);
         article.setTitle(metadata.get("title") == null ? "未命名" : (String) metadata.get("title"));
         User author = userService.getUserByNickname((String) metadata.get("author"));
@@ -419,7 +434,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         article.setIsTop(false);
         article.setIsHot(false);
         article.setIsOriginal(true);
-        article.setShortUrl(ArticleParser.generateShortUrl(article.getTitle()));
+        article.setShortUrl(shortUrl);
         this.baseMapper.insert(article);
         articleTagService.syncArticleTag(article.getId(), tagIds);
         this.recommendationService.updateArticleStatus(article);

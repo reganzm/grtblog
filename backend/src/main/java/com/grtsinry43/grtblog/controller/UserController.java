@@ -2,10 +2,14 @@ package com.grtsinry43.grtblog.controller;
 
 import com.grtsinry43.grtblog.dto.ApiResponse;
 import com.grtsinry43.grtblog.dto.ArticleDTO;
+import com.grtsinry43.grtblog.dto.NickNameUpdateRequest;
 import com.grtsinry43.grtblog.dto.UserRegisterDTO;
 import com.grtsinry43.grtblog.entity.Article;
+import com.grtsinry43.grtblog.entity.PasswordResetToken;
 import com.grtsinry43.grtblog.entity.User;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
+import com.grtsinry43.grtblog.service.EmailService;
+import com.grtsinry43.grtblog.service.PasswordResetTokenService;
 import com.grtsinry43.grtblog.service.impl.UserServiceImpl;
 import com.grtsinry43.grtblog.util.JwtUtil;
 import com.grtsinry43.grtblog.vo.UserVO;
@@ -21,6 +25,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -36,10 +41,14 @@ import java.util.Objects;
 public class UserController {
     private final UserServiceImpl userService;
     private final AuthenticationManager authenticationManager;
+    private final PasswordResetTokenService passwordResetTokenService;
+    private final EmailService emailService;
 
-    public UserController(UserServiceImpl userService, AuthenticationManager authenticationManager) {
+    public UserController(UserServiceImpl userService, AuthenticationManager authenticationManager, PasswordResetTokenService passwordResetTokenService, EmailService emailService) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.passwordResetTokenService = passwordResetTokenService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/login")
@@ -97,6 +106,30 @@ public class UserController {
         return ApiResponse.success(userVO);
     }
 
+    @PostMapping("/request-password-reset")
+    public ApiResponse<String> requestPasswordReset(@RequestParam String email, HttpServletRequest request) {
+        String sessionCaptcha = (String) request.getSession().getAttribute("captcha");
+        if (sessionCaptcha == null || !sessionCaptcha.equals(request.getParameter("captcha"))) {
+            return ApiResponse.error(401, "验证码错误");
+        }
+        PasswordResetToken token = passwordResetTokenService.createToken(email);
+        emailService.sendPasswordResetEmail(email, token.getToken());
+        return ApiResponse.success("重置密码邮件已发送");
+    }
+
+    @PostMapping("/reset-password")
+    public ApiResponse<String> resetPassword(@RequestParam String token, @RequestParam String newPassword) {
+        PasswordResetToken resetToken = passwordResetTokenService.getToken(token);
+
+        if (resetToken == null || resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            return ApiResponse.error(400, "无效的重置密码令牌");
+        }
+
+         userService.updatePassword(resetToken.getEmail(), newPassword);
+
+        return ApiResponse.success("密码重置成功");
+    }
+
     @GetMapping("/info")
     public ApiResponse<UserVO> getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -113,7 +146,7 @@ public class UserController {
     }
 
     @PatchMapping("/update/nickname")
-    public ApiResponse<UserVO> updateNickname(@RequestBody String nickname) {
+    public ApiResponse<UserVO> updateNickname(@RequestBody NickNameUpdateRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         LoginUserDetails principal = (LoginUserDetails) authentication.getPrincipal();
         if (Objects.isNull(principal)) {
@@ -121,7 +154,7 @@ public class UserController {
         }
         // 这里说明登录成功，终于能获取到 User 对象了
         User user1 = principal.getUser();
-        user1.setNickname(nickname);
+        user1.setNickname(request.getNickName());
         userService.updateById(user1);
         UserVO userVO = new UserVO();
         BeanUtils.copyProperties(user1, userVO);

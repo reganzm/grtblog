@@ -11,6 +11,7 @@ import EmojiPicker from "emoji-picker-react";
 import {useAppSelector} from "@/redux/hooks";
 import {useTheme} from "next-themes";
 import {PickerConfigInternal} from "emoji-picker-react/src/config/config";
+import {toast} from "react-toastify";
 
 const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
     const [form, setForm] = useState({
@@ -52,7 +53,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                 parentId: parentId || '',
             }).then((res) => {
                 if (res) {
-
+                    toast('评论成功', {type: 'success'});
                     // 使用事件总线触发评论列表的刷新
                     emitter.emit('refreshCommentList');
                 }
@@ -64,7 +65,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                 parentId: parentId || '',
             }).then((res) => {
                 if (res) {
-
+                    toast('评论成功', {type: 'success'});
                     // 使用事件总线触发评论列表的刷新
                     emitter.emit('refreshCommentList');
                 }

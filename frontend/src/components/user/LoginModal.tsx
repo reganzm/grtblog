@@ -15,6 +15,8 @@ import {FaGoogle} from 'react-icons/fa';
 import {userLogin, userRegister} from '@/api/user';
 import {UserInfo} from '@/redux/userSlice';
 import {useAppDispatch} from '@/redux/hooks';
+import Link from "next/link";
+import {toast} from "react-toastify";
 
 const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void }) => {
     const [loginForm, setLoginForm] = useState({
@@ -39,15 +41,16 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
     const submitLoginForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!loginForm.userEmail || !loginForm.password) {
+            toast('请填写所有必填字段', {type: 'error'});
             setError('请填写所有必填字段');
             return;
         }
         userLogin(loginForm, captcha).then((res) => {
             if (!res) {
+                toast('登录失败，请检查用户名密码或验证码', {type: 'error'});
                 setError('登录失败，请检查用户名密码或验证码');
                 setCaptchaRandom(Math.random());
             } else {
-
                 dispatch({type: 'user/initUserInfo', payload: res as UserInfo});
                 dispatch({type: 'user/changeLoginStatus', payload: true});
                 onClose();
@@ -58,19 +61,22 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
     const submitRegisterForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (!registerForm.userEmail || !registerForm.password || !registerForm.confirmPassword) {
+            toast('请填写所有必填字段', {type: 'error'});
             setError('请填写所有必填字段');
             return;
         }
         if (registerForm.password !== registerForm.confirmPassword) {
+            toast('两次输入的密码不一致', {type: 'error'});
             setError('两次输入的密码不一致');
             return;
         }
         userRegister(registerForm, captcha).then((res) => {
             if (!res) {
+                toast('注册失败，可能是邮箱已被注册或验证码错误', {type: 'error'});
                 setError('注册失败，可能是邮箱已被注册或验证码错误');
                 setCaptchaRandom(Math.random());
             } else {
-
+                toast('注册成功，请登录', {type: 'success'});
                 setIsLoginForm(true);
                 setError('注册成功，请登录');
             }
@@ -196,6 +202,10 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                                 setCaptchaRandom(Math.random());
                                                             }}
                                                         />
+                                                    </div>
+                                                    <div className="text-sm text-center">
+                                                        忘记密码了？ <Link
+                                                        href="/my/reset-password-request"> 点击这里重置密码 </Link>
                                                     </div>
                                                     <div className={styles.formActions}>
                                                         <Button style={{marginRight: '1rem'}} type="submit">
