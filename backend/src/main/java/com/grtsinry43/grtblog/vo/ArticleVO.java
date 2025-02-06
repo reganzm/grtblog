@@ -18,6 +18,8 @@ public class ArticleVO {
 
     private String summary;
 
+    private String aiSummary;
+
     private String toc;
 
     private String content;

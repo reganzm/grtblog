@@ -18,6 +18,8 @@ public class Page {
     private Long id;
     private String title;
     private String description;
+    @TableField("ai_summary")
+    private String aiSummary;
     @TableField("ref_path")
     private String refPath;
     private Boolean enable;

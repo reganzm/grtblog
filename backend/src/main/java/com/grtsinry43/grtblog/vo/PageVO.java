@@ -14,6 +14,7 @@ public class PageVO {
     private String id;
     private String title;
     private String description;
+    private String aiSummary;
     private String refPath;
     private String toc;
     private String content;

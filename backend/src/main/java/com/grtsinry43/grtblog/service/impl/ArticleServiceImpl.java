@@ -144,10 +144,6 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         BeanUtils.copyProperties(articleDTO, article);
         article.setCategoryId(Long.parseLong(articleDTO.getCategoryId()));
         article.setAuthorId(userId);
-        // 查看是否有重复的短链接
-        if (lambdaQuery().eq(Article::getShortUrl, articleDTO.getShortUrl()).count() > 0) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
         // 解析文章并生成目录
         String toc = null;
         try {

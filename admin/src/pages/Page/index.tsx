@@ -1,3 +1,4 @@
+import AISummaryModal from '@/components/AISummaryModal';
 import PageController from '@/services/page/PageController';
 import { refreshFrontendCache } from '@/services/refersh';
 import {
@@ -7,11 +8,13 @@ import {
 } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
 import { Button, message, Popconfirm, Switch, Tooltip } from 'antd';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
   const navigate = useNavigate();
+  const [isAIModalVisible, setIsAIModalVisible] = useState<boolean>(false);
+  const [currentContentId, setCurrentContentId] = useState<string>('');
 
   const deleteArticleHandle = async (id: string) => {
     const response = await PageController.deletePage(id);
@@ -125,6 +128,16 @@ const Index = () => {
       align: 'center',
       render: (_: any, record: any) => [
         <Button
+          variant="text"
+          key="ai-summary"
+          onClick={() => {
+            setCurrentContentId(record.id);
+            setIsAIModalVisible(true);
+          }}
+        >
+          AI 摘要
+        </Button>,
+        <Button
           variant={'text'}
           key="edit"
           onClick={() => navigate(`/pages/edit/${record.id}`)}
@@ -153,6 +166,12 @@ const Index = () => {
 
   return (
     <PageContainer title={'所有页面'}>
+      <AISummaryModal
+        visible={isAIModalVisible}
+        onClose={() => setIsAIModalVisible(false)}
+        contentType={'PAGE'}
+        contentId={currentContentId}
+      />
       <ProTable
         tableStyle={{
           overflowX: 'auto',

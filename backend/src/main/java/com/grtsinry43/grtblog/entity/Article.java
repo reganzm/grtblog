@@ -34,6 +34,9 @@ public class Article implements Serializable {
     @TableField("summary")
     private String summary;
 
+    @TableField("ai_summary")
+    private String aiSummary;
+
     @TableField("toc")
     private String toc;
 

@@ -17,11 +17,13 @@ import FloatingTocMobile from "@/components/article/FloatingTocMobile";
 import Toc from "@/components/article/Toc";
 import ArticleScrollSync from "@/components/article/ArticleScrollSync";
 import {Calendar, Clock, Eye} from "lucide-react";
+import AiSummaryBlock from "@/components/article/AISummaryBlock";
 
 export type PageVO = {
     id: string;
     commentId: string,
     comments: number,
+    aiSummary: string,
     content: string;
     createdAt: string;
     description: string;
@@ -71,6 +73,7 @@ const PageView = ({page}: { page: PageVO }) => {
                         </div>
                         <ArticleTopPaddingAnimate reverse={true}/>
                         <ScrollHandler/>
+                        <AiSummaryBlock aiSummary={page.aiSummary}/>
                         <ReactMarkdown
                             className={styles.markdown}
                             rehypePlugins={[rehypeSanitize]}

@@ -24,12 +24,14 @@ import 'rehype-callouts/theme/github'
 // import rehypeKatex from "rehype-katex";
 import rehypeReact from "rehype-react";
 import UserReadReporter from "@/components/article/UserReadReporter";
+import AiSummaryBlock from "@/components/article/AISummaryBlock";
 
 export type Post = {
     id: string;
     title: string;
     content: string;
     summary: string;
+    aiSummary: string;
     categoryName: string;
     toc: string;
     authorName: string;
@@ -73,6 +75,7 @@ const ArticleView = ({post}: { post: Post }) => {
                             readingTime={readingTime}
                         />
                         <UserReadReporter articleId={post.id}/>
+                        <AiSummaryBlock aiSummary={post.aiSummary}/>
                         <ReactMarkdown
                             className={styles.markdown}
                             rehypePlugins={[

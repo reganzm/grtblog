@@ -16,11 +16,14 @@ import ArticleTopPaddingAnimate from "@/components/article/ArticleTopPaddingAnim
 import remarkGfm from 'remark-gfm';
 import BackgroundGrid from "@/components/moment/BackgroundGrid";
 import FloatingTocMobile from "@/components/article/FloatingTocMobile";
+import AiSummaryBlock from "@/components/article/AISummaryBlock";
 
 export interface MomentView {
     id: string;
     authorName: string;
     categoryName: string;
+    summary: string;
+    aiSummary: string;
     toc: string;
     comments: number;
     commentId: string;
@@ -126,6 +129,7 @@ function MomentReadingPage({moment}: { moment: MomentView }) {
 
                                 <div
                                     className={clsx(moment_font.className, "space-y-6 text-gray-800 dark:text-gray-200 leading-relaxed")}>
+                                    <AiSummaryBlock aiSummary={moment.aiSummary}/>
                                     <ReactMarkdown
                                         remarkPlugins={[remarkGfm]}
                                         components={{

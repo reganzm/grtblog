@@ -8,13 +8,16 @@ import {
 } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
 import { Button, message, Popconfirm, Switch, Tag, Tooltip } from 'antd';
-import { useEffect, useRef } from 'react';
+import {useEffect, useRef, useState} from 'react';
+import AISummaryModal from "@/components/AISummaryModal";
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
   const navigate = useNavigate();
   const { list } = useSelector((state: any) => state.category);
   const dispatch = useDispatch();
+  const [isAIModalVisible, setIsAIModalVisible] = useState<boolean>(false);
+  const [currentContentId, setCurrentContentId] = useState<string>('');
 
   const deleteMomentHandle = async (id: string) => {
     const response = await MomentController.deleteMoment(id);
@@ -202,6 +205,16 @@ const Index = () => {
       align: 'center',
       render: (_: any, record: any) => [
         <Button
+            variant="text"
+            key="ai-summary"
+            onClick={() => {
+              setCurrentContentId(record.id);
+              setIsAIModalVisible(true);
+            }}
+        >
+          AI 摘要
+        </Button>,
+        <Button
           variant={'text'}
           key="edit"
           onClick={() => navigate(`/moment/edit/${record.id}`)}
@@ -227,6 +240,12 @@ const Index = () => {
 
   return (
     <PageContainer title={'随手记录列表'}>
+      <AISummaryModal
+          visible={isAIModalVisible}
+          onClose={() => setIsAIModalVisible(false)}
+          contentType={'MOMENT'}
+          contentId={currentContentId}
+      />
       <ProTable
         tableStyle={{
           overflowX: 'auto',

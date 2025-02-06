@@ -35,6 +35,8 @@ public class ArticleView {
      */
     private String summary;
 
+    private String aiSummary;
+
     /**
      * 文章目录
      */

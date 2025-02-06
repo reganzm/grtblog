@@ -27,7 +27,7 @@ public class RecommendationService {
 
     public String[] getRecommendations(Long articleId, Integer count) {
         ApiResponse<ArticleRecommendation> res = recommenderClient.getRecommendations(articleId.toString(), count);
-        if (res.getCode() == 0) {
+        if (res.getCode() != null &&res.getCode() == 0) {
             return res.getData().getRecommendation();
         } else {
             return new String[0];

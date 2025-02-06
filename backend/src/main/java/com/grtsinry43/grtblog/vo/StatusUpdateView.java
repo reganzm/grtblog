@@ -46,6 +46,10 @@ public class StatusUpdateView {
      */
     private String content;
 
+    private String summary;
+
+    private String aiSummary;
+
     /**
      * 查看次数
      */

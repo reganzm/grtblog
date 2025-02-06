@@ -26,6 +26,8 @@ public class StatusUpdateVO {
      */
     private String summary;
 
+    private String aiSummary;
+
     /**
      * 分享内容，markdown 格式，交由前端解析
      */

@@ -1,3 +1,4 @@
+import AISummaryModal from '@/components/AISummaryModal';
 import ArticleController from '@/services/article/ArticleController';
 import { refreshFrontendCache } from '@/services/refersh';
 import { useDispatch, useSelector } from '@@/exports';
@@ -8,13 +9,15 @@ import {
 } from '@ant-design/pro-components';
 import { useNavigate } from '@umijs/max';
 import { Button, Image, message, Popconfirm, Switch, Tag, Tooltip } from 'antd';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Index = () => {
   const actionRef = useRef<ActionType>();
   const navigate = useNavigate();
   const { list } = useSelector((state: any) => state.category);
   const dispatch = useDispatch();
+  const [isAIModalVisible, setIsAIModalVisible] = useState<boolean>(false);
+  const [currentContentId, setCurrentContentId] = useState<string>('');
 
   const toggleStatusHandle = async (
     id: string,
@@ -212,6 +215,16 @@ const Index = () => {
       align: 'center',
       render: (_: any, record: any) => [
         <Button
+          variant="text"
+          key="ai-summary"
+          onClick={() => {
+            setCurrentContentId(record.id);
+            setIsAIModalVisible(true);
+          }}
+        >
+          AI 摘要
+        </Button>,
+        <Button
           variant={'text'}
           key="edit"
           onClick={() => navigate(`/article/edit/${record.id}`)}
@@ -237,6 +250,12 @@ const Index = () => {
 
   return (
     <PageContainer title={'文章列表'}>
+      <AISummaryModal
+        visible={isAIModalVisible}
+        onClose={() => setIsAIModalVisible(false)}
+        contentType={'ARTICLE'}
+        contentId={currentContentId}
+      />
       <ProTable
         tableStyle={{
           overflowX: 'auto',
