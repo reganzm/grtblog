@@ -112,6 +112,18 @@ export default defineConfig({
       ],
     },
     {
+      name: '相册',
+      icon: 'PictureOutlined',
+      path: '/album',
+      routes: [
+        {
+          name: '添加图片',
+          path: '/album/add',
+          component: './Album/AddPhoto',
+        },
+      ],
+    },
+    {
       name: '评论管理',
       icon: 'comment',
       path: '/comment',

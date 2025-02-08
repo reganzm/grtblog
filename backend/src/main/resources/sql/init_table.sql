@@ -616,3 +616,15 @@ CREATE TABLE IF NOT EXISTS `footer_section`
     title VARCHAR(255) NOT NULL,
     links JSON         NOT NULL
 );
+
+CREATE TABLE IF NOT EXISTS `photo`
+(
+    `id`         BIGINT      NOT NULL AUTO_INCREMENT COMMENT '照片ID，会由雪花算法生成',
+    `url`        VARCHAR(255) NOT NULL COMMENT '照片URL',
+    `location`   VARCHAR(255) COMMENT '照片拍摄地点',
+    `device`     VARCHAR(255) COMMENT '拍摄设备',
+    `shade`     VARCHAR(255) COMMENT '主题色',
+    `description` TEXT        COMMENT '照片描述',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '照片创建时间',
+    PRIMARY KEY (`id`)
+);
