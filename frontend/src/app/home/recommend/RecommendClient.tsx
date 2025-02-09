@@ -29,7 +29,8 @@ const RecommendClient = () => {
                 const response = await getRecommend()
                 setRecommendations(response)
             } catch (error) {
-                console.error("Error fetching recommendations:", error)
+                console.log(error)
+                setRecommendations([])
             } finally {
                 setLoading(false)
             }

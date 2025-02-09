@@ -49,7 +49,9 @@ const RecentMomentItem: React.FC<{ statusUpdate: StatusUpdate }> = ({ statusUpda
         <div className={styles.itemTitle}>
           <span className={styles.underlineAnimation}>{statusUpdate.title}</span>
         </div>
-        <ArrowRightIcon className={styles.arrowIcon} />
+        <div>
+          <ArrowRightIcon className={styles.arrowIcon} />
+        </div>
       </div>
     </Link>
   );

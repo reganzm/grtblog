@@ -6,14 +6,14 @@ import {useTheme} from 'next-themes';
 import useIsMobile from '@/hooks/useIsMobile';
 import emitter from '@/utils/eventBus';
 import CommentModal from "@/components/comment/CommentModal";
-import {Button, IconButton} from "@radix-ui/themes";
+import {Button} from "@radix-ui/themes";
 import ReadingProgress from "@/components/article/ReadingProgress";
-import {ChatBubbleIcon, HeartIcon} from "@radix-ui/react-icons";
-import {ShareIcon} from "@heroicons/react/24/outline";
 import {clsx} from "clsx";
 import {article_font} from "@/app/fonts/font";
 import {likeRequest} from "@/api/like";
 import {toast} from "react-toastify";
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip";
+import {Heart, MessageCircle, Share2} from "lucide-react";
 
 export type TocItem = {
     level: number
@@ -40,6 +40,7 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
     const tocRef = useRef<HTMLDivElement>(null);
     const [activeItemRef, setActiveItemRef] = useState<HTMLLIElement | null>(null);
     const [isCommentOpen, setIsCommentOpen] = React.useState(false);
+    const [liked, setLiked] = useState(false);
 
     const spring = {
         type: 'spring',
@@ -179,7 +180,7 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
                 }`}>
                     <a
                         href={`#${item.anchor}`}
-                        className={`block py-1 px-2 rounded transition-colors duration-300 ${
+                        className={`block py-0 px-2 rounded transition-colors duration-300 ${
                             item.isSelect
                                 ? 'text-primary bg-primary/10'
                                 : `${curTheme}`
@@ -215,6 +216,7 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
                 toast('您已经点过赞了捏！感谢！', {type: 'info'});
             }
         });
+        setLiked(true);
     };
 
     if (isMobile) return null;
@@ -236,18 +238,64 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
                     </ul>
                 </motion.div>
             </div>
-            <div className={clsx(article_font.className, "ml-4 mt-4 flex gap-2")}>
-                <Button onClick={likeHandle} variant={'soft'}>
-                    <HeartIcon/> <span className="text-sm ml-0.5">{likesNum}</span>
-                </Button>
-                <Button onClick={() => setIsCommentOpen(true)} variant={'soft'}>
-                    <ChatBubbleIcon/> <span className="text-sm ml-0.5">{comments}</span>
-                </Button>
-                <IconButton variant={'soft'} onClick={() => {
-                    navigator.clipboard.writeText(window.location.href);
-                }}>
-                    <ShareIcon height={12} width={12}/>
-                </IconButton>
+            <div className={clsx(article_font.className, "flex items-center justify-start space-x-2 mt-2 p-4")}>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={likeHandle}
+                                variant="ghost"
+                                style={{
+                                    borderColor: liked ? "red" : "rgba(var(--foreground), 0.1)",
+                                }}
+                                className={clsx(
+                                    "flex items-center space-x-2 transition-colors",
+                                    liked ? "text-red-500 hover:text-red-600" : "text-gray-500 hover:text-gray-700",
+                                )}
+                            >
+                                <Heart className={clsx("w-4 h-4", liked && "fill-current")}/>
+                                <span className="text-sm font-medium">{likesNum}</span>
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{liked ? "你已经点过赞了，感谢支持" : "点赞"}</p>
+                        </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={() => setIsCommentOpen(true)}
+                                variant="ghost"
+                                className="flex items-center space-x-2 text-gray-500 hover:text-gray-700 transition-colors"
+                            >
+                                <MessageCircle className="w-4 h-4"/>
+                                <span className="text-sm font-medium">{comments}</span>
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p> 评论 </p>
+                        </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(window.location.href);
+                                    toast('Link copied to clipboard!');
+                                }}
+                                variant="ghost"
+                                className="text-gray-500 hover:text-gray-700 transition-colors"
+                            >
+                                <Share2 className="w-4 h-4"/>
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p> 复制链接以分享 </p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </div>
             <CommentModal isOpen={isCommentOpen} onClose={() => setIsCommentOpen(false)}
                           commentId={commentId}/>

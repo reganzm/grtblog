@@ -22,23 +22,23 @@
   overflow: hidden;
 }
 
-.textarea {
-  resize: none;
-  min-height: 7rem;
-  background: rgba(var(--background), 0.3);
-  outline: rgba(var(--primary), 0.5);
-  border: 1px solid rgba(var(--foreground), 0.2);
-  width: 100%;
-  padding: 10px;
-  line-height: 1.5;
-  transition: all 0.3s;
-}
+//.textarea {
+//  resize: none;
+//  min-height: 7rem;
+//  background: rgba(var(--background), 0.3);
+//  outline: rgba(var(--primary), 0.5);
+//  border: 1px solid rgba(var(--foreground), 0.2);
+//  width: 100%;
+//  padding: 10px;
+//  line-height: 1.5;
+//  transition: all 0.3s;
+//}
 
 .markdownSupport,
 .charCount,
 .emojiPanel {
   position: absolute;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   color: gray;
 }
 

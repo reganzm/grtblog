@@ -174,11 +174,7 @@
   position: relative;
 }
 
-.searchIcon {
-  color: rgb(var(--muted-foreground));
-  cursor: pointer;
-}
-
+.searchIcon,
 .githubLink,
 .themeToggle {
   background: none;

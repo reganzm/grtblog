@@ -85,7 +85,7 @@ export default function ImageView({src, alt}: { src: string; alt: string }) {
                 style={{
                     margin: "2em auto",
                     objectFit: "cover",
-                    borderRadius: "10px",
+                    borderRadius: "5px",
                     filter: `drop-shadow(0 0 10px ${glowColor})`,
                     transition: "filter 0.3s ease-in-out, transform 0.3s ease-in-out",
                     cursor: "pointer",
@@ -94,7 +94,7 @@ export default function ImageView({src, alt}: { src: string; alt: string }) {
                 priority
                 crossOrigin="anonymous"
                 onClick={handleImageClick}
-                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+                onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.01)")}
                 onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
             />
             {isZoomed && <ZoomedImage src={src} alt={alt} onClose={handleCloseZoom}/>}

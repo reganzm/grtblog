@@ -73,7 +73,7 @@ const UpdateNotification = () => {
             borderRadius: '5px',
             color: 'var(--text)',
             boxShadow: '0 0 10px 0 rgba(var(--foreground), 0.1)',
-            width: '400px',
+            width: '350px',
             transform: show ? 'translateX(0)' : 'translateX(450px)',
             transition: 'transform 0.3s ease-in-out',
         }}>

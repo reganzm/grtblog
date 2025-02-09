@@ -31,14 +31,14 @@ const AuthorCard = () => {
                         transition={{type: 'spring', stiffness: 260, damping: 20}}
                         drag
                         dragConstraints={{
-                            top: -50,
-                            left: -50,
-                            right: 50,
-                            bottom: 50,
+                            top: -1,
+                            left: -1,
+                            right: 1,
+                            bottom: 1,
                         }}
                     >
                         <Container
-                            className="relative backdrop-blur-3xl bg-gradient-to-r from-white/40 to-white/20 dark:from-black/40 dark:to-black/20 p-8 rounded-xl z-0 border border-white/20 shadow-2xl">
+                            className="z-50 relative backdrop-blur-3xl bg-gradient-to-r from-white/40 to-white/20 dark:from-black/40 dark:to-black/20 p-8 rounded-xl border border-white/20 shadow-2xl">
                             <div className="flex items-center space-x-4 mb-4">
                                 <Avatar className="w-16 h-16 border-2 border-white shadow-lg"
                                         src="https://dogeoss.grtsinry43.com/img/author.jpeg" alt="Author"

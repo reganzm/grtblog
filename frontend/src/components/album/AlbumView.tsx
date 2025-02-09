@@ -10,7 +10,6 @@ import {
 } from "@radix-ui/react-icons";
 import {Camera, MapPinIcon} from "lucide-react";
 import {PhotoPreview} from "@/components/album/AlbumFlowClient";
-import Image from "next/image";
 
 const AlbumView = ({photo, isOpen, setIsOpen, prevHandler, nextHandler, prevDisabled, nextDisabled}: {
     photo: PhotoPreview
@@ -56,7 +55,7 @@ const AlbumView = ({photo, isOpen, setIsOpen, prevHandler, nextHandler, prevDisa
                                     zIndex: -1
                                 }}
                             ></div>
-                            <Image
+                            <img
                                 src={photo.url}
                                 alt={`Photo from ${photo.date}`}
                                 className="w-full h-full object-contain"

@@ -7,7 +7,6 @@ import {FooterLink, FooterSection, getFooterLinks} from "@/api/footer";
 
 const Footer = async () => {
     const footerLinks: FooterSection[] = await getFooterLinks({next: {revalidate: 60}});
-    console.log(footerLinks);
     return (
         <div className={clsx(article_font.className, "text-sm")}>
             <Container size={'4'}>

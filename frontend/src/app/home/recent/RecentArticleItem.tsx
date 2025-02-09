@@ -38,7 +38,9 @@ const RecentArticleItem: React.FC<{ article: Article }> = ({ article }) => {
           <span className={styles.underlineAnimation}>{article.title}</span>
         </div>
         <span className={styles.date}>{formattedDate}</span>
-        <ArrowRightIcon className={styles.arrowIcon} />
+        <div>
+          <ArrowRightIcon width={12} height={12} className={styles.arrowIcon} />
+        </div>
       </div>
     </Link>
   );

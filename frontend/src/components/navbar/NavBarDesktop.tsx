@@ -160,57 +160,70 @@ export default function NavBarDesktop({items}: {
                                         <span className="ml-1">{titleInfo.categoryName}</span>
                                     </div>
                                     {/* 标题 */}
-                                    <div className={styles.title}>{titleInfo.title}</div>
+                                    <div style={{
+                                        lineHeight: '1.2em',
+                                    }}>{titleInfo.title}</div>
                                 </div>
                             </motion.div>
                         ) : (
-                            <div className={styles.navItemContainer}>
-                                {navItems.map((item) => (
-                                    <div key={item.name} className={styles.navItemWrapper}
-                                         onMouseEnter={() => handleMouseEnter(item.name)}
-                                         onMouseLeave={handleMouseLeave}>
-                                        <Link href={item.href} passHref>
-                                            <div className={styles.navItemLink}>
-                                                <motion.div whileTap={{scale: 0.95}}>
+                            <div>
+                                <motion.div
+                                    initial={{y: -10, opacity: 1}}
+                                    style={{width: '100%'}}
+                                    animate={isTitleVisible ? {y: 10, opacity: 0} : {y: 0, opacity: 1}}
+                                    transition={{type: 'spring', stiffness: 260, damping: 20}}
+                                >
+                                    <div className={styles.navItemContainer}>
+                                        {navItems.map((item) => (
+                                            <div key={item.name} className={styles.navItemWrapper}
+                                                 onMouseEnter={() => handleMouseEnter(item.name)}
+                                                 onMouseLeave={handleMouseLeave}>
+                                                <Link href={item.href} passHref>
+                                                    <div className={styles.navItemLink}>
+                                                        <motion.div whileTap={{scale: 0.95}}>
                         <span
                             className={clsx(styles.navItem, styles.underlineAnimation, styles.glowAnimation)}>{item.name}</span>
-                                                </motion.div>
-                                            </div>
-                                        </Link>
-                                        <AnimatePresence>
-                                            {item.children && item.children.length > 0 && activeItem === item.name && (
-                                                <motion.div initial={{opacity: 0, y: -10}} animate={{opacity: 1, y: 0}}
-                                                            exit={{opacity: 0, y: -10}} transition={{duration: 0.2}}>
-                                                    <div className={styles.submenu}>
-                                                        {item.children.map((child, index) => (
-                                                            <motion.div key={child.name}
-                                                                        initial={{
-                                                                            opacity: 0,
-                                                                            x: -20,
-                                                                            filter: 'blur(10px)'
-                                                                        }}
-                                                                        animate={{
-                                                                            opacity: 1,
-                                                                            x: 0,
-                                                                            filter: 'blur(0px)'
-                                                                        }}
-                                                                        transition={{delay: index * 0.1}}>
-                                                                <Link href={child.href} passHref>
-                                                                    <div className={styles.submenuItemWrapper}>
-                                                                        <motion.div whileTap={{scale: 0.95}}>
+                                                        </motion.div>
+                                                    </div>
+                                                </Link>
+                                                <AnimatePresence>
+                                                    {item.children && item.children.length > 0 && activeItem === item.name && (
+                                                        <motion.div initial={{opacity: 0, y: -10}}
+                                                                    animate={{opacity: 1, y: 0}}
+                                                                    exit={{opacity: 0, y: -10}}
+                                                                    transition={{duration: 0.2}}>
+                                                            <div className={styles.submenu}>
+                                                                {item.children.map((child, index) => (
+                                                                    <motion.div key={child.name}
+                                                                                initial={{
+                                                                                    opacity: 0,
+                                                                                    x: -20,
+                                                                                    filter: 'blur(10px)'
+                                                                                }}
+                                                                                animate={{
+                                                                                    opacity: 1,
+                                                                                    x: 0,
+                                                                                    filter: 'blur(0px)'
+                                                                                }}
+                                                                                transition={{delay: index * 0.1}}>
+                                                                        <Link href={child.href} passHref>
+                                                                            <div className={styles.submenuItemWrapper}>
+                                                                                <motion.div whileTap={{scale: 0.95}}>
                                                                         <span
                                                                             className={styles.submenuItem}>{child.name}</span>
-                                                                        </motion.div>
-                                                                    </div>
-                                                                </Link>
-                                                            </motion.div>
-                                                        ))}
-                                                    </div>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
+                                                                                </motion.div>
+                                                                            </div>
+                                                                        </Link>
+                                                                    </motion.div>
+                                                                ))}
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
+                                </motion.div>
                             </div>
                         )}
 

@@ -17,7 +17,10 @@ const CommentArea = ({id, isModal}: { id: string, isModal?: boolean }) => {
                 flex: 1,
             }}>
                 <span className={clsx(article_font.className, "text-sm opacity-10")}> COMMENT {id}</span>
-                <h2 className="text-2xl font-bold"> 发表评论 </h2>
+                <div className={clsx(article_font.className, "flex")}>
+                    <h2 className="text-2xl font-bold"> 发表评论 </h2>
+                    <span className="ml-4 self-end text-sm opacity-60"> 来这里畅所欲言吧！</span>
+                </div>
                 <CommentForm id={id}/>
                 <ScrollArea style={{
                     transition: 'all 0.3s',

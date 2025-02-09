@@ -28,7 +28,7 @@ const ReadingProgress = () => {
   }, [isDark]);
 
   const handleScrollToTop = () => {
-    
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -58,8 +58,8 @@ const ReadingProgress = () => {
         className="ml-2 flex items-center cursor-pointer"
         onClick={handleScrollToTop}
       >
-        <ArrowUpIcon width={14} height={14} />
-        <span className="text-sm"> 返回顶部 </span>
+        <ArrowUpIcon className="opacity-30 mr-0.5" width={14} height={14} />
+        <span className="text-[0.75em] opacity-40"> 返回顶部 </span>
       </div>
     </div>
   );

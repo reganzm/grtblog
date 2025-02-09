@@ -2,6 +2,9 @@ import type React from "react"
 import {motion} from "framer-motion"
 import {TagIcon, UserIcon, EyeIcon} from "lucide-react"
 import Link from "next/link";
+import {useTheme} from "next-themes";
+import {clsx} from "clsx";
+import {article_font} from "@/app/fonts/font";
 
 interface RecommendationItem {
     id: string
@@ -13,42 +16,74 @@ interface RecommendationItem {
     cover?: string | null
 }
 
-const RecommendationCard: React.FC<{ item: RecommendationItem }> = ({item}) => (
-
-    <Link href={`/posts/${item.shortUrl}`} passHref>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-all duration-300
-            ease-in-out hover:shadow-xl hover:scale-105">
+const RecommendationCard: React.FC<{ item: RecommendationItem }> = ({item}) => {
+    const isDark = useTheme().resolvedTheme === "dark"
+    return (
+        <Link href={`/posts/${item.shortUrl}`} passHref>
             <motion.div
-                whileHover={{y: -5}}
+                whileHover={{
+                    y: -5,
+                }}
             >
-                <div className="relative h-48 bg-gray-200 dark:bg-gray-700">
-                    {item.cover ? (
-                        <img src={item.cover} alt={item.title}
-                             className="w-full h-full object-cover"/>
-                    ) : (
-                        <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
-                            还没有封面捏
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden transition-all duration-300
+            ease-in-out hover:shadow-xl" style={{
+                    border: '1px solid rgba(var(--foreground), 0.1)',
+                }}>
+                    <div style={{
+                        filter: 'blur(20px)',
+                        position: "absolute",
+                        objectFit: 'cover',
+                        width: '100%',
+                        height: '60%',
+                        background: `url(${item.cover})`,
+                        backgroundSize: 'cover',
+                        zIndex: -1,
+                    }}/>
+                    <motion.div
+                        whileHover={{
+                            scale: 1.05,
+                        }}
+                    >
+                        <div className="h-48 bg-gray-200 dark:bg-gray-700">
+                            {item.cover ? (
+                                <img src={item.cover} alt={item.title}
+                                     style={{
+                                         filter: 'none',
+                                     }}
+                                     className="w-full h-full object-cover"/>
+                            ) : (
+                                <div
+                                    className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                                    还没有封面捏
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-                <div className="p-6">
-                    <h3 className="text-xl font-semibold mb-2 text-gray-800 dark:text-white line-clamp-2">{item.title}</h3>
-                    <div className="flex items-center mb-2 text-gray-600 dark:text-gray-300">
-                        <UserIcon className="w-4 h-4 mr-2"/>
-                        <span className="text-sm">{item.authorName}</span>
+                    </motion.div>
+                    <div className="p-6" style={{
+                        background: isDark ? 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5))' : 'linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.5))',
+                        height: '8em',
+                    }}>
+                        <h3 className={clsx(article_font.className, "text-xl font-semibold mb-2 text-gray-800 dark:text-white line-clamp-2")}>{item.title}</h3>
+                        <div className="flex gap-4 items-center">
+                            <div className="flex items-center text-gray-600 dark:text-gray-300">
+                                <UserIcon className="w-4 h-4 mr-2"/>
+                                <span className="text-sm">{item.authorName}</span>
+                            </div>
+                            <div className="flex items-center text-gray-600 dark:text-gray-300">
+                                <TagIcon className="w-4 h-4 mr-2"/>
+                                <span className="text-sm">{item.tags.split(",")[0]}</span>
+                            </div>
+                            <div className="flex items-center text-gray-600 dark:text-gray-300">
+                                <EyeIcon className="w-4 h-4 mr-2"/>
+                                <span className="text-sm">{item.views} views</span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex items-center mb-2 text-gray-600 dark:text-gray-300">
-                        <TagIcon className="w-4 h-4 mr-2"/>
-                        <span className="text-sm">{item.tags.split(",")[0]}</span>
-                    </div>
-                    <div className="flex items-center text-gray-600 dark:text-gray-300">
-                        <EyeIcon className="w-4 h-4 mr-2"/>
-                        <span className="text-sm">{item.views} views</span>
-                    </div>
+
                 </div>
             </motion.div>
-        </div>
-    </Link>
-)
+        </Link>
+    )
+}
 
 export default RecommendationCard

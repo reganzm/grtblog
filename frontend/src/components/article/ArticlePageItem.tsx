@@ -35,7 +35,7 @@ const ArticlePageItem = ({post}: { post: ArticlePreview }) => {
     return (
         <div className={article_font.className}>
             <motion.div
-                style={{width: '100%', margin: '2em auto', perspective: '1000px'}}
+                style={{width: '100%', margin: '0 auto', perspective: '1000px', padding: '1em'}}
                 whileTap={{scale: 0.95}}
                 whileHover={{
                     scale: 1.03,
@@ -55,7 +55,8 @@ const ArticlePageItem = ({post}: { post: ArticlePreview }) => {
                             <div className="flex items-center mr-4 mb-2">
                                 {
                                     post.categoryShortUrl ? (
-                                        <Link href={`/categories/${post.categoryShortUrl}`} className="underlineAnimation">
+                                        <Link href={`/categories/${post.categoryShortUrl}`}
+                                              className="underlineAnimation">
                                             <HashtagIcon width={12} height={12} className="inline-block mr-1"/>
                                             <span>{post.categoryName}</span>
                                         </Link>

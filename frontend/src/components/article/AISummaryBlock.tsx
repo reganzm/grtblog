@@ -13,7 +13,7 @@ import CodeBlock from "@/components/CodeBlock"
 import {clsx} from "clsx"
 import TableView from "@/components/article/TableView"
 import Link from "next/link"
-import rehypeRaw from "rehype-raw";
+import rehypeRaw from "rehype-raw"
 
 interface AiSummaryBlockProps {
     aiSummary: string
@@ -28,7 +28,7 @@ const AiSummaryBlock: React.FC<AiSummaryBlockProps> = ({aiSummary}) => {
         if (contentRef.current) {
             setShowGradient(contentRef.current.scrollHeight > 100)
         }
-    }, [contentRef])
+    }, [contentRef.current]) // Updated dependency
 
     if (!aiSummary) {
         return null
@@ -36,18 +36,22 @@ const AiSummaryBlock: React.FC<AiSummaryBlockProps> = ({aiSummary}) => {
 
     return (
         <div
-            className="bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900 dark:to-indigo-900 rounded-lg shadow-md p-6 mb-8">
+            className="bg-gradient-to-r from-purple-100 to-indigo-100 dark:from-purple-900 dark:to-indigo-900 rounded-lg p-4 mb-8 bg-opacity-70 dark:bg-opacity-30" style={{
+                border: '1px solid rgba(var(--foreground), 0.1)',
+        }}>
             <div className="flex items-center mb-4">
                 <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400 mr-2"/>
-                <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-200 flex-grow">AI Summary</h2>
-                <span className="opacity-55">Powered By DeepSeek-R1</span>
+                <h2 className="text-md font-semibold text-gray-800 dark:text-gray-200 flex-grow">AI Summary</h2>
+                <div className="opacity-55 text-[0.75em] self-end sm:self-center">Powered By DeepSeek-R1</div>
             </div>
             <div className="relative text-sm">
                 <div
                     ref={contentRef}
-                    className={`prose dark:prose-invert max-w-none overflow-hidden transition-all duration-300 ease-in-out ${
-                        isExpanded ? "max-h-[1000px]" : "max-h-[100px]"
-                    }`}
+                    className={clsx(
+                        "prose dark:prose-invert max-w-none overflow-hidden transition-all duration-300 ease-in-out",
+                        isExpanded ? "max-h-[1000px]" : "max-h-[100px]",
+                        !isExpanded && showGradient && "mask-image-fade",
+                    )}
                 >
                     <ReactMarkdown
                         className={styles.markdown}
@@ -90,26 +94,22 @@ const AiSummaryBlock: React.FC<AiSummaryBlockProps> = ({aiSummary}) => {
                                 return <blockquote className={styles.blockquote} {...props} />
                             },
                             h1({...props}) {
-                                return <h1 className={styles.heading1} {...props} />;
+                                return <h1 className={styles.heading1} {...props} />
                             },
                             h2({...props}) {
-                                return <h2 className={styles.heading2} {...props} />;
+                                return <h2 className={styles.heading2} {...props} />
                             },
                             h3({...props}) {
-                                return <h3 className={styles.heading3} {...props} />;
+                                return <h3 className={styles.heading3} {...props} />
                             },
                             h4({...props}) {
-                                return <h2 className={styles.heading4} {...props} />;
+                                return <h2 className={styles.heading4} {...props} />
                             },
                         }}
                     >
                         {aiSummary}
                     </ReactMarkdown>
                 </div>
-                {!isExpanded && showGradient && (
-                    <div
-                        className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-purple-100 to-transparent dark:from-purple-900"/>
-                )}
             </div>
             {showGradient && (
                 <button
