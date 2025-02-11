@@ -24,7 +24,7 @@ const RecommendedSection: React.FC<RecommendedSectionProps> = ({recommendations}
             transition={{duration: 0.5}}
         >
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {recommendations.map((item, index) => (
+                {recommendations?.map((item, index) => (
                     <motion.div
                         key={item.id}
                         initial={{opacity: 0, y: 20}}

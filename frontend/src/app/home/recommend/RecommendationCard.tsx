@@ -19,26 +19,20 @@ interface RecommendationItem {
 const RecommendationCard: React.FC<{ item: RecommendationItem }> = ({item}) => {
     const isDark = useTheme().resolvedTheme === "dark"
     return (
-        <Link href={`/posts/${item.shortUrl}`} passHref>
+        <Link href={`/posts/${item.shortUrl}`} passHref style={{
+            overflow: 'hidden',
+        }}>
             <motion.div
                 whileHover={{
                     y: -5,
                 }}
             >
-                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden transition-all duration-300
+                <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm transition-all duration-300
             ease-in-out hover:shadow-xl" style={{
-                    border: '1px solid rgba(var(--foreground), 0.1)',
+                    overflow: 'hidden',
+                    background: `url(${item.cover})`,
+                    objectFit: 'cover',
                 }}>
-                    <div style={{
-                        filter: 'blur(20px)',
-                        position: "absolute",
-                        objectFit: 'cover',
-                        width: '100%',
-                        height: '60%',
-                        background: `url(${item.cover})`,
-                        backgroundSize: 'cover',
-                        zIndex: -1,
-                    }}/>
                     <motion.div
                         whileHover={{
                             scale: 1.05,
@@ -50,7 +44,7 @@ const RecommendationCard: React.FC<{ item: RecommendationItem }> = ({item}) => {
                                      style={{
                                          filter: 'none',
                                      }}
-                                     className="w-full h-full object-cover"/>
+                                     className="object-cover"/>
                             ) : (
                                 <div
                                     className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
@@ -60,8 +54,9 @@ const RecommendationCard: React.FC<{ item: RecommendationItem }> = ({item}) => {
                         </div>
                     </motion.div>
                     <div className="p-6" style={{
-                        background: isDark ? 'linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.5))' : 'linear-gradient(rgba(255,255,255,0), rgba(255,255,255,0.5))',
+                        background: isDark ? 'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,1))' : 'linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,1))',
                         height: '8em',
+                        backdropFilter: 'blur(80px)',
                     }}>
                         <h3 className={clsx(article_font.className, "text-xl font-semibold mb-2 text-gray-800 dark:text-white line-clamp-2")}>{item.title}</h3>
                         <div className="flex gap-4 items-center">

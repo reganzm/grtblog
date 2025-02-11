@@ -2,7 +2,8 @@ package com.grtsinry43.grtblog.controller;
 
 import com.grtsinry43.grtblog.dto.AggregatedSearchResult;
 import com.grtsinry43.grtblog.dto.ApiResponse;
-import com.grtsinry43.grtblog.service.SearchService;
+import com.grtsinry43.grtblog.service.MeiliSearchService;
+//import com.grtsinry43.grtblog.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,15 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class SearchController {
-    private final SearchService searchService;
+    //    private final SearchService searchService;
+    private final MeiliSearchService meiliSearchService;
 
-    @Autowired
-    public SearchController(SearchService searchService) {
-        this.searchService = searchService;
+    public SearchController(MeiliSearchService meiliSearchService) {
+        this.meiliSearchService = meiliSearchService;
     }
+
 
     @GetMapping("/search")
     public ApiResponse<AggregatedSearchResult> search(@RequestParam String keyword) {
-        return ApiResponse.success(searchService.searchAll(keyword));
+        return ApiResponse.success(meiliSearchService.searchAll(keyword));
     }
 }

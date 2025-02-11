@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {AnimatePresence, motion} from 'framer-motion';
 import {Button, IconButton, TextField, Tooltip} from '@radix-ui/themes';
 import styles from '@/styles/LoginModal.module.scss';
@@ -17,6 +17,7 @@ import {UserInfo} from '@/redux/userSlice';
 import {useAppDispatch} from '@/redux/hooks';
 import Link from "next/link";
 import {toast} from "react-toastify";
+import {Separator} from '@/components/ui/separator';
 
 const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void }) => {
     const [loginForm, setLoginForm] = useState({
@@ -37,6 +38,17 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
 
     const dispatch = useAppDispatch();
     const [captchaRandom, setCaptchaRandom] = useState(Math.random());
+
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+        return () => {
+            setIsMounted(false);
+        };
+    }, []);
+
+    if (!isMounted) return null;
 
     const submitLoginForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -97,11 +109,15 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                         initial={{opacity: 0}}
                         animate={{opacity: 1}}
                         exit={{opacity: 0}}
+                        transition={{
+                            type: "tween",
+                            duration: 0.2,
+                        }}
                     >
                         <motion.div
-                            initial={{scale: 0.8, opacity: 0}}
-                            animate={{scale: 1, opacity: 1}}
-                            exit={{scale: 0.8, opacity: 0}}
+                            initial={{scale: 0.8, opacity: 0, y: 100}}
+                            animate={{scale: 1, opacity: 1, y: -20}}
+                            exit={{scale: 0.8, opacity: 0, y: 100}}
                         >
                             <div className={styles.modalContent}>
                                 <div style={{
@@ -116,17 +132,21 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                     </motion.div>
                                 </div>
                                 <h2 className={clsx(styles.title, varela_round.className)}>
-                                    <span className={noto_sans_sc.className}>{isLoginForm ? '登录到' : '注册'} </span>
+                                        <span
+                                            className={noto_sans_sc.className}>{isLoginForm ? '登录到' : '注册'} </span>
                                     Grtsinry43&apos;s Blog 😘
                                 </h2>
                                 {
                                     !isFormShow && (
-                                        <Button onClick={() => setIsFormShow(true)}>
-                                            <MailIcon/>
+                                        <Button onClick={() => setIsFormShow(true)} style={{
+                                            borderRadius: '0.375rem',
+                                        }}>
+                                            <MailIcon width={16} height={16}/>
                                             通过邮箱 {isLoginForm ? '登录' : '注册'}
                                         </Button>
                                     )
                                 }
+                                <Separator className="my-4"/>
                                 <AnimatePresence mode="wait">
                                     {isFormShow && (
                                         <motion.div
@@ -159,7 +179,16 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         <div className={styles.label}> 邮箱</div>
                                                         <TextField.Root
                                                             key="login-email"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             value={loginForm.userEmail}
                                                             onChange={(e) => setLoginForm({
                                                                 ...loginForm,
@@ -171,7 +200,16 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         <div className={styles.label}> 密码</div>
                                                         <TextField.Root
                                                             key="login-password"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             type="password"
                                                             value={loginForm.password}
                                                             onChange={(e) => setLoginForm({
@@ -181,10 +219,22 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         />
                                                     </div>
                                                     <div className={styles.formGroup}>
-                                                        <div className={styles.label}> 验证码</div>
+                                                        <div className={styles.label} style={{
+                                                            marginRight: '1rem',
+                                                        }}> 验证码
+                                                        </div>
                                                         <TextField.Root
                                                             key="login-captcha"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             value={captcha}
                                                             onChange={(e) => setCaptcha(e.target.value)}
                                                         />
@@ -205,7 +255,8 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                     </div>
                                                     <div className="text-sm text-center">
                                                         忘记密码了？ <Link
-                                                        href="/my/reset-password-request"> 点击这里重置密码 </Link>
+                                                        href="/my/reset-password-request"
+                                                        color={"#184aff"}> 点击这里重置密码 </Link>
                                                     </div>
                                                     <div className={styles.formActions}>
                                                         <Button style={{marginRight: '1rem'}} type="submit">
@@ -230,7 +281,16 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         <div className={styles.label}> 昵称</div>
                                                         <TextField.Root
                                                             key="register-nickname"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             value={registerForm.nickname}
                                                             onChange={(e) => setRegisterForm({
                                                                 ...registerForm,
@@ -242,7 +302,16 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         <div className={styles.label}> 邮箱</div>
                                                         <TextField.Root
                                                             key="register-email"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             value={registerForm.userEmail}
                                                             onChange={(e) => setRegisterForm({
                                                                 ...registerForm,
@@ -254,7 +323,16 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         <div className={styles.label}> 密码</div>
                                                         <TextField.Root
                                                             key="register-password"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             type="password"
                                                             value={registerForm.password}
                                                             onChange={(e) => setRegisterForm({
@@ -264,10 +342,22 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         />
                                                     </div>
                                                     <div className={styles.formGroup}>
-                                                        <div className={styles.label}> 确认密码</div>
+                                                        <div className={styles.label} style={{
+                                                            marginRight: '1rem',
+                                                        }}> 确认密码
+                                                        </div>
                                                         <TextField.Root
                                                             key="register-confirm-password"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             type="password"
                                                             value={registerForm.confirmPassword}
                                                             onChange={(e) => setRegisterForm({
@@ -280,7 +370,16 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         <div className={styles.label}> 验证码</div>
                                                         <TextField.Root
                                                             key="login-captcha"
-                                                            className={styles.textField}
+                                                            style={{
+                                                                backgroundColor: 'rgba(var(--foreground), 0.03)',
+                                                                flex: '1',
+                                                                boxShadow: 'none',
+                                                                minHeight: '2rem',
+                                                                border: '1px solid rgba(var(--foreground), 0.1)',
+                                                                borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                                                                outline: 'none',
+                                                                borderRadius: '0.375rem',
+                                                            }}
                                                             value={captcha}
                                                             onChange={(e) => setCaptcha(e.target.value)}
                                                         />

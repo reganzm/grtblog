@@ -27,9 +27,11 @@ import java.util.Objects;
 @Service
 public class PageService extends ServiceImpl<PageMapper, Page> {
     private final CommentAreaService commentAreaService;
+    private final MeiliDataSyncService meiliDataSyncService;
 
-    public PageService(CommentAreaService commentAreaService) {
+    public PageService(CommentAreaService commentAreaService, MeiliDataSyncService meiliDataSyncService) {
         this.commentAreaService = commentAreaService;
+        this.meiliDataSyncService = meiliDataSyncService;
     }
 
     public Page getPageByPath(String path) {
@@ -96,6 +98,10 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
             throw new BusinessException(ErrorCode.OPERATION_ERROR);
         }
         updateById(page);
+        if (!page.getEnable()){
+            // 删除索引数据
+            meiliDataSyncService.deleteContent(page.getId(), "page");
+        }
         PageVO pageVO = new PageVO();
         BeanUtils.copyProperties(page, pageVO);
         pageVO.setId(page.getId().toString());
@@ -109,6 +115,8 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
             throw new BusinessException(ErrorCode.NOT_FOUND);
         }
         page.setDeletedAt(LocalDateTime.now());
+        // 删除索引数据
+        meiliDataSyncService.deleteContent(page.getId(), "page");
         if (commentAreaService.isExist(page.getCommentId().toString())) {
             commentAreaService.deleteCommentArea(page.getCommentId());
         }

@@ -14,6 +14,7 @@ import com.grtsinry43.grtblog.security.LoginUserDetails;
 import com.grtsinry43.grtblog.service.CommentAreaService;
 import com.grtsinry43.grtblog.service.IStatusUpdateService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.grtsinry43.grtblog.service.MeiliDataSyncService;
 import com.grtsinry43.grtblog.service.SocketIOService;
 import com.grtsinry43.grtblog.util.ArticleParser;
 import com.grtsinry43.grtblog.vo.StatusUpdatePreview;
@@ -43,12 +44,14 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
     private final CategoryServiceImpl categoryService;
     private final CommentAreaService commentAreaService;
     private final SocketIOService socketIOService;
+    private final MeiliDataSyncService meiliDataSyncService;
 
-    public StatusUpdateServiceImpl(UserMapper userMapper, CategoryServiceImpl categoryService, CommentAreaService commentAreaService, @Lazy SocketIOService socketIOService) {
+    public StatusUpdateServiceImpl(UserMapper userMapper, CategoryServiceImpl categoryService, CommentAreaService commentAreaService, @Lazy SocketIOService socketIOService, MeiliDataSyncService meiliDataSyncService) {
         this.userMapper = userMapper;
         this.categoryService = categoryService;
         this.commentAreaService = commentAreaService;
         this.socketIOService = socketIOService;
+        this.meiliDataSyncService = meiliDataSyncService;
     }
 
     @Override
@@ -195,6 +198,8 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
             // 删除评论区
             commentAreaService.deleteCommentArea(statusUpdate.getCommentId());
             this.updateById(statusUpdate);
+            // 删除搜索索引
+            meiliDataSyncService.deleteContent(id, "statusUpdate");
         } else {
             throw new BusinessException(ErrorCode.UNAUTHORIZED);
         }
@@ -219,6 +224,9 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
             statusUpdateVO.setAuthorName(userMapper.selectById(userId).getNickname());
             if (statusUpdate.getIsPublished()) {
                 socketIOService.broadcastNotification("分享：" + statusUpdate.getTitle() + " 已更新");
+            } else {
+                // 删除搜索索引
+                meiliDataSyncService.deleteContent(id, "statusUpdate");
             }
             return statusUpdateVO;
         } else {
@@ -246,6 +254,9 @@ public class StatusUpdateServiceImpl extends ServiceImpl<StatusUpdateMapper, Sta
         statusUpdateVO.setCategoryId(statusUpdate.getCategoryId() != null ? statusUpdate.getCategoryId().toString() : null);
         if (statusUpdate.getIsPublished()) {
             socketIOService.broadcastNotification("分享" + statusUpdate.getTitle() + " 状态已更新");
+        } else {
+            // 删除搜索索引
+            meiliDataSyncService.deleteContent(id, "statusUpdate");
         }
         return statusUpdateVO;
     }

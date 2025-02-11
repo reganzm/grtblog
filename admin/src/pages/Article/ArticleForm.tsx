@@ -1,3 +1,4 @@
+import CustomEditor from '@/components/CustomEditor';
 import CategoryController from '@/services/category/CategoryController';
 import { getToken } from '@/utils/token';
 import { useDispatch, useSelector } from '@@/exports';
@@ -51,8 +52,9 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
         type: 'category/initCategoryList',
       });
     }
-
   }, []);
+
+  useEffect(() => {}, []);
 
   const [addCategoryForm, setAddCategoryForm] = useState({
     name: '',
@@ -175,14 +177,11 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
             onChange={(e) => onValueChange('title', e.target.value)}
           />
         </Form.Item>
-        <Form.Item
-            label="短链接"
-            name="shortUrl"
-        >
+        <Form.Item label="短链接" name="shortUrl">
           <Input
-              value={articleInfo?.shortUrl}
-              placeholder="短链接，例如'hello-world'，留空则根据标题生成"
-              onChange={(e) => onValueChange('shortUrl', e.target.value)}
+            value={articleInfo?.shortUrl}
+            placeholder="短链接，例如'hello-world'，留空则根据标题生成"
+            onChange={(e) => onValueChange('shortUrl', e.target.value)}
           />
         </Form.Item>
         <Form.Item
@@ -190,14 +189,7 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           name="content"
           rules={[{ required: true, message: '文章内容不能为空' }]}
         >
-          <Editor
-            previewStyle="vertical"
-            height="600px"
-            useCommandShortcut={true}
-            initialEditType="markdown"
-            initialValue=""
-            ref={editorRef}
-          />
+          <CustomEditor ref={editorRef} />
         </Form.Item>
         <Form.Item>
           <div style={{ marginTop: '20px', marginRight: '20px' }}>

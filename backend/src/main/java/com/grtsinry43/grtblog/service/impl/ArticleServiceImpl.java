@@ -11,11 +11,8 @@ import com.grtsinry43.grtblog.exception.BusinessException;
 import com.grtsinry43.grtblog.mapper.ArticleMapper;
 import com.grtsinry43.grtblog.mapper.TagMapper;
 import com.grtsinry43.grtblog.security.LoginUserDetails;
-import com.grtsinry43.grtblog.service.CommentAreaService;
-import com.grtsinry43.grtblog.service.IArticleService;
+import com.grtsinry43.grtblog.service.*;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.grtsinry43.grtblog.service.RecommendationService;
-import com.grtsinry43.grtblog.service.SocketIOService;
 import com.grtsinry43.grtblog.util.ArticleParser;
 import com.grtsinry43.grtblog.vo.ArticlePreview;
 import com.grtsinry43.grtblog.vo.ArticleVO;
@@ -51,8 +48,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     private final SocketIOService socketIOService;
     private final ArticleMapper articleMapper;
     private final TagMapper tagMapper;
+    private final MeiliDataSyncService meiliDataSyncService;
 
-    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, CategoryServiceImpl categoryService, UserServiceImpl userService, RecommendationService recommendationService, CommentAreaService commentAreaService, @Lazy SocketIOService socketIOService, ArticleMapper articleMapper, TagMapper tagMapper) {
+    public ArticleServiceImpl(ArticleTagServiceImpl articleTagService, TagServiceImpl tagService, CategoryServiceImpl categoryService, UserServiceImpl userService, RecommendationService recommendationService, CommentAreaService commentAreaService, @Lazy SocketIOService socketIOService, ArticleMapper articleMapper, TagMapper tagMapper, MeiliDataSyncService meiliDataSyncService) {
         this.articleTagService = articleTagService;
         this.tagService = tagService;
         this.categoryService = categoryService;
@@ -62,6 +60,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         this.socketIOService = socketIOService;
         this.articleMapper = articleMapper;
         this.tagMapper = tagMapper;
+        this.meiliDataSyncService = meiliDataSyncService;
     }
 
     @Override
@@ -136,6 +135,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         recommendationService.deleteArticleStatus(articleId);
         // 删除评论区
         commentAreaService.deleteCommentArea(article.getCommentId());
+        // 删除搜索索引
+        meiliDataSyncService.deleteContent(articleId, "article");
     }
 
     @Override
@@ -198,6 +199,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             recommendationService.updateArticleStatus(article);
         } else {
             recommendationService.deleteArticleStatus(article.getId());
+            // 删除搜索索引
+            meiliDataSyncService.deleteContent(articleId, "article");
         }
 
         ArticleVO articleVO = new ArticleVO();

@@ -10,7 +10,7 @@ const AlbumPage = async () => {
     return (
         <TracingBeam>
             <div>
-                <h1 style={{fontSize: '2em', fontWeight: 'bolder', marginTop: '1em'}}
+                <h1 style={{fontSize: '2em', fontWeight: 'bolder', marginTop: '1em',transform:'translateY(-0.15em)'}}
                     className={noto_sans_sc.className}>
                     相册
                 </h1>

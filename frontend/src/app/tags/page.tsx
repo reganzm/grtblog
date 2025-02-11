@@ -48,6 +48,7 @@ const Page = async () => {
                             left: '50%',
                             transform: 'translateX(-50%)',
                         }}>TAGS</span>
+
                 </div>
                 {/*<div className="search">*/}
                 {/*    <TextField.Root*/}

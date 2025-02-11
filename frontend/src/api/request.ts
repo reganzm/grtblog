@@ -1,66 +1,69 @@
-import { ofetch } from 'ofetch';
-import { getToken, setToken } from '@/utils/token';
+import {ofetch} from 'ofetch';
+import {getToken, setToken} from '@/utils/token';
+import {toast} from "react-toastify";
 
 const ins = ofetch.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_API_URL || '/api/v1', // Ensure it works in both browser and Node.js environments
-  async onRequest({ options }) {
-    const token = getToken();
+    baseURL: process.env.NEXT_PUBLIC_BASE_API_URL || '/api/v1', // Ensure it works in both browser and Node.js environments
+    async onRequest({options}) {
+        const token = getToken();
 
-    if (token) {
-      options.headers = new Headers({
-        ...options.headers,
-        Authorization: `Bearer ${token}`,
-      });
-    }
-  },
-  async onResponse({ response }) {
+        if (token) {
+            options.headers = new Headers({
+                ...options.headers,
+                Authorization: `Bearer ${token}`,
+            });
+        }
+    },
+    async onResponse({response}) {
 
 
-
-    const token = response.headers.get('Authorization');
-    if (token) {
-      setToken(token);
-    }
-  },
+        const token = response.headers.get('Authorization');
+        if (token) {
+            setToken(token);
+        }
+    },
 });
 
 export const request = async (url: string, options?: RequestInit) => {
-  const res = await ins(url, options);
+    const res = await ins(url, options);
 
 
-  if (res.code !== 0) {
-    return null;
-  } else {
-    return res.data;
-  }
+    if (res.code !== 0) {
+        if (typeof window !== 'undefined') {
+            toast(res.msg, {type: 'error'});
+        }
+        return null;
+    } else {
+        return res.data;
+    }
 };
 
 const ins_bff = ofetch.create({
-  baseURL: process.env.NEXT_PUBLIC_BFF_BASE_URL || '/api/bff', // Ensure it works in both browser and Node.js environments
-  async onRequest({ options }) {
-    const token = getToken();
-    if (token) {
-      options.headers = new Headers({
-        ...options.headers,
-        Authorization: `Bearer ${token}`,
-      });
-    }
-  },
-  async onResponse({ response }) {
-    const token = response.headers.get('Authorization');
-    if (token) {
-      setToken(token);
-    }
-  },
+    baseURL: process.env.NEXT_PUBLIC_BFF_BASE_URL || '/api/bff', // Ensure it works in both browser and Node.js environments
+    async onRequest({options}) {
+        const token = getToken();
+        if (token) {
+            options.headers = new Headers({
+                ...options.headers,
+                Authorization: `Bearer ${token}`,
+            });
+        }
+    },
+    async onResponse({response}) {
+        const token = response.headers.get('Authorization');
+        if (token) {
+            setToken(token);
+        }
+    },
 });
 
 export const request_bff = async (url: string, options?: RequestInit) => {
-  const res = await ins_bff(url, options);
+    const res = await ins_bff(url, options);
 
 
-  if (res.code !== 0) {
-    throw new Error(res.msg);
-  } else {
-    return res.data;
-  }
+    if (res.code !== 0) {
+        throw new Error(res.msg);
+    } else {
+        return res.data;
+    }
 };

@@ -21,6 +21,7 @@ const AlbumView = ({photo, isOpen, setIsOpen, prevHandler, nextHandler, prevDisa
     nextDisabled: boolean
 }) => {
     const [warning, setWarning] = useState("");
+    const [imageLoaded, setImageLoaded] = useState(false);
     return createPortal(
         <AnimatePresence>
             {isOpen && (
@@ -50,17 +51,61 @@ const AlbumView = ({photo, isOpen, setIsOpen, prevHandler, nextHandler, prevDisa
                             <div
                                 className="absolute inset-0 bg-center bg-cover"
                                 style={{
-                                    backgroundImage: `url(${photo.url})`,
+                                    background: imageLoaded ? `url(${photo.url})` : photo.shade,
                                     filter: 'blur(80px)',
-                                    zIndex: -1
+                                    zIndex: -1,
+                                    backgroundSize: 'cover'
                                 }}
-                            ></div>
-                            <img
-                                src={photo.url}
-                                alt={`Photo from ${photo.date}`}
-                                className="w-full h-full object-contain"
-                                style={{position: 'relative'}}
                             />
+                            <AnimatePresence>
+                                {!imageLoaded && (
+                                    <motion.div
+                                        initial={{opacity: 1}}
+                                        exit={{opacity: 0}}
+                                        transition={{duration: 0.5}}
+                                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                        // @ts-expect-error
+                                        className="absolute inset-0 flex items-center justify-center"
+                                    >
+                                        <div
+                                            className="w-10 h-10 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                            <motion.div
+                                initial={{
+                                    clipPath: "polygon(0 0, 0 0, 0 0)",
+                                    filter: "blur(20px)",
+                                }}
+                                animate={
+                                    imageLoaded
+                                        ? {
+                                            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+                                            filter: "blur(0px)",
+                                        }
+                                        : {}
+                                }
+                                transition={{
+                                    clipPath: {duration: 1, ease: "easeInOut"},
+                                    filter: {duration: 0.8, ease: "easeOut"},
+                                }}
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-expect-error
+                                className="w-full h-full flex justify-center"
+                            >
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                    src={photo.url}
+                                    alt={`Photo from ${photo.date}`}
+                                    className="w-full h-full object-contain"
+                                    onLoad={
+                                        () => {
+                                            setImageLoaded(true)
+                                            console.log("Image loaded")
+                                        }
+                                    }
+                                />
+                            </motion.div>
                             <ArrowLeftIcon
                                 className="absolute top-[50%] left-4 text-white w-8 h-8 cursor-pointer opacity-35 z-10"
                                 style={{transform: 'translateY(-50%)'}}
@@ -99,6 +144,13 @@ const AlbumView = ({photo, isOpen, setIsOpen, prevHandler, nextHandler, prevDisa
                                 </div>
                             }
                         </div>
+
+                        {/*    <img*/}
+                        {/*        src={photo.url}*/}
+                        {/*        alt={`Photo from ${photo.date}`}*/}
+                        {/*        className="w-full h-full object-contain"*/}
+                        {/*        style={{position: 'relative'}}*/}
+                        {/*    />*/}
 
                         {/* 信息面板 */}
                         <div className="p-6 space-y-4 text-sm text-gray-300 flex flex-col min-w-[300px]">
