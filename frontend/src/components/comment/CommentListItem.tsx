@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Comment} from '@/types';
 import styles from '@/styles/comment/CommentList.module.scss';
 import rehypeSanitize from 'rehype-sanitize';
@@ -40,7 +40,36 @@ const getBrowserIcon = (browser: string) => {
 };
 
 const CommentListItem = ({comment}: { comment: Comment }) => {
-    const formattedCreatedAt = formatDistanceToNow(parseISO(comment.createdAt), {addSuffix: true, locale: zhCN});
+    const [formattedCreatedAt, setFormattedCreatedAt] = useState('');
+
+    useEffect(() => {
+        const updateFormattedTime = () => {
+            const now = new Date()
+            const createdAt = parseISO(comment.createdAt)
+            const diffInSeconds = (now.getTime() - createdAt.getTime()) / 1000
+
+            if (diffInSeconds < 60) {
+                if (diffInSeconds < 2) {
+                    setFormattedCreatedAt('刚刚 ')
+                    return
+                }
+                setFormattedCreatedAt(`${Math.floor(diffInSeconds)} 秒前 `)
+            } else if (diffInSeconds < 3600) {
+                setFormattedCreatedAt(`${Math.floor(diffInSeconds / 60)} 分钟前 `)
+            } else if (diffInSeconds < 86400) {
+                setFormattedCreatedAt(`${Math.floor(diffInSeconds / 3600)} 小时前 `)
+            } else {
+                setFormattedCreatedAt(formatDistanceToNow(createdAt, {addSuffix: true, locale: zhCN}))
+            }
+        }
+
+        updateFormattedTime()
+
+        const interval = setInterval(updateFormattedTime, 1000)
+
+        return () => clearInterval(interval)
+    }, [comment.createdAt])
+
     const [isReplying, setIsReplying] = React.useState(false);
 
     return (
@@ -207,7 +236,7 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                             }
                             {isReplying && (
                                 <div>
-                                    <Button variant="ghost" size="1" className="ml-16"
+                                    <Button variant="ghost" size="1" className="ml-12"
                                             onClick={() => setIsReplying(false)}> 取消 </Button>
                                 </div>
                             )}
