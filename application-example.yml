@@ -92,6 +92,10 @@ com:
   grtsinry43:
     secret_key:  # 这里使用 `openssl rand -base64 64` 生成一个随机字符串用作密钥
     deepseek-api-key: your_api_key
+    github:
+      clientId: your_client_id
+      clientSecret: your_client_secret
+      redirectUri: https://your_deploy_site/api/v1/login/oauth2/code/github
     meilisearch:
       url: http://localhost:7700
       apiKey: masterKey
