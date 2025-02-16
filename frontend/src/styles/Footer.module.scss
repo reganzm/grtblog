@@ -1,6 +1,7 @@
 .footerContainer {
   position: relative;
   background-color: rgba(var(--primary), 0.05);
+  transition: background-color 0.3s;
   color: var(--text-color);
   padding: 20px;
 }
@@ -31,7 +32,7 @@
 }
 
 .footerContainer.dark {
-  background-color: rgba(var(--primary-foreground), 0.05);
+  background-color: rgba(var(--primary), 0.05);
   color: white;
 }
 
@@ -41,12 +42,13 @@
 }
 
 .footerLink {
-  color: var(--primary);
+  color: rgb(var(--foreground));
   text-decoration: none;
   margin-right: 0.5em;
 }
 
 .footerLink:hover {
+  color: rgb(var(--primary));
   text-decoration: underline;
 }
 

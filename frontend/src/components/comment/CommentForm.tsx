@@ -137,7 +137,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             boxShadow: 'none',
                             minHeight: '2rem',
                             border: '1px solid rgba(var(--foreground), 0.1)',
-                            borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                            borderBottom: '1px solid rgba(var(--primary), 0.5)',
                             outline: 'none',
                         }}
                         onChange={(e) => {
@@ -155,7 +155,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             minHeight: '2rem',
                             boxShadow: 'none',
                             border: '1px solid rgba(var(--foreground), 0.1)',
-                            borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                            borderBottom: '1px solid rgba(var(--primary), 0.5)',
                             outline: 'none',
                         }}
                         onChange={(e) => {
@@ -172,7 +172,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             boxShadow: 'none',
                             minHeight: '2rem',
                             border: '1px solid rgba(var(--foreground), 0.1)',
-                            borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                            borderBottom: '1px solid rgba(var(--primary), 0.5)',
                             outline: 'none',
                         }}
                         onChange={(e) => {
@@ -203,7 +203,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                             boxShadow: 'none',
                             position: 'relative',
                             border: '1px solid rgba(var(--foreground), 0.1)',
-                            borderBottom: '1px solid rgba(var(--foreground), 0.5)',
+                            borderBottom: '1px solid rgba(var(--primary), 0.5)',
                             outline: 'none',
                         }}
                         value={form.content}
@@ -223,7 +223,7 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                                 <DropdownMenu.Trigger>
                                     <IconButton variant={'ghost'} size="4" style={{
                                         color: 'var(--foreground)',
-                                    }} >
+                                    }}>
                                         <Smiley width={16} height={16}/>
                                     </IconButton>
                                 </DropdownMenu.Trigger>
@@ -240,6 +240,8 @@ const CommentForm = ({id, parentId}: { id: string, parentId?: string }) => {
                         </div>
                         <Button style={{
                             borderRadius: '0.5rem',
+                            color: "rgb(var(--primary))",
+                            backgroundColor: "rgba(var(--primary), 0.1)",
                         }} type="submit" variant={"soft"}><BiPaperPlane/> 发送 </Button>
                     </div>
                     {/*<span*/}

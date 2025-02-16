@@ -5,6 +5,7 @@ import {getAllTags} from '@/api/tag';
 import {noto_sans_sc, varela_round} from '@/app/fonts/font';
 import TagItemCard from '@/components/tags/TagItemCard';
 import {Metadata} from "next";
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 type Tag = {
     tagId: number;
@@ -78,6 +79,7 @@ const Page = async () => {
                 </div>
             </Container>
             <TagCloudBackground tags={tags.map((tag) => tag.tagName)}/>
+            <FloatingMenu items={[]}/>
         </div>
     );
 };

@@ -84,7 +84,6 @@
 }
 
 .glowAnimation {
-  color: var(--primary);
 }
 
 @keyframes glow {
@@ -101,6 +100,7 @@
 
 .glowAnimation:hover {
   animation: glow 1s forwards;
+  color: rgb(var(--primary));
 }
 
 .paragraph {

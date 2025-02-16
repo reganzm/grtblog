@@ -3,6 +3,7 @@ import {getThinkingList, Thinking} from "@/api/thinkings";
 import ThinkingNote from "@/components/thinking/ThinkingNote";
 import {clsx} from "clsx";
 import {noto_serif_sc_bold} from "@/app/fonts/font";
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 const AllThinkingPage = async () => {
     const thinkingData: Thinking[] = await getThinkingList({next: {revalidate: 60}});
@@ -16,6 +17,7 @@ const AllThinkingPage = async () => {
                     <ThinkingNote key={thinking.id} thinking={thinking} index={index}/>
                 ))}
             </div>
+            <FloatingMenu items={[]}/>
         </div>
     );
 };

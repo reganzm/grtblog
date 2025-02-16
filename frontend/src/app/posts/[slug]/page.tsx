@@ -2,10 +2,10 @@ import ArticleView from '@/components/article/ArticleView';
 import CommentArea from '@/components/comment/CommentArea';
 import RelatedRecommend from '@/components/article/RelatedRecommend';
 import {notFound} from 'next/navigation';
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 // 定义 API 请求的 URL
 const API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
-
 
 
 interface Params {
@@ -14,7 +14,7 @@ interface Params {
 
 export async function generateStaticParams() {
     // 向 Spring Boot 后端获取所有文章的 slug
-    const res = await fetch(API_URL + '/article/shortLinks',{
+    const res = await fetch(API_URL + '/article/shortLinks', {
         next: {revalidate: 60},
     });
 
@@ -64,6 +64,7 @@ export default async function BlogPost({params}: BlogPostProps) {
             <ArticleView post={post.data}/>
             <RelatedRecommend id={slug}/>
             <CommentArea id={post.data.commentId}/>
+            <FloatingMenu items={[]}/>
         </div>
     );
 }

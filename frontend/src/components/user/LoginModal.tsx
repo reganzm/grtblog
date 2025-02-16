@@ -140,6 +140,8 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                     !isFormShow && (
                                         <Button onClick={() => setIsFormShow(true)} style={{
                                             borderRadius: '0.375rem',
+                                            backgroundColor: 'rgba(var(--primary),0.5)',
+                                            color: 'rga(var(--foreground))',
                                         }}>
                                             <MailIcon width={16} height={16}/>
                                             通过邮箱 {isLoginForm ? '登录' : '注册'}
@@ -259,10 +261,17 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                                         color={"#184aff"}> 点击这里重置密码 </Link>
                                                     </div>
                                                     <div className={styles.formActions}>
-                                                        <Button style={{marginRight: '1rem'}} type="submit">
+                                                        <Button style={{
+                                                            marginRight: '1rem',
+                                                            backgroundColor: 'rgba(var(--primary),0.5)',
+                                                            color: 'rga(var(--foreground))',
+                                                        }} type="submit">
                                                             登录
                                                         </Button>
-                                                        <Button variant="soft" onClick={toggleForm}>
+                                                        <Button variant="soft" style={{
+                                                            backgroundColor: 'rgba(var(--primary),0.5)',
+                                                            color: 'rga(var(--foreground))',
+                                                        }} onClick={toggleForm}>
                                                             转到注册
                                                         </Button>
                                                     </div>
@@ -413,6 +422,9 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                 </AnimatePresence>
                                 {isFormShow && (
                                     <Button variant="ghost"
+                                            style={{
+                                                color: 'rga(var(--foreground))',
+                                            }}
                                             onClick={() => setIsFormShow(false)}> 返回使用快捷登录 </Button>
                                 )}
                                 {!isFormShow && (
@@ -428,14 +440,23 @@ const LoginModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () => void })
                                         </div>
                                         <div>
                                             <Tooltip content="使用 GitHub 登录">
-                                                <IconButton radius="full" className={styles.icon} onClick={() => {
+                                                <IconButton radius="full" style={{
+                                                    backgroundColor: 'rgba(var(--background),0.5)',
+                                                    border: '1px solid rgba(var(--foreground), 0.1)',
+                                                    color: 'rga(var(--foreground))',
+                                                    marginRight: '0.5rem',
+                                                }} className={styles.icon} onClick={() => {
                                                     location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/oauth2/authorization/github?redirect_uri= ${encodeURIComponent(location.href)}`;
                                                 }}>
                                                     <GitHubLogoIcon/>
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip content="使用 Google 登录">
-                                                <IconButton radius="full" className={styles.icon} onClick={() => {
+                                                <IconButton radius="full" style={{
+                                                    backgroundColor: 'rgba(var(--background),0.5)',
+                                                    border: '1px solid rgba(var(--foreground), 0.1)',
+                                                    color: 'rga(var(--foreground))',
+                                                }} className={styles.icon} onClick={() => {
                                                     location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/oauth2/authorization/google?redirect_uri=${encodeURIComponent(location.href)}`;
                                                 }}>
                                                     <FaGoogle/>

@@ -40,7 +40,10 @@ const RecommendClient = () => {
     }, [])
 
     return (
-        <section className="py-12 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-850">
+        <section className="py-12"
+                 style={{
+                     background: "linear-gradient(to bottom right, rgba(var(--primary),0.05), rgba(var(--background),0.3))"
+                 }}>
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white"> 为你推荐 </h2>
                 <div className="text-sm opacity-50 mb-4">

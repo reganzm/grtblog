@@ -5,6 +5,7 @@ import {getArchives} from '@/api/archive';
 import {ArticleArchive, StatusUpdateArchive, YearlyArchive} from '@/types';
 import ArchiveItem from '@/components/archive/ArchiveItem';
 import {Metadata} from "next";
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 type Archives = YearlyArchive[];
 
@@ -17,7 +18,7 @@ export const metadata: Metadata = {
 
 const ArchivePage = async () => {
     const archives: Archives = await getArchives({next: {revalidate: 60}});
-    
+
 
     const groupedItems: { [key: number]: CombinedItem[] } = {};
 
@@ -61,6 +62,7 @@ const ArchivePage = async () => {
                     </div>
                 ))}
             </div>
+            <FloatingMenu items={[]}/>
         </div>
     );
 };

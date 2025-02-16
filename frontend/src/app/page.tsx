@@ -10,6 +10,7 @@ import {getLastFourShare} from "@/api/share"
 import type {Article, StatusUpdate} from "@/types"
 import RecommendClient from "@/app/home/recommend/RecommendClient";
 import {getLatestThinking, Thinking} from "@/api/thinkings";
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 export default async function Home() {
     // 通过传递 revalidate 配置实现增量更新
@@ -29,6 +30,7 @@ export default async function Home() {
                 </div>
             </div>
             <RecommendClient/>
+            <FloatingMenu items={[]}/>
         </div>
     )
 }

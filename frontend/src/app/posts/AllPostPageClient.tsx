@@ -6,6 +6,7 @@ import {getArticlesByTag} from "@/api/tag";
 import ArticlePageItem, {ArticlePreview} from '@/components/article/ArticlePageItem';
 import {motion} from 'framer-motion';
 import ArticlePageItemSkeleton from "@/app/posts/ArticlePostItemSkeleton";
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 const AllPostPageClient = ({initialArticles, category, tag}: {
     category?: string,
@@ -17,6 +18,7 @@ const AllPostPageClient = ({initialArticles, category, tag}: {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(initialArticles.length > 0);
     const observer = useRef<IntersectionObserver>(null);
+    const [isSummaryShow, setIsSummaryShow] = useState(true);
 
     const lastArticleElementRef = useRef<HTMLDivElement>(null);
 
@@ -73,7 +75,7 @@ const AllPostPageClient = ({initialArticles, category, tag}: {
                             animate={{opacity: 1, y: 0}}
                             transition={{type: 'spring', stiffness: 500, damping: 100, delay, bounce: 0.7, mass: 0.5}}
                         >
-                            <ArticlePageItem post={item}/>
+                            <ArticlePageItem post={item} isSummaryShow={isSummaryShow}/>
                         </motion.div>
                     );
                 } else {
@@ -84,7 +86,7 @@ const AllPostPageClient = ({initialArticles, category, tag}: {
                             animate={{opacity: 1, y: 0}}
                             transition={{type: 'spring', stiffness: 100, damping: 10, delay, bounce: 0.3}}
                         >
-                            <ArticlePageItem post={item}/>
+                            <ArticlePageItem post={item} isSummaryShow={isSummaryShow}/>
                         </motion.div>
                     );
                 }
@@ -95,6 +97,33 @@ const AllPostPageClient = ({initialArticles, category, tag}: {
             {!hasMore && (
                 <div className="text-center text-gray-500 text-sm mt-2"> 没有更多啦，不小心让你翻到底了欸 〃•ω‹〃</div>
             )}
+            <FloatingMenu items={[
+                // {
+                //     type: 'button',
+                //     icon: <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                //                xmlns="http://www.w3.org/2000/svg">
+                //         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                //               d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                //     </svg>,
+                //     label: '回到顶部',
+                //     onClick: () => {
+                //         window.scrollTo({top: 0, behavior: 'smooth'});
+                //     }
+                // },
+                {
+                    type: 'switch',
+                    value: isSummaryShow,
+                    label: '显示摘要',
+                    icon: <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                               xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                              d="M5 13l4 4L19 7"/>
+                    </svg>,
+                    onClick: (e) => {
+                        setIsSummaryShow(e ?? false);
+                    }
+                }
+            ]}/>
         </>
     );
 };

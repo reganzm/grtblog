@@ -4,6 +4,7 @@ import AlbumFlowClient from "@/components/album/AlbumFlowClient";
 import {fetchPhotosByPage} from "@/api/photos";
 import {noto_sans_sc, noto_serif_sc_bold} from "@/app/fonts/font";
 import {clsx} from "clsx";
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 const AlbumPage = async () => {
     const initialImages = await fetchPhotosByPage(1, 10);
@@ -18,6 +19,7 @@ const AlbumPage = async () => {
                     className={clsx(noto_serif_sc_bold.className, 'text-gray-500 text-md mb-8 mt-4')}> 每一个精彩的瞬间，都值得被记录
                 </div>
                 <AlbumFlowClient initialImages={initialImages}/>
+                <FloatingMenu items={[]}/>
             </div>
         </TracingBeam>
     );

@@ -187,50 +187,53 @@ const FloatingTocMobile = ({toc, targetId, type}: { toc: TocItem[], targetId: st
                 variant={'ghost'}
                 style={{
                     position: 'fixed',
-                    bottom: '11em',
+                    bottom: '13em',
                     right: isUtilIconShowed ? '2em' : '0em',
                     transition: 'right 0.3s ease-in-out',
                     zIndex: 1000,
                     backgroundColor: 'rgba(var(--background), 0.6)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: '5px',
+                    color: 'var(--primary)',
+                    borderRadius: '50%',
                     border: '1px solid rgba(var(--foreground), 0.1)',
                 }}
                 onClick={() => {
                     window.scrollTo({top: 0, behavior: 'smooth'})
                 }}
             >
-                <PinTopIcon height={24} width={24}/>
+                <PinTopIcon height={18} width={18}/>
             </IconButton>
             }
             <IconButton
                 variant={'ghost'}
                 style={{
                     position: 'fixed',
-                    bottom: '8em',
+                    bottom: '10em',
                     right: isUtilIconShowed ? '2em' : '0em',
+                    color: 'var(--primary)',
+                    borderRadius: '50%',
                     transition: 'right 0.3s ease-in-out',
                     zIndex: 1000,
                     backgroundColor: 'rgba(var(--background), 0.6)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: '5px',
                     border: '1px solid rgba(var(--foreground), 0.1)',
                 }}
                 onClick={likeHandle}
             >
-                <HeartIcon height={24} width={24}/>
+                <HeartIcon height={18} width={18}/>
             </IconButton>
             <IconButton
                 variant={'ghost'}
                 style={{
                     position: 'fixed',
-                    bottom: '5em',
+                    bottom: '7em',
                     right: isUtilIconShowed ? '2em' : '0em',
                     transition: 'right 0.3s ease-in-out',
+                    color: 'var(--primary)',
+                    borderRadius: '50%',
                     zIndex: 1000,
                     backgroundColor: 'rgba(var(--background), 0.6)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: '5px',
                     border: '1px solid rgba(var(--foreground), 0.1)',
                 }}
                 onClick={() => {
@@ -240,24 +243,25 @@ const FloatingTocMobile = ({toc, targetId, type}: { toc: TocItem[], targetId: st
                     });
                 }}
             >
-                <MessageCircleIcon/>
+                <MessageCircleIcon height={18} width={18}/>
             </IconButton>
             <IconButton
                 variant={'ghost'}
                 style={{
                     position: 'fixed',
-                    bottom: '2em',
+                    bottom: '4em',
                     right: isUtilIconShowed ? '2em' : '0em',
                     transition: 'right 0.3s ease-in-out',
                     zIndex: 1000,
                     backgroundColor: 'rgba(var(--background), 0.6)',
                     backdropFilter: 'blur(10px)',
-                    borderRadius: '5px',
+                    color: 'var(--primary)',
+                    borderRadius: '50%',
                     border: '1px solid rgba(var(--foreground), 0.1)',
                 }}
                 onClick={showPanelHandle}
             >
-                <TableOfContentsIcon/>
+                <TableOfContentsIcon height={18} width={18}/>
             </IconButton>
             {showPanel && (
                 <>

@@ -1,7 +1,8 @@
 import React, {useState, useEffect, useRef} from 'react';
 import Link from 'next/link';
 import {motion, AnimatePresence} from 'framer-motion';
-import {Avatar, IconButton, DropdownMenu, Badge} from '@radix-ui/themes';
+import {Avatar, DropdownMenu, Badge} from '@radix-ui/themes';
+import {Button} from '@/components/ui/button';
 import {MoonIcon, SunIcon, GitHubLogoIcon, MagnifyingGlassIcon} from '@radix-ui/react-icons';
 import styles from '@/styles/NavBar.module.scss';
 import {useTheme} from 'next-themes';
@@ -300,11 +301,17 @@ export default function NavBarDesktop({items}: {
                                     </div>
                                 ) : (
                                     <motion.div whileHover={{scale: 1.05}} whileTap={{scale: 0.95}}>
-                                        <IconButton variant="ghost" radius={'full'} color={'gray'}
+                                        <Button variant="ghost"
+                                                style={{
+                                                    width: '2.3em',
+                                                    height: '2.3em',
+                                                    overflow: 'hidden',
+                                                    borderRadius: '50%',
+                                                }}
                                                     className={styles.loginButton}
                                                     onClick={openLoginModal}>
                                             <UserRoundPlusIcon width={16} height={16}/>
-                                        </IconButton>
+                                        </Button>
                                     </motion.div>
                                 )}
                             </div>

@@ -5,6 +5,7 @@ import {noto_sans_sc} from '@/app/fonts/font';
 import AllPostPageClient from '@/app/posts/AllPostPageClient';
 import {getAllCategories} from '@/api/category';
 import {notFound} from 'next/navigation';
+import FloatingMenu from "@/components/menu/FloatingMenu";
 
 const pageSize = 10;
 
@@ -56,6 +57,7 @@ const CategoryPage = async ({params}: CategoryPageProps) => {
                 分类 - {category.name}
             </h1>
             <AllPostPageClient initialArticles={initialArticles} category={slug}/>
+            <FloatingMenu items={[]}/>
         </div>
     );
 };

@@ -1,6 +1,8 @@
 import {notFound} from 'next/navigation';
 import MomentReadingPage from "@/components/moment/MomentReading";
 import CommentArea from "@/components/comment/CommentArea";
+import FloatingMenu from "@/components/menu/FloatingMenu";
+import React from "react";
 
 // 定义 API 请求的 URL
 const API_URL = process.env.NEXT_PUBLIC_BASE_API_URL;
@@ -67,6 +69,7 @@ export default async function Page({params}: MomentPageProps) {
         <div className="moment-container">
             <MomentReadingPage moment={moment.data}/>
             <CommentArea id={moment.data.commentId}/>
+            <FloatingMenu items={[]}/>
         </div>
     );
 }

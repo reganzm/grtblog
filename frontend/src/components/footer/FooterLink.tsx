@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from '@/styles/Footer.module.scss';
-import {Container, Link, Text} from '@radix-ui/themes';
+import {Container, Text} from '@radix-ui/themes';
 import {article_font} from "@/app/fonts/font";
 import {clsx} from "clsx";
 import {FooterLink, FooterSection, getFooterLinks} from "@/api/footer";
+import Link from 'next/link';
 
 const Footer = async () => {
     const footerLinks: FooterSection[] = await getFooterLinks({next: {revalidate: 60}});

@@ -35,6 +35,7 @@ public class PageService extends ServiceImpl<PageMapper, Page> {
     }
 
     public Page getPageByPath(String path) {
+        System.out.println("path = " + path);
         return this.lambdaQuery().eq(Page::getRefPath, path).one();
     }
 

@@ -19,7 +19,7 @@ const ArchiveItem = ({ item, index }: { item: CombinedItem, index: number }) => 
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <div className="relative pl-8">
-        <div className="absolute left-0 top-2 w-3 h-3 bg-primary rounded-full" />
+        <div className="absolute left-0 top-7 w-3 h-3 bg-primary rounded-full z-10" />
         <div className="absolute left-[5px] top-5 bottom-0 w-0.5 bg-gray-200 dark:bg-gray-700" />
 
         <div className="flex justify-between gap-4 items-center">

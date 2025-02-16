@@ -31,6 +31,7 @@ const RecommendationCard: React.FC<{ item: RecommendationItem }> = ({item}) => {
             ease-in-out hover:shadow-xl" style={{
                     overflow: 'hidden',
                     background: `url(${item.cover})`,
+                    border: '1px solid rgba(var(--primary), 0.4)',
                     objectFit: 'cover',
                 }}>
                     <motion.div

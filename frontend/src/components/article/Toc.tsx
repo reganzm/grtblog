@@ -247,6 +247,7 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
                                 variant="ghost"
                                 style={{
                                     borderColor: liked ? "red" : "rgba(var(--foreground), 0.1)",
+                                    color: liked ? "red" : "rgb(var(--primary))",
                                 }}
                                 className={clsx(
                                     "flex items-center space-x-2 transition-colors",
@@ -267,7 +268,10 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
                             <Button
                                 onClick={() => setIsCommentOpen(true)}
                                 variant="ghost"
-                                className="flex items-center space-x-2 text-gray-500 hover:text-gray-700 transition-colors"
+                                style={{
+                                    color: "rgb(var(--primary))"
+                                }}
+                                className="flex items-center space-x-2 text-gray-500 hover:text-gray-700 transition-colors text-primary"
                             >
                                 <MessageCircle className="w-4 h-4"/>
                                 <span className="text-sm font-medium">{comments}</span>
@@ -285,8 +289,11 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
                                     navigator.clipboard.writeText(window.location.href);
                                     toast('Link copied to clipboard!');
                                 }}
+                                style={{
+                                    color: "rgb(var(--primary))"
+                                }}
                                 variant="ghost"
-                                className="text-gray-500 hover:text-gray-700 transition-colors"
+                                className="text-gray-500 hover:text-gray-700 transition-colors text-primary"
                             >
                                 <Share2 className="w-4 h-4"/>
                             </Button>

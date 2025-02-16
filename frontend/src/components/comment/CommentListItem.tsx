@@ -228,6 +228,9 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                                 !comment.isDeleted && (
                                     <div>
                                         <Button variant="ghost" size="1" className=""
+                                                style={{
+                                                    color: "rgb(var(--primary))",
+                                                }}
                                                 onClick={() => setIsReplying(true)}>
                                             <Reply width={16} height={16}/>
                                             回复 </Button>
@@ -237,6 +240,9 @@ const CommentListItem = ({comment}: { comment: Comment }) => {
                             {isReplying && (
                                 <div>
                                     <Button variant="ghost" size="1" className="ml-12"
+                                            style={{
+                                                color: "rgb(var(--primary))",
+                                            }}
                                             onClick={() => setIsReplying(false)}> 取消 </Button>
                                 </div>
                             )}

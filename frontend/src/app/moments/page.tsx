@@ -3,6 +3,8 @@ import { Moment } from '@/types';
 import { noto_sans_sc, noto_serif_sc_bold } from '@/app/fonts/font';
 import AllMomentClient from '@/components/moment/AllMomentClient';
 import { clsx } from 'clsx';
+import FloatingMenu from "@/components/menu/FloatingMenu";
+import React from "react";
 
 export default async function AllMomentPage() {
   const pageSize = 5;
@@ -15,6 +17,7 @@ export default async function AllMomentPage() {
       </h1>
       <div className={clsx(noto_serif_sc_bold.className, 'text-gray-500 text-md mb-4 mt-4')}> 记录生活中的点点滴滴</div>
       <AllMomentClient initialMoments={initialMoments} />
+        <FloatingMenu items={[]}/>
     </div>
   );
 }

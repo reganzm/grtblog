@@ -47,6 +47,7 @@ public class PageMatcher {
             return getPageTitle(path);
         }
 
+        System.out.println(path);
         pathAccessMap.put(path, currentTime);
 
         if (path.startsWith("/posts/")) {
@@ -91,7 +92,7 @@ public class PageMatcher {
             Category matchedCategory = categoryService.getCategoryByShortUrl(path.substring(12));
             return "分类：" + (matchedCategory != null ? matchedCategory.getName() : "未知 (屮゜Д゜)屮");
         } else {
-            Page matchedPage = pageService.getPageByPath(path);
+            Page matchedPage = pageService.getPageByPath(path.substring(1));
             return "页面：" + (matchedPage != null ? matchedPage.getTitle() : "未知 (屮゜Д゜)屮");
         }
     }

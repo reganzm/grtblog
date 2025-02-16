@@ -6,7 +6,7 @@ import {formatDistanceToNow, parseISO} from 'date-fns';
 import {zhCN} from 'date-fns/locale';
 import {Calendar, Eye, ThumbsUpIcon} from 'lucide-react';
 import {AiOutlineComment} from 'react-icons/ai';
-import {motion} from 'framer-motion';
+import {motion, AnimatePresence} from 'framer-motion';
 import useIsMobile from '@/hooks/useIsMobile';
 import {PinTopIcon} from '@radix-ui/react-icons';
 
@@ -27,7 +27,7 @@ export type ArticlePreview = {
     views: number
 }
 
-const ArticlePageItem = ({post}: { post: ArticlePreview }) => {
+const ArticlePageItem = ({post, isSummaryShow}: { post: ArticlePreview, isSummaryShow: boolean }) => {
     const formattedCreatedDate = formatDistanceToNow(parseISO(post.createdAt), {addSuffix: true, locale: zhCN});
     const formattedUpdatedDate = formatDistanceToNow(parseISO(post.updatedAt), {addSuffix: true, locale: zhCN});
     const isMobile = useIsMobile();
@@ -39,7 +39,7 @@ const ArticlePageItem = ({post}: { post: ArticlePreview }) => {
                 whileTap={{scale: 0.95}}
                 whileHover={{
                     scale: 1.03,
-                    backgroundColor: 'rgba(var(--foreground), 0.05)',
+                    backgroundColor: 'rgba(var(--primary), 0.05)',
                     borderRadius: '0.5em',
                     padding: '1em',
                     transition: {duration: 0.2},
@@ -48,8 +48,21 @@ const ArticlePageItem = ({post}: { post: ArticlePreview }) => {
             >
                 <Link href={`/posts/${post.shortUrl}`}>
                     <h1 className="text-xl font-bold transition">{post.title}</h1>
-                    <div
-                        className="text-gray-500 text-sm mt-2">{isMobile ? post.summary.length > 100 ? post.summary.slice(0, 100) + '...' : post.summary : post.summary}</div>
+                    <AnimatePresence>
+                        {isSummaryShow && (
+                            <motion.div
+                                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                // @ts-expect-error
+                                className="text-gray-500 text-sm mt-2"
+                                initial={{opacity: 0, y: -10}}
+                                animate={{opacity: 1, y: 0}}
+                                exit={{opacity: 0, y: -10}}
+                                transition={{duration: 0.3}}
+                            >
+                                {isMobile ? post.summary.length > 100 ? post.summary.slice(0, 100) + '...' : post.summary : post.summary}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                     <div className="commentMeta mt-2 text-sm text-gray-700 dark:text-gray-300">
                         <div className="flex flex-wrap">
                             <div className="flex items-center mr-4 mb-2">

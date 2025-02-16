@@ -140,7 +140,6 @@
 }
 
 .glowAnimation {
-  color: var(--primary);
 }
 
 @keyframes glow {
@@ -157,6 +156,7 @@
 
 .glowAnimation:hover {
   animation: glow 1s forwards;
+  color: rgb(var(--primary));
 }
 
 .navbarContent {
@@ -189,10 +189,10 @@
 }
 
 .loginButton {
-  color: var(--foreground);
+  color: rgb(var(--foreground));
   margin: auto 0;
   cursor: pointer;
-  border: rgba(var(--foreground), 0.1) 1px solid;
+  border: rgba(var(--foreground), 0.05) 1px solid;
   transition: background-color 0.2s ease;
 
   &:hover {

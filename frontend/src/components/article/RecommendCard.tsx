@@ -5,6 +5,7 @@ import {motion} from 'framer-motion';
 import {Heart, MessageCircle, Eye} from 'lucide-react';
 import {ArticlePreview} from '@/types';
 import Link from 'next/link';
+import Image from "next/image";
 
 export default function RecommendCard({item}: { item: ArticlePreview }) {
     return (
@@ -16,24 +17,32 @@ export default function RecommendCard({item}: { item: ArticlePreview }) {
             <div style={{
                 width: '100%',
                 maxWidth: '300px',
-                minWidth: '250px',
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: '350px',
+                margin: '0 auto',
+                minHeight: '100%',
                 borderRadius: '10px',
                 border: '1px solid rgba(var(--foreground), 0.1)',
+                overflow: 'hidden',
             }}
                  className="m-1 duration-300 ease-in-out">
-                {/*{item.cover ? (*/}
-                {/*    <div className="relative h-48">*/}
-                {/*        <Image*/}
-                {/*            src={item.cover}*/}
-                {/*            alt={item.title}*/}
-                {/*            layout="fill"*/}
-                {/*            objectFit="cover"*/}
-                {/*            className="transition-transform duration-300 ease-in-out transform hover:scale-105"*/}
-                {/*        />*/}
-                {/*    </div>*/}
-                {/*) : (*/}
-                {/*    <div className="bg-card-foreground h-0 w-0"/>*/}
-                {/*)}*/}
+                {item.cover ? (
+                    <div className="relative h-16 overflow-hidden">
+                        <Image
+                            src={item.cover}
+                            alt={item.title}
+                            layout="fill"
+                            objectFit="cover"
+                            className="transition-transform duration-300 ease-in-out transform hover:scale-105"
+                        />
+                    </div>
+                ) : (
+                    <div style={{
+                        color: "rgb(var(--primary))",
+                        backgroundColor: "rgba(var(--primary), 0.1)",
+                    }} className="h-16 w-full"/>
+                )}
                 <div className="p-4">
                     <Link href={`/posts/${item.shortUrl}`}>
                         <h2 className="font-semibold mb-2 line-clamp-2">{item.title}</h2>
@@ -46,22 +55,22 @@ export default function RecommendCard({item}: { item: ArticlePreview }) {
                         <span>{new Date(item.createdAt).toLocaleDateString()}</span>
                     </div>
                 </div>
-                <div className="bg-muted p-4 flex justify-center gap-6 items-center text-sm">
+                <div className="p-4 flex justify-center gap-6 items-center text-sm self-end">
                     <motion.div whileHover={{scale: 1.1}}>
                         <div className="flex items-center space-x-1">
-                            <Eye className="w-4 h-4"/>
+                            <Eye className="w-3 h-3"/>
                             <span>{item.views}</span>
                         </div>
                     </motion.div>
                     <motion.div whileHover={{scale: 1.1}}>
                         <div className="flex items-center space-x-1">
-                            <MessageCircle className="w-4 h-4"/>
+                            <MessageCircle className="w-3 h-3"/>
                             <span>{item.comments}</span>
                         </div>
                     </motion.div>
                     <motion.div whileHover={{scale: 1.1}}>
                         <div className="flex items-center space-x-1">
-                            <Heart className="w-4 h-4"/>
+                            <Heart className="w-3 h-3"/>
                             <span>{item.likes}</span>
                         </div>
                     </motion.div>

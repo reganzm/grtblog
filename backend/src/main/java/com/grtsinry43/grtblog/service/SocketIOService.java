@@ -82,6 +82,7 @@ public class SocketIOService {
 
     @OnEvent("enterPage")
     public void onEnterPage(SocketIOClient client, String page) {
+        System.out.println("onEnterPage: " + page);
         UUID clientId = client.getSessionId();
         SocketAddress remoteAddress = client.getRemoteAddress();
         String pageName = pageMatcher.matchPath(page, remoteAddress);

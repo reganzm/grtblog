@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import '@/styles/global.css';
 import './globals.css';
 import {Theme} from '@radix-ui/themes';
-import '@radix-ui/themes/styles.css';
+// import '@radix-ui/themes/styles.css';
 import {ThemeProvider} from './theme-provider';
 import styles from '@/styles/Main.module.scss';
 import NavBar from '@/components/navbar/NavBar';

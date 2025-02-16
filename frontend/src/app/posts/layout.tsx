@@ -13,45 +13,15 @@ export default function RootLayout({
     children: React.ReactNode
 }>) {
     return (
-        <div
-            className="relative min-h-screen overflow-hidden"
+        <Container
+            size={"4"}
             style={{
-                backgroundColor: "var(--background)",
-                color: "var(--foreground)",
+                padding: "0 20px",
+                scrollBehavior: "smooth",
             }}
         >
-            <div
-                className="absolute inset-0 z-0"
-                style={{
-                    content: '""',
-                    background: `
-                        linear-gradient(to right, rgba(var(--foreground), 0.1)1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(var(--foreground), 0.1)1px, transparent 1px)
-                    `,
-                    backgroundSize: "20px 20px",
-                    opacity: 0.1,
-                    pointerEvents: "none",
-                }}
-            />
-            <div
-                className="absolute inset-0 z-10"
-                style={{
-                    backdropFilter: "blur(5px)",
-                    backgroundColor: "rgba(var(--background), 0.7)",
-                }}
-            />
-            <div className="relative z-20">
-                <Container
-                    size={"4"}
-                    style={{
-                        padding: "0 20px",
-                        scrollBehavior: "smooth",
-                    }}
-                >
-                    {children}
-                </Container>
-            </div>
-        </div>
+            {children}
+        </Container>
     )
 }
 
