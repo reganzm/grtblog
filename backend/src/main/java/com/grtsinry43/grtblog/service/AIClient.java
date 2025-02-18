@@ -67,6 +67,7 @@ public class AIClient {
             StringBuilder result = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
+                System.out.println(line);
                 if (line.endsWith("[DONE]")) {
                     break;
                 } else if (line.endsWith("keep-alive")) {

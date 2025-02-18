@@ -54,23 +54,23 @@ pf4j:
   pluginsConfigDir: plugins
 
 
-#management:
-#  endpoint:
-#    health:
-#      show-details: always
-#    info:
-#      enabled: true
-#
-#  endpoints:
-#    web:
-#      exposure:
-#        include: health,info,env,metrics,httptrace,loggers,threaddump
-#
-#
-#
-#  metrics:
-#    enable:
-#      processor: false
+management:
+  endpoint:
+    health:
+      show-details: always
+    info:
+      enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,metrics,httptrace,loggers,threaddump
+
+
+
+  metrics:
+    enable:
+      processor: false
 
 recommender:
   service:
