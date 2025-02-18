@@ -1,3 +1,6 @@
+-- 修改数据库的字符集和排序规则
+ALTER DATABASE `grtblog` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- 创建用户表
 CREATE TABLE IF NOT EXISTS `user`
 (

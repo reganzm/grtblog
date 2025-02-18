@@ -20,13 +20,16 @@ import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {NotificationProvider} from "@/lib/NotificationContext";
 
-const websiteInfo: WebsiteInfo = await getWebsiteInfo({next: {revalidate: 60}});
+export async function generateMetadata(): Promise<Metadata> {
+    const websiteInfo = await getWebsiteInfo({next: {revalidate: 60}});
 
-export const metadata: Metadata = {
-    title: websiteInfo.WEBSITE_NAME,
-    description: websiteInfo.WEBSITE_DESCRIPTION,
-    keywords: websiteInfo.WEBSITE_KEYWORDS,
-};
+    return {
+        title: websiteInfo.WEBSITE_NAME,
+        description: websiteInfo.WEBSITE_DESCRIPTION,
+        keywords: websiteInfo.WEBSITE_KEYWORDS,
+    }
+}
+
 
 export default async function RootLayout({
                                              children,
@@ -34,6 +37,7 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     const navItems = await getAllNavItem({next: {revalidate: 60}});
+    const websiteInfo: WebsiteInfo = await getWebsiteInfo({next: {revalidate: 60}});
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
