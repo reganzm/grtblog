@@ -200,6 +200,12 @@ export default defineConfig({
       path: '/config',
       component: './Config',
     },
+    {
+      name: '系统信息',
+      icon: 'InfoCircleOutlined',
+      path: '/system',
+      component: './System',
+    },
     { path: '/*', component: '@/pages/404.tsx' },
   ],
   npmClient: 'pnpm',

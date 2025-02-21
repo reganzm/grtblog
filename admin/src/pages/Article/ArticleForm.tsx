@@ -1,4 +1,3 @@
-import CustomEditor from '@/components/CustomEditor';
 import CategoryController from '@/services/category/CategoryController';
 import { getToken } from '@/utils/token';
 import { useDispatch, useSelector } from '@@/exports';
@@ -189,7 +188,14 @@ const ArticleForm: React.FC<ArticleFormProps> = ({
           name="content"
           rules={[{ required: true, message: '文章内容不能为空' }]}
         >
-          <CustomEditor ref={editorRef} />
+          <Editor
+            ref={editorRef}
+            initialValue=""
+            previewStyle="vertical"
+            height="600px"
+            initialEditType="markdown"
+            useCommandShortcut={true}
+          />
         </Form.Item>
         <Form.Item>
           <div style={{ marginTop: '20px', marginRight: '20px' }}>

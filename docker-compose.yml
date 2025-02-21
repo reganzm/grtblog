@@ -17,6 +17,7 @@ services:
 #      - ./uploads:/app/uploads
     ports:
       - "8080:8080"
+      - "9091:9091"
     depends_on:
       - mysql
       - mongo
@@ -39,6 +40,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./mysql-init:/docker-entrypoint-initdb.d
+      - ./mysql-init/my.cnf:/etc/mysql/conf.d/my.cnf
     networks:
       custom_network:
         ipv4_address: 172.20.0.3
@@ -74,7 +76,6 @@ services:
     image: grtsinry43/grtblog-recommend:v1.0.0-beta2
     working_dir: /app
     volumes:
-      - ./recommend:/app
       - ./cfg.py:/app/cfg.py
     ports:
       - "8001:8001"

@@ -97,7 +97,7 @@ com:
       clientSecret: your_client_secret
       redirectUri: https://your_deploy_site/api/v1/login/oauth2/code/github
     meilisearch:
-      url: http://localhost:7700
+      url: http://172.20.0.6:7700
       apiKey: masterKey
 
 recommender:
