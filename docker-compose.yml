@@ -9,7 +9,8 @@ services:
   #    command: sh -c "npm install && npm run dev"
 
   backend:
-    image: grtsinry43/grtblog-backend:v1.0.0-beta2
+    image: grtsinry43/grtblog-backend:v1.0.0-beta3
+#    build: .
     working_dir: /app
     volumes:
       - ./application.yml:/app/application.yml

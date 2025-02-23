@@ -24,6 +24,7 @@ const CustomEditor = forwardRef<EditorHandle, NonNullable<unknown>>(
       setMarkdown: (markdown: string) => {
         editorRef.current?.getInstance().setMarkdown(markdown);
       },
+      getMarkdown: () => editorRef.current?.getInstance().getMarkdown() || '',
       context: editorRef.current?.context,
       setState: editorRef.current?.setState,
       forceUpdate: editorRef.current?.forceUpdate,
