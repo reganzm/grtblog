@@ -14,6 +14,7 @@ import {
   message,
 } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import CustomEditor from '@/components/CustomEditor';
 
 interface MomentFormProps {
   type: 'add' | 'edit'; // 添加或编辑
@@ -192,15 +193,9 @@ const MomentForm: React.FC<MomentFormProps> = ({
         <Form.Item
           label="内容"
           name="content"
-          rules={[{ required: true, message: '动态内容不能为空' }]}
+          // rules={[{ required: true, message: '动态内容不能为空' }]}
         >
-          <Editor
-            previewStyle="vertical"
-            height="300px"
-            useCommandShortcut={true}
-            initialEditType="markdown"
-            ref={editorRef}
-          />
+          <CustomEditor ref={editorRef} />
         </Form.Item>
 
         {coverPreview}
