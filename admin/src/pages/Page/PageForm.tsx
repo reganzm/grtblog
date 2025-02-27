@@ -2,6 +2,7 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 import { Button, Form, Input, Select, Upload } from 'antd';
 import React, { useEffect, useRef, useState } from 'react';
+import CustomEditor from '@/components/CustomEditor';
 
 interface PageFormProps {
   type: 'add' | 'edit';
@@ -109,16 +110,9 @@ const PageForm: React.FC<PageFormProps> = ({
         <Form.Item
           label={'内容'}
           name="content"
-          rules={[{ required: true, message: '内容不能为空' }]}
+          // rules={[{ required: true, message: '内容不能为空' }]}
         >
-          <Editor
-            previewStyle="vertical"
-            height="600px"
-            useCommandShortcut={true}
-            initialEditType="markdown"
-            initialValue=""
-            ref={editorRef}
-          />
+          <CustomEditor ref={editorRef} />
         </Form.Item>
         <Form.Item>
           <div style={{ marginTop: '20px', marginRight: '20px' }}>
