@@ -101,7 +101,7 @@ public class UploadFileController {
     }
 
     private boolean isAllowedExtension(String extension) {
-        String[] allowedExtensions = {".jpg", ".png", ".pdf", ".jpeg", ".gif"};
+        String[] allowedExtensions = {".jpg", ".png", ".pdf", ".jpeg", ".gif",".webp"};
         for (String allowed : allowedExtensions) {
             if (extension.equalsIgnoreCase(allowed)) {
                 return true;
