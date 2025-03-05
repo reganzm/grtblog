@@ -173,7 +173,7 @@ export default function Toc({toc, commentId, targetId, likes, comments, type}: {
                     paddingLeft: `${(item.level - 2) * 12}px`,
                 }}
                 variants={itemVariants}
-                ref={(el) => setItemRef(el as HTMLLIElement, item.isSelect)}
+                ref={(el) => setItemRef(el as unknown as HTMLLIElement, item.isSelect)}
             >
                 <li className={`mb-2 transition-all duration-300 ease-in-out ${
                     item.isSelect ? 'font-semibold' : 'font-normal'

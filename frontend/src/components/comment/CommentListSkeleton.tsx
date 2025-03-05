@@ -12,7 +12,7 @@ const CommentListSkeleton = () => {
                     animate={{opacity: 1, y: 0}}
                     transition={{type: "spring", stiffness: 100, delay: index * 0.1}}
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-expect-error
+                    //// @ts-expect-error
                     className="bg-card rounded-lg p-4 shadow-sm"
                 >
                     <div className="flex items-center space-x-2 mb-2">

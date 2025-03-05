@@ -43,7 +43,7 @@ export default function FloatingMenu({items}: { items: MenuItem[] }) {
                         exit={{opacity: 0, scale: 0.8, y: 20}}
                         transition={{type: 'spring', stiffness: 300, damping: 30}}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-expect-error
+                        //// @ts-expect-error
                         className="absolute bottom-16 right-0 w-72 rounded-lg border bg-background shadow-lg overflow-hidden"
                     >
                         <div className="absolute inset-0 bg-background/80 backdrop-blur-sm z-0"/>
