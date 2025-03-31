@@ -1,5 +1,5 @@
 module.exports = {
-    siteUrl: 'https://blog.grtsinry43.com', // 替换为你的域名
+    siteUrl: 'https://itodoit.com', // 替换为你的域名
     generateRobotsTxt: true,          // 同时生成 robots.txt
     changefreq: 'daily',              // 修改频率
     priority: 0.7,                    // 默认优先级

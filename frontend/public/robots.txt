@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://itodoit.com
+
+# Sitemaps
+Sitemap: https://itodoit.com/sitemap.xml

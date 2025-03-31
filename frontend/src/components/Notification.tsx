@@ -63,7 +63,7 @@ const Notification: React.FC<NotificationProps> = ({message, type, onClose}) => 
         <AnimatePresence>
             <motion.div
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                //// @ts-expect-error
+                // @ts-expect-error
                 className="fixed top-16 left-1/2 z-50"
                 initial="initial"
                 animate={controls}
@@ -72,7 +72,7 @@ const Notification: React.FC<NotificationProps> = ({message, type, onClose}) => 
             >
                 <motion.div
                     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    //// @ts-expect-error
+                    // @ts-expect-error
                     className="bg-white dark:bg-black dark:bg-opacity-20 bg-opacity-20 backdrop-filter backdrop-blur-lg rounded-full shadow-lg flex items-center overflow-hidden"
                     initial={{width: 40, x: "-50%"}}
                     animate={{
@@ -86,7 +86,7 @@ const Notification: React.FC<NotificationProps> = ({message, type, onClose}) => 
                     </div>
                     <motion.div
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        //// @ts-expect-error
+                        //@ts-expect-error
                         className="px-4 py-2 overflow-hidden"
                         initial={{width: 0, opacity: 0}}
                         animate={{
@@ -97,7 +97,7 @@ const Notification: React.FC<NotificationProps> = ({message, type, onClose}) => 
                     >
                         <motion.p
                             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            //// @ts-expect-error
+                            //@ts-expect-error
                             className="text-sm text-gray-800 dark:text-gray-200 whitespace-nowrap"
                             initial={{x: 20, opacity: 0}}
                             animate={{

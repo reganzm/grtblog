@@ -43,7 +43,7 @@ interface RecentMomentMomentProps {
 const RecentMomentMotion = ({ list }: RecentMomentMomentProps) => {
   const ref = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  //// @ts-expect-error
+  // @ts-expect-error
   const inView = useInView(ref, {
     once: true,
   });

@@ -70,7 +70,7 @@ const FriendLinkApplyModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () 
                         animate={{opacity: 1}}
                         exit={{opacity: 0}}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        //// @ts-expect-error
+                        //@ts-expect-error
                         className="absolute inset-0 bg-black/30 backdrop-blur-sm"
                         onClick={onClose}
                     />
@@ -82,7 +82,7 @@ const FriendLinkApplyModal = ({isOpen, onClose}: { isOpen: boolean; onClose: () 
                         animate={{scale: 1, opacity: 1}}
                         exit={{scale: 0.9, opacity: 0}}
                         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        //// @ts-expect-error
+                        //@ts-expect-error
                         className="relative w-full max-w-md rounded-lg bg-white/80 p-6 shadow-xl dark:bg-gray-800/80"
                     >
                         <div
