@@ -30,9 +30,9 @@ const FriendCollapsibleInfo = () => {
                             <div className="p-4">
                                 <div>
                                     <span
-                                        className={clsx(noto_sans_sc, "block mt-2 text-sm")}> 网站名称：Grtsinry43&#39;s Blog</span>
+                                        className={clsx(noto_sans_sc, "block mt-2 text-sm")}> 网站名称：二进制视界</span>
                                     <span className={clsx(noto_sans_sc, "block mt-2 text-sm")}>
-                    网站地址：https://blog.grtsinry43.com
+                    网站地址：https://www.itodoit.com
                   </span>
                                     <span
                                         className={clsx(noto_sans_sc, "block mt-2 text-sm")}> 网站描述：总之岁月漫长，然而值得等待 </span>

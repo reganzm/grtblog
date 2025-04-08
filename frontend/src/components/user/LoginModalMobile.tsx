@@ -126,7 +126,7 @@ const LoginModalMobile = ({isOpen, onClose}: { isOpen: boolean; onClose: () => v
                                             <h2 className={clsx(styles.title, varela_round.className)}>
                                         <span
                                             className={noto_sans_sc.className}>{isLoginForm ? '登录到' : '注册'} </span>
-                                                Grtsinry43&apos;s Blog 😘
+                                                二进制视界
                                             </h2>
                                             {
                                                 !isFormShow && (

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-<url><loc>https://itodoit.com/my/reset-password</loc><lastmod>2025-03-30T15:03:10.040Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/my</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/my/reset-password-request</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/tags</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/categories</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/posts</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/album</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/thinking</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/moments</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/friends</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/tags/english</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/categories/logic_english</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/archives</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/posts/hello-world</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
-<url><loc>https://itodoit.com/%2Fposts%2Fenglish</loc><lastmod>2025-03-30T15:03:10.042Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/my</loc><lastmod>2025-04-02T02:55:13.856Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/my/reset-password-request</loc><lastmod>2025-04-02T02:55:13.857Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/posts</loc><lastmod>2025-04-02T02:55:13.857Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/archives</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/album</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/my/reset-password</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/thinking</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/categories/logic_english</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/tags</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/friends</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/moments</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/categories</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/tags/english</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/%2Fposts%2Fenglish</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+<url><loc>https://itodoit.com/posts/hello-world</loc><lastmod>2025-04-02T02:55:13.858Z</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
 </urlset>

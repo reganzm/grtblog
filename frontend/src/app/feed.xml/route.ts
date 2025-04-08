@@ -24,13 +24,13 @@ interface FeedFormat {
 
 export async function GET() {
     const feed = new RSS({
-        title: 'Grtsinry43\'s Blog',
-        description: '一个认真学习前端的大二学生 总之岁月漫长，然而值得等待',
-        site_url: 'https://blog.grtsinry43.com', // 你的网站域名
-        feed_url: 'https://blog.grtsinry43.com/feed.xml', // 尽可能用绝对 URL
+        title: '二进制视界',
+        description: '一个努力学习英语的程序员，记录学习过程中的点滴，分享一些技术文章和经验。',
+        site_url: 'https://www.itodoit.com', // 你的网站域名
+        feed_url: 'https://blog.itodoit.com/feed.xml', // 尽可能用绝对 URL
         language: 'zh-CN', // 网站语言代码
         image_url: 'https://dogeoss.grtsinry43.com/img/author.jpeg',
-        generator: 'Grtblog v0.1.1-Technical Preview', // 想写什么就写什么，也可以不提供
+        generator: 'Nextjs', // 想写什么就写什么，也可以不提供
         custom_elements: [ // 你可以添加任何自定义元素，这个用于添加 follow
             {
                 'follow_challenge': [

@@ -59,7 +59,7 @@ const nextConfig = {
         silenceDeprecations: ['legacy-js-api'],
     },
     experimental: {
-        reactCompiler: true,
+        //reactCompiler: true,
     },
 };
 

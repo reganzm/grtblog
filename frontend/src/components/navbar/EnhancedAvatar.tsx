@@ -108,7 +108,7 @@ export function EnhancedAvatar({avatarSrc}: EnhancedAvatarProps) {
                 >
                     <h3 className="text-sm font-medium mb-2"> 当前在线，康康他在干什么👀</h3>
                     <p className="text-xs text-gray-700 dark:text-gray-300 mb-2">
-                        grtsinry43 正在使用 <b>{userActivity.process}</b> {userActivity.extend}
+                        reganzm 正在使用 <b>{userActivity.process}</b> {userActivity.extend}
                     </p>
                     {userActivity.media?.title && (
                         <div className="flex items-center mb-2">

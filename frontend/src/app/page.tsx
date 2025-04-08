@@ -8,7 +8,7 @@ import styles from "@/styles/HomePage.module.scss"
 import {getLastFiveArticles} from "@/api/article"
 import {getLastFourShare} from "@/api/share"
 import type {Article, StatusUpdate} from "@/types"
-import RecommendClient from "@/app/home/recommend/RecommendClient";
+// 推荐import RecommendClient from "@/app/home/recommend/RecommendClient";
 import {getLatestThinking, Thinking} from "@/api/thinkings";
 import FloatingMenu from "@/components/menu/FloatingMenu";
 
@@ -29,7 +29,7 @@ export default async function Home() {
                     <RecentMoment shareList={shareList}/>
                 </div>
             </div>
-            <RecommendClient/>
+            {/* <RecommendClient/> */}
             <FloatingMenu items={[]}/>
         </div>
     )

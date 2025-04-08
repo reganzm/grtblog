@@ -77,10 +77,10 @@ const AuthorCard = () => {
                                                         />
                                                         <Box>
                                                             <Heading size="3" as="h3">
-                                                                grtsinry43
+                                                                reganzm
                                                             </Heading>
                                                             <Text as="div" size="2" color="gray" mb="2">
-                                                                grtsinry43 · he/him
+                                                                reganzm · he/him
                                                             </Text>
                                                             <Text as="div" size="2">
                                                                 Nothing but enthusiasm brightens up the endless years.
@@ -97,7 +97,7 @@ const AuthorCard = () => {
                                             <HoverCard.Root>
                                                 <HoverCard.Trigger>
                                                     <a
-                                                        href="https://www.grtsinry43.com"
+                                                        href="https://www.itodoit.com"
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className={clsx(styles.underlineAnimation, 'text-blue-700 dark:text-blue-400', styles.glowAnimation)}
@@ -118,7 +118,7 @@ const AuthorCard = () => {
                                                                 学习开发记录
                                                             </Heading>
                                                             <Text as="div" size="2" color="gray" mb="2">
-                                                                grtsinry43 的个人主页
+                                                                reganzm 的个人主页
                                                             </Text>
                                                             <Text as="div" size="2">
                                                                 记录了最近项目，学习进度，折腾历程，以及一些技术分享。
