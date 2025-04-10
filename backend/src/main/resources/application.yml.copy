@@ -3,9 +3,9 @@ spring:
     name: grtblog-backend
   data:
     mongodb:
-      uri: mongodb://itodoit.com:27017/grtblog
+      uri: mongodb://172.20.0.4:27017/grtblog
   datasource:
-    url: jdbc:mysql://itodoit.com:3306/grtblog?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://172.20.0.3:3306/grtblog?serverTimezone=GMT%2B8&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: user
     password: password
@@ -38,12 +38,12 @@ spring:
             client-id: 771501593369-5uuoko1kokogvfsu8hgpedrbe94fl80n.apps.googleusercontent.com
             client-secret: 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
             scope: profile, email
-            redirect-uri: "http://itodoit.com:8080/login/oauth2/code/google"
+            redirect-uri: "http://127.0.0.1:8080/login/oauth2/code/google"
             client-name: Google
           github:
             client-id: Ov23lizpL2clUapS5WzB
             client-secret: af210e176ae3b91ce7e7852c7a9b0b5f9b8afbe1
-            redirect-uri: "https://itodoit.com:8080/login/oauth2/code/github"
+            redirect-uri: "https://www.itodoit.com:8080/login/oauth2/code/github"
             scope: user:email
             client-name: Github
         provider:
@@ -97,9 +97,9 @@ com:
       clientSecret: your_client_secret
       redirectUri: https://your_deploy_site/api/v1/login/oauth2/code/github
     meilisearch:
-      url: http://itodoit.com:7700
+      url: http://172.20.0.6:7700
       apiKey: masterKey
 
 recommender:
   service:
-    url: http://itodoit.com:8001
+    url: http://172.20.0.7:8001
