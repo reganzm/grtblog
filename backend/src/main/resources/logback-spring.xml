@@ -1,9 +1,9 @@
 <!--这个是用于配置日志记录-->
 <configuration>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>logs/grtblog-backend.log</file>
+        <file>logs/iTodo-backend.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>logs/grtblog-backend.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>logs/iTodo-backend.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>7</maxHistory>
         </rollingPolicy>
         <encoder>
