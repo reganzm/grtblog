@@ -2,10 +2,12 @@ module.exports = {
   apps: [
     {
       name: 'grtblog-frontend',
-      script: 'npm',
-      args: 'start',
+      script: 'pnpm',
+      //args:'start',
+      args: 'dev',
       env: {
-        NODE_ENV: 'production',
+        NODE_ENV: 'dev',
+        //NODE_ENV: 'production',
       },
     },
   ],
